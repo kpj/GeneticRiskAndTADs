@@ -51,5 +51,4 @@ def load_biogrid(
         edge_attr='Score')
     graph_bgrid = max(nx.connected_component_subgraphs(graph_bgrid_all), key=len)
 
-    graph_bgrid_undir = graph_bgrid.to_undirected()
-    return graph_bgrid_undir, df_bgrid_phys
+    return graph_bgrid, df_bgrid_phys
