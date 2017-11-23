@@ -17,36 +17,34 @@ def load_snp_data(snp_dir: str = 'data/snps') -> pd.DataFrame:
         'EFO_term', 'disease_name', 'SNP_name', 'chromosome', 'position'])
 
     # load all SNP-disease associations
-    df_cancer_tad = pd.read_table(
-        f'{snp_dir}/all/dSNPs_cancer_tad2.dat', **kwargs)
     df_cancer_notad = pd.read_table(
         f'{snp_dir}/all/dSNPs_cancer2.dat', **kwargs)
-    df_nocancer_tad = pd.read_table(
-        f'{snp_dir}/all/dSNPs_noncancer_tad2.dat', **kwargs)
     df_nocancer_notad = pd.read_table(
         f'{snp_dir}/all/dSNPs_noncancer2.dat', **kwargs)
 
-    df_cancer_tad['is_cancer'] = True
-    df_cancer_tad['is_tad'] = True
     df_cancer_notad['is_cancer'] = True
-    df_cancer_notad['is_tad'] = False
-    df_nocancer_tad['is_cancer'] = False
-    df_nocancer_tad['is_tad'] = True
     df_nocancer_notad['is_cancer'] = False
-    df_nocancer_notad['is_tad'] = False
 
-    df_all = pd.concat([
-        df_cancer_tad, df_cancer_notad,
-        df_nocancer_tad, df_nocancer_notad], axis=0)
+    df_all = pd.concat([df_cancer_notad, df_nocancer_notad], axis=0)
 
-    # load associations of TAD-border enriched diseases
+    # mark SNPs in TAD-borders
+    df_nocancer_tad = pd.read_table(
+        f'{snp_dir}/all/dSNPs_noncancer_tad2.dat', **kwargs)
+    df_cancer_tad = pd.read_table(
+        f'{snp_dir}/all/dSNPs_cancer_tad2.dat', **kwargs)
+    df_all_tad = pd.concat([df_nocancer_tad, df_cancer_tad], axis=0)
+
+    tad_snps = set(df_all_tad.SNP_name.unique())
+    df_all['is_tad'] = df_all['SNP_name'].apply(
+        lambda x: x in tad_snps)
+
+    # mark diseases with TAD border enrichment
     df_enr_tad = pd.read_table(
         f'{snp_dir}/tad_enr/dSNPs_all_tad.dat', **kwargs)
     df_enr_notad = pd.read_table(
         f'{snp_dir}/tad_enr/dSNPs_all.dat', **kwargs)
     df_all_enr = pd.concat([df_enr_tad, df_enr_notad], axis=0)
 
-    # mark diseases with TAD border enrichment
     enr_snps = set(df_all_enr.SNP_name.unique())
     df_all['disease_tad_enriched'] = df_all['SNP_name'].apply(
         lambda x: x in enr_snps)
