@@ -2,6 +2,10 @@
 Functions for reading various data sources
 """
 
+import os
+
+from typing import Tuple, Dict
+
 import pandas as pd
 import networkx as nx
 
@@ -50,11 +54,11 @@ def load_snp_data(snp_dir: str = 'data/snps') -> pd.DataFrame:
 
 def load_biogrid(
     fname: str = 'data/BIOGRID-ORGANISM-Homo_sapiens-3.4.153.tab2.txt'
-) -> nx.Graph:
+) -> Tuple[nx.Graph, pd.DataFrame]:
     """ Load protein-interaction data from BioGRID
     """
     # BioGRID
-    df_bgrid = pd.read_csv(fname, sep='\t', low_memory=False)
+    df_bgrid = pd.read_table(fname, low_memory=False)
 
     # subset physical interactions
     df_bgrid_phys = df_bgrid[df_bgrid['Experimental System Type'] == 'physical']
@@ -68,9 +72,31 @@ def load_biogrid(
 
     return graph_bgrid, df_bgrid_phys
 
+def load_stringdb(
+    fname: str = 'data/stringdb_entrez.tsv.gz',
+    threshold: int = 850
+) -> Tuple[nx.Graph, pd.DataFrame]:
+    """ Load protein-interaction data from StringDB and convert entries to ENTREZ ids
+    """
+    if not os.path.exists(fname):
+        print('Please execute LoadStringDB.ipynb')
+        exit(-1)
+
+    df = pd.read_table(fname)
+    df_sub = df[df['combined_score']>threshold]
+
+    graph_all = nx.convert_matrix.from_pandas_edgelist(
+        df_sub,
+        source='protein1', target='protein2',
+        edge_attr='combined_score')
+    graph = max(nx.connected_component_subgraphs(graph_all), key=len)
+
+    return graph, df_sub
+
 
 def main():
-    df = load_snp_data()
+    #df = load_snp_data()
+    ppi, df = load_stringdb()
     import ipdb; ipdb.set_trace()
 
 if __name__ == '__main__':
