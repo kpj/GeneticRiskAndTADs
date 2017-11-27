@@ -11,7 +11,7 @@ import networkx as nx
 
 
 def load_gwas(
-    fname: str='data/gwas_catalog_v1.0.1-associations_e90_r2017-11-13.tsv'
+    fname: str='data/gwas_catalog_v1.0.1-associations_e90_r2017-11-13.tsv.gz'
 ) -> pd.DataFrame:
     df = pd.read_table(fname, low_memory=False)
     return df
