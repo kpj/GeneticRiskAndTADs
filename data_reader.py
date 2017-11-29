@@ -46,9 +46,9 @@ def load_snp_data(snp_dir: str = 'data/snps') -> pd.DataFrame:
     df_enr = pd.read_table(
         f'{snp_dir}/tad_enr/dSNPs_all.dat', **kwargs)
 
-    enr_snps = set(df_enr.SNP_name.unique())
-    df_all['disease_tad_enriched'] = df_all['SNP_name'].apply(
-        lambda x: x in enr_snps)
+    enr_efos = set(df_enr.EFO_term.unique())
+    df_all['disease_tad_enriched'] = df_all['EFO_term'].apply(
+        lambda x: x in enr_efos)
 
     return df_all
 
