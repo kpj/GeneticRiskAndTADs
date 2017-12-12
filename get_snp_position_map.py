@@ -56,7 +56,7 @@ def main(dbSNP_dir):
         outfile = os.path.join(dbSNP_dir, f'match_{pm_name}')
 
         if not os.path.exists(f'{outfile}.gz'):
-            cmd = f'zgrep -wFf {snplist_fname} {entry.path} > {outfile}'
+            cmd = f'zgrep -w -F -f {snplist_fname} {entry.path} > {outfile}'
             print(f'Running "{cmd}"...', end=' ', flush=True)
             os.system(cmd)
             os.system(f'gzip {outfile}')
