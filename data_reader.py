@@ -52,51 +52,9 @@ def load_snp_data(snp_dir: str = 'data/snps') -> pd.DataFrame:
 
     return df_all
 
-def load_biogrid(
-    fname: str = 'data/BIOGRID-ORGANISM-Homo_sapiens-3.4.153.tab2.txt'
-) -> Tuple[nx.Graph, pd.DataFrame]:
-    """ Load protein-interaction data from BioGRID
-    """
-    # BioGRID
-    df_bgrid = pd.read_table(fname, low_memory=False)
-
-    # subset physical interactions
-    df_bgrid_phys = df_bgrid[df_bgrid['Experimental System Type'] == 'physical']
-
-    # create network
-    graph_bgrid_all = nx.convert_matrix.from_pandas_edgelist(
-        df_bgrid_phys,
-        source='Entrez Gene Interactor A', target='Entrez Gene Interactor B',
-        edge_attr='Score')
-    graph_bgrid = max(nx.connected_component_subgraphs(graph_bgrid_all), key=len)
-
-    return graph_bgrid, df_bgrid_phys
-
-def load_stringdb(
-    fname: str = 'data/stringdb_entrez.tsv.gz',
-    threshold: int = 850
-) -> Tuple[nx.Graph, pd.DataFrame]:
-    """ Load protein-interaction data from StringDB and convert entries to ENTREZ ids
-    """
-    if not os.path.exists(fname):
-        print('Please execute LoadStringDB.ipynb')
-        exit(-1)
-
-    df = pd.read_table(fname)
-    df_sub = df[df['combined_score']>threshold]
-
-    graph_all = nx.convert_matrix.from_pandas_edgelist(
-        df_sub,
-        source='protein1', target='protein2',
-        edge_attr='combined_score')
-    graph = max(nx.connected_component_subgraphs(graph_all), key=len)
-
-    return graph, df_sub
-
 
 def main():
-    #df = load_snp_data()
-    ppi, df = load_stringdb()
+    df = load_snp_data()
     import ipdb; ipdb.set_trace()
 
 if __name__ == '__main__':
