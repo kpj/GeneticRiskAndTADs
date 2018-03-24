@@ -10,7 +10,7 @@
     * `TAD_Borders`: Compute network-coherences
     * `ComputeTADEnrichments`: compute TAD (-border) enrichments
 
-Execute as follows:
+Force execution as follows:
 ```bash
-$ snakemake -pr
+$ snakemake -pr -R convert_tad_coordinates
 ```
