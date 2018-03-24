@@ -1,5 +1,3 @@
-import os
-
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
 
@@ -8,12 +6,11 @@ from nbconvert.preprocessors import ExecutePreprocessor
 # setup
 
 def execute_notebook(nb_path):
-    os.system(f'jupyter nbconvert --ExecutePreprocessor.timeout=600 --to notebook --execute {nb_path}')
-    # with open(nb_path) as fd:
-    #     nb = nbformat.read(fd, as_version=4)
-    #
-    # ep = ExecutePreprocessor(timeout=600)
-    # ep.preprocess(nb, {})
+    with open(nb_path) as fd:
+        nb = nbformat.read(fd, as_version=4)
+
+    ep = ExecutePreprocessor(timeout=600)
+    ep.preprocess(nb, {})
 
 
 ###
