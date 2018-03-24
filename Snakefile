@@ -4,6 +4,7 @@ from nbconvert.preprocessors import ExecutePreprocessor
 
 ###
 # setup
+configfile: 'config.yaml'
 
 def execute_notebook(nb_path):
     with open(nb_path) as fd:
@@ -23,7 +24,7 @@ rule all:
 
 rule convert_tad_coordinates:
     input:
-        'data/tads_hESC_hg19_with_ids.txt'
+        config['input_files']['tad_coordinates_hg19']
     output:
         'results/tads_hESC_hg38.tsv'
     run:
@@ -31,7 +32,7 @@ rule convert_tad_coordinates:
 
 rule assemble_snp_database:
     input:
-        'data/curated_variant_disease_associations.tsv.gz',
+        config['input_files']['raw_disgenet'],
         'results/tads_hESC_hg38.tsv'
     output:
         'results/disgenet_enhanced_hg38.tsv',
