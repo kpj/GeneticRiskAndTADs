@@ -9,3 +9,8 @@
 * Analyses
     * `TAD_Borders`: Compute network-coherences
     * `ComputeTADEnrichments`: compute TAD (-border) enrichments
+
+Execute as follows:
+```bash
+$ snakemake -pr
+```
