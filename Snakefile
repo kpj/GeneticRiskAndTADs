@@ -1,17 +1,9 @@
-import nbformat
-from nbconvert.preprocessors import ExecutePreprocessor
+from bioinf_common.tools import execute_notebook
 
 
 ###
 # setup
 configfile: 'config.yaml'
-
-def execute_notebook(nb_path):
-    with open(nb_path) as fd:
-        nb = nbformat.read(fd, as_version=4)
-
-    ep = ExecutePreprocessor(timeout=600)
-    ep.preprocess(nb, {})
 
 
 ###
