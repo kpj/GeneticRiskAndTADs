@@ -25,10 +25,10 @@ rule convert_tad_coordinates:
 rule assemble_snp_database:
     input:
         config['input_files']['raw_disgenet'],
+        config['input_files']['raw_gwascatalog'],
         'results/tads_hESC_hg38.tsv'
     output:
-        'results/disgenet_enhanced_hg38.tsv',
-        'results/disease_terms.csv'
+        'results/disgenet_enhanced_hg38.tsv'
     run:
         execute_notebook('LoadDisGeNET.ipynb')
 
