@@ -37,14 +37,16 @@ rule compute_enrichments:
         'results/disgenet_enhanced_hg38.tsv',
         'results/tads_hESC_hg38.tsv'
     output:
-        'results/TAD_enrichment.csv'
+        'results/TAD_enrichment.csv',
+        'results/disease_cancer_classification.csv'
     run:
         execute_notebook('ComputeTADEnrichments.ipynb')
 
 rule produce_figures:
     input:
         'results/disgenet_enhanced_hg38.tsv',
-        'results/TAD_enrichment.csv'
+        'results/TAD_enrichment.csv',
+        'results/disease_cancer_classification.csv'
     output:
         'images/tad_border_enrichment.pdf'
     run:
