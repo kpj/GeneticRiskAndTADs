@@ -42,7 +42,7 @@ rule compute_enrichments:
     run:
         execute_notebook('ComputeTADEnrichments.ipynb')
 
-rule produce_figures:
+rule analyze_results:
     input:
         'results/disgenet_enhanced_hg38.tsv',
         'results/TAD_enrichment.csv',
@@ -51,3 +51,4 @@ rule produce_figures:
         'images/tad_border_enrichment.pdf'
     run:
         execute_notebook('PublicationReproductions.ipynb')
+        execute_notebook('FurtherExperiments.ipynb')
