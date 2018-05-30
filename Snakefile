@@ -46,7 +46,8 @@ rule analyze_results:
     input:
         'results/disgenet_enhanced_hg38.tsv',
         'results/TAD_enrichment.csv',
-        'results/disease_cancer_classification.csv'
+        'results/disease_cancer_classification.csv',
+        'results/tads_hESC_hg38.tsv'
     output:
         'images/tad_border_enrichment.pdf'
     run:
