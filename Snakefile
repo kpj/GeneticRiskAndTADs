@@ -28,7 +28,8 @@ rule assemble_snp_database:
         config['input_files']['raw_gwascatalog'],
         'results/tads_hESC_hg38.tsv'
     output:
-        'results/disgenet_enhanced_hg38.tsv'
+        'results/disgenet_enhanced_hg38.tsv',
+        'results/disease_cancer_classification.csv'
     run:
         execute_notebook('LoadDisGeNET.ipynb')
 
@@ -37,8 +38,7 @@ rule compute_enrichments:
         'results/disgenet_enhanced_hg38.tsv',
         'results/tads_hESC_hg38.tsv'
     output:
-        'results/TAD_enrichment.csv',
-        'results/disease_cancer_classification.csv'
+        'results/TAD_enrichment.csv'
     run:
         execute_notebook('ComputeTADEnrichments.ipynb')
 
