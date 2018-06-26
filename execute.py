@@ -36,6 +36,27 @@ def main():
         },
         {
             'output_dirs': dict(
+                results=f'{ow}/oldgwas:e90/results',
+                images=f'{ow}/oldgwas:e90/images'),
+            'input_files': dict(
+                raw_gwascatalog='gwas_catalog_v1.0.1-associations_e90_r2017-11-20.tsv')
+        },
+        {
+            'output_dirs': dict(
+                results=f'{ow}/tads:random/results',
+                images=f'{ow}/tads:random/images'),
+            'input_files': dict(
+                tad_coordinates_hg19='data/tads_hg19_randomized.tsv')
+        },
+        {
+            'output_dirs': dict(
+                results=f'{ow}/tads:new:rao/results',
+                images=f'{ow}/tads:new:rao/images'),
+            'input_files': dict(
+                tad_coordinates_hg19='data/TADcallsByTool_Rao.tsv')
+        },
+        {
+            'output_dirs': dict(
                 results=f'{ow}/ORthres_1,3/results',
                 images=f'{ow}/ORthres_1,3/images'),
             'filters': dict(OR_threshold=1.3)
