@@ -5,20 +5,22 @@ from bioinf_common.tools import execute_notebook
 # setup
 configfile: 'config.yaml'
 
+results = config['output_dirs']['results']
+images = config['output_dirs']['images']
 
 ###
 # rule definitions
 
 rule all:
     input:
-        'results/TAD_enrichment.csv',
-        'images/tad_border_enrichment.pdf'
+        f'{results}/TAD_enrichment.csv',
+        f'{images}/tad_border_enrichment.pdf'
 
 rule convert_tad_coordinates:
     input:
         config['input_files']['tad_coordinates_hg19']
     output:
-        'results/tads_hESC_hg38.tsv'
+        f'{results}/tads_hESC_hg38.tsv'
     run:
         execute_notebook('ConvertTADGenomicCoordinates.ipynb')
 
@@ -26,30 +28,30 @@ rule assemble_snp_database:
     input:
         config['input_files']['raw_disgenet'],
         config['input_files']['raw_gwascatalog'],
-        'results/tads_hESC_hg38.tsv'
+        f'{results}/tads_hESC_hg38.tsv'
     output:
-        'results/disgenet_enhanced_hg38.tsv',
-        'results/disease_cancer_classification.csv'
+        f'{results}/disgenet_enhanced_hg38.tsv',
+        f'{results}/disease_cancer_classification.csv'
     run:
         execute_notebook('LoadDisGeNET.ipynb')
 
 rule compute_enrichments:
     input:
-        'results/disgenet_enhanced_hg38.tsv',
-        'results/tads_hESC_hg38.tsv'
+        f'{results}/disgenet_enhanced_hg38.tsv',
+        f'{results}/tads_hESC_hg38.tsv'
     output:
-        'results/TAD_enrichment.csv'
+        f'{results}/TAD_enrichment.csv'
     run:
         execute_notebook('ComputeTADEnrichments.ipynb')
 
 rule analyze_results:
     input:
-        'results/disgenet_enhanced_hg38.tsv',
-        'results/TAD_enrichment.csv',
-        'results/disease_cancer_classification.csv',
-        'results/tads_hESC_hg38.tsv'
+        f'{results}/disgenet_enhanced_hg38.tsv',
+        f'{results}/TAD_enrichment.csv',
+        f'{results}/disease_cancer_classification.csv',
+        f'{results}/tads_hESC_hg38.tsv'
     output:
-        'images/tad_border_enrichment.pdf'
+        f'{images}/tad_border_enrichment.pdf'
     run:
         execute_notebook('PublicationReproductions.ipynb')
         execute_notebook('FurtherExperiments.ipynb')

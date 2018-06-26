@@ -2,3 +2,6 @@ input_files:
     tad_coordinates_hg19: 'data/tads_hESC_hg19_with_ids.txt'
     raw_disgenet: 'data/curated_variant_disease_associations.tsv.gz'
     raw_gwascatalog: 'data/gwas_catalog_v1.0.2-associations_e92_r2018-06-20.tsv'
+output_dirs:
+    results: 'results'
+    images: 'images'
