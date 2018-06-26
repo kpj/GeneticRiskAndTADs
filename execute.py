@@ -23,12 +23,11 @@ def update(d, u):
     return d
 
 
-def main():
+def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
     # load default config
     default_config = load_config()
 
     # setup configurations
-    ow = 'exec_output'
     configurations = [
         {
             'index': 'raw'
@@ -79,7 +78,7 @@ def main():
 
         # setup environment
         for key, dir_value in default_config['output_dirs'].items():
-            cwd = f'{ow}/{idx}/{dir_value}'
+            cwd = f'{execution_dir}/{idx}/{dir_value}'
 
             cur_conf['output_dirs'][key] = cwd
             sh.mkdir('-p', cwd)
@@ -96,14 +95,13 @@ def main():
             _out=sys.stdout, _err=sys.stderr)
 
     # gather results
-    output_dir = 'toshow'
-    sh.rm('-rf', output_dir)
-    sh.mkdir('-p', output_dir)
-    for conf_type in os.scandir(ow):
+    sh.rm('-rf', results_dir)
+    sh.mkdir('-p', results_dir)
+    for conf_type in os.scandir(execution_dir):
         c_type = conf_type.name
         for img in os.scandir(f'{conf_type.path}/images'):
             img_name = img.name.replace('.pdf', f'_{c_type}.pdf')
-            sh.cp(img.path, f'{output_dir}/{img_name}')
+            sh.cp(img.path, f'{results_dir}/{img_name}')
 
 if __name__ == '__main__':
     main()
