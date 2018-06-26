@@ -39,7 +39,7 @@ def main():
                 results=f'{ow}/oldgwas:e90/results',
                 images=f'{ow}/oldgwas:e90/images'),
             'input_files': dict(
-                raw_gwascatalog='gwas_catalog_v1.0.1-associations_e90_r2017-11-20.tsv')
+                raw_gwascatalog='data/gwas_catalog_v1.0.1-associations_e90_r2017-11-20.tsv')
         },
         {
             'output_dirs': dict(
