@@ -1,9 +1,13 @@
+import os
+
 import yaml
 
 import pandas as pd
 
 
 def load_config(fname='config.yaml'):
+    fname = os.environ.get('SNAKEMAKE__CONFIG_FILE', None) or fname
+
     with open(fname) as fd:
         return yaml.load(fd)
 
