@@ -6,6 +6,7 @@ import os
 import sys
 import copy
 import collections
+from pprint import pprint
 
 import sh
 from tqdm import tqdm
@@ -30,70 +31,64 @@ def main():
     ow = 'exec_output'
     configurations = [
         {
-            'output_dirs': dict(
-                results=f'{ow}/raw/results',
-                images=f'{ow}/raw/images')
+            'index': 'raw'
         },
         {
-            'output_dirs': dict(
-                results=f'{ow}/oldgwas:e90/results',
-                images=f'{ow}/oldgwas:e90/images'),
+            'index': 'oldgwas:e90',
             'input_files': dict(
                 raw_gwascatalog='data/gwas_catalog_v1.0.1-associations_e90_r2017-11-20.tsv')
         },
         {
-            'output_dirs': dict(
-                results=f'{ow}/tads:random/results',
-                images=f'{ow}/tads:random/images'),
+            'index': 'ORthres_1,3',
+            'filters': dict(OR_threshold=1.3)
+        },
+        {
+            'index': 'ORthres_1,5',
+            'filters': dict(OR_threshold=1.5)
+        },
+        {
+            'index': 'ORthres_2',
+            'filters': dict(OR_threshold=2)
+        },
+        {
+            'index': 'nonexonic',
+            'filters': dict(variant_type='nonexonic')
+        },
+        {
+            'index': 'intergenic',
+            'filters': dict(variant_type='intergenic')
+        },
+        {
+            'index': 'tads:random',
             'input_files': dict(
                 tad_coordinates_hg19='data/tads_hg19_randomized.tsv')
         },
         {
-            'output_dirs': dict(
-                results=f'{ow}/tads:new:rao/results',
-                images=f'{ow}/tads:new:rao/images'),
+            'index': 'tads:new:rao',
             'input_files': dict(
                 tad_coordinates_hg19='data/TADcallsByTool_Rao.tsv')
         },
-        {
-            'output_dirs': dict(
-                results=f'{ow}/ORthres_1,3/results',
-                images=f'{ow}/ORthres_1,3/images'),
-            'filters': dict(OR_threshold=1.3)
-        },
-        {
-            'output_dirs': dict(
-                results=f'{ow}/ORthres_1,5/results',
-                images=f'{ow}/ORthres_1,5/images'),
-            'filters': dict(OR_threshold=1.5)
-        },
-        {
-            'output_dirs': dict(
-                results=f'{ow}/ORthres_2/results',
-                images=f'{ow}/ORthres_2/images'),
-            'filters': dict(OR_threshold=2)
-        },
-        {
-            'output_dirs': dict(
-                results=f'{ow}/nonexonic/results',
-                images=f'{ow}/nonexonic/images'),
-            'filters': dict(variant_type='nonexonic')
-        },
-        {
-            'output_dirs': dict(
-                results=f'{ow}/intergenic/results',
-                images=f'{ow}/intergenic/images'),
-            'filters': dict(variant_type='intergenic')
-        }
     ]
 
     # execute pipelines
     for conf in tqdm(configurations):
+        idx = conf.pop('index')
+
+        # merge default and run-specific configurations
         cur_conf = update(copy.deepcopy(default_config), conf)
 
-        for k, v in cur_conf['output_dirs'].items():
-            sh.mkdir('-p', v)
+        # setup environment
+        for key, dir_value in default_config['output_dirs'].items():
+            cwd = f'{ow}/{idx}/{dir_value}'
 
+            cur_conf['output_dirs'][key] = cwd
+            sh.mkdir('-p', cwd)
+
+        print(idx)
+        pprint(cur_conf)
+        print()
+
+        # run
         c_list = [f'{k}={v}' for k, v in cur_conf.items()]
         sh.snakemake(
             '-pr',
