@@ -90,6 +90,10 @@ def main():
     # execute pipelines
     for conf in tqdm(configurations):
         cur_conf = update(copy.deepcopy(default_config), conf)
+
+        for k, v in cur_conf['output_dirs'].items():
+            sh.mkdir('-p', v)
+
         c_list = [f'{k}={v}' for k, v in cur_conf.items()]
         sh.snakemake(
             '-pr',
