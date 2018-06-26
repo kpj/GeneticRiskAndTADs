@@ -5,3 +5,6 @@ input_files:
 output_dirs:
     results: 'results'
     images: 'images'
+filters:
+    OR_threshold:  # <float>
+    variant_type:  # 'nonexonic', 'intergenic'
