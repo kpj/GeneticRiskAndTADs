@@ -4,62 +4,72 @@ Execute various pipeline configurations
 
 import os
 import sys
+import copy
+import collections
 
 import sh
 from tqdm import tqdm
 
+from utils import load_config
+
+
+def update(d, u):
+    for k, v in u.items():
+        if isinstance(v, collections.Mapping):
+            d[k] = update(d.get(k, {}), v)
+        else:
+            d[k] = v
+    return d
+
 
 def main():
+    # load default config
+    default_config = load_config()
+
+    # setup configurations
     ow = 'exec_output'
     configurations = [
         {
             'output_dirs': dict(
                 results=f'{ow}/raw/results',
-                images=f'{ow}/raw/images'),
-            'filters': dict(
-                OR_threshold=None, variant_type=None)
+                images=f'{ow}/raw/images')
         },
         {
             'output_dirs': dict(
                 results=f'{ow}/ORthres_1,3/results',
                 images=f'{ow}/ORthres_1,3/images'),
-            'filters': dict(
-                OR_threshold=1.3, variant_type=None)
+            'filters': dict(OR_threshold=1.3)
         },
         {
             'output_dirs': dict(
                 results=f'{ow}/ORthres_1,5/results',
                 images=f'{ow}/ORthres_1,5/images'),
-            'filters': dict(
-                OR_threshold=1.5, variant_type=None)
+            'filters': dict(OR_threshold=1.5)
         },
         {
             'output_dirs': dict(
                 results=f'{ow}/ORthres_2/results',
                 images=f'{ow}/ORthres_2/images'),
-            'filters': dict(
-                OR_threshold=2, variant_type=None)
+            'filters': dict(OR_threshold=2)
         },
         {
             'output_dirs': dict(
                 results=f'{ow}/nonexonic/results',
                 images=f'{ow}/nonexonic/images'),
-            'filters': dict(
-                OR_threshold=None, variant_type='nonexonic')
+            'filters': dict(variant_type='nonexonic')
         },
         {
             'output_dirs': dict(
                 results=f'{ow}/intergenic/results',
                 images=f'{ow}/intergenic/images'),
-            'filters': dict(
-                OR_threshold=None, variant_type='intergenic')
+            'filters': dict(variant_type='intergenic')
         }
     ]
 
     # execute pipelines
     for conf in tqdm(configurations):
-        c_list = [f'{k}={v}' for k, v in conf.items()]
-        print(c_list)
+        cur_conf = update(copy.deepcopy(default_config), conf)
+        c_list = [f'{k}={v}' for k, v in cur_conf.items()]
         sh.snakemake(
             '-pr',
             '--config', *c_list,
