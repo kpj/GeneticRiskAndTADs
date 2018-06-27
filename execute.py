@@ -104,16 +104,13 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
     for conf_type in os.scandir(execution_dir):
         c_type = conf_type.name
 
-        # data
-        for res in os.scandir(f'{conf_type.path}/results'):
-            suf = res.name.split('.')[-1]
-            res_name = res.name[:-(len(suf)+1)] + f'_{c_type}.{suf}'
-            sh.cp(res.path, f'{results_dir}/{res_name}')
+        for res_type in os.scandir(conf_type.path):
+            for res in os.scandir(f'{conf_type.path}/{res_type.name}'):
+                suf = res.name.split('.')[-1]
+                res_name = res.name[:-(len(suf)+1)] + f'_{c_type}.{suf}'
 
-        # images
-        for img in os.scandir(f'{conf_type.path}/images'):
-            img_name = img.name.replace('.pdf', f'_{c_type}.pdf')
-            sh.cp(img.path, f'{results_dir}/{img_name}')
+                sh.mkdir('-p', f'{results_dir}/{res_type.name}')
+                sh.cp(res.path, f'{results_dir}/{res_type.name}/{res_name}')
 
 if __name__ == '__main__':
     main()
