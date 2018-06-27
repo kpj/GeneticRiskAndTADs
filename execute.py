@@ -28,46 +28,45 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
     default_config = load_config()
 
     # setup configurations
-    configurations = [
-        {
-            'index': 'raw'
-        },
-        {
-            'index': 'oldgwas:e90',
+    configurations = [{'index': 'raw'}]
+
+    # other GWAS versions
+    configurations.append({
+        'index': 'oldgwas:e90',
+        'input_files': dict(
+            raw_gwascatalog='data/gwas_catalog_v1.0.1-associations_e90_r2017-11-20.tsv')
+    })
+
+    # OR thresholds
+    for or_thres in [1.3, 1.5, 2]:
+        configurations.append({
+            'index': f'ORthres_{or_thres}',
+            'filters': dict(OR_threshold=or_thres)
+        })
+
+    # variant filters
+    for var_filter in ['nonexonic', 'intergenic']:
+        configurations.append({
+            'index': var_filter,
+            'filters': dict(variant_type=var_filter)
+        })
+
+    # other TAD data
+    for tad_idx, tad_fname in [
+        ('tads:random', 'data/tads_hg19_randomized.tsv'),
+        ('DomainCaller_500M_50000', 'data/TADcallsByTool_Rao_DomainCaller_500M_50000.tsv'),
+        ('HiCSeg_500M_50000', 'data/TADcallsByTool_Rao_HiCSeg_500M_50000.tsv'),
+        ('TADbit_500M_50000', 'data/TADcallsByTool_Rao_TADbit_500M_50000.tsv'),
+        ('TADtree_500M_50000', 'data/TADcallsByTool_Rao_TADtree_500M_50000.tsv'),
+        ('TopDom_500M_50000', 'data/TADcallsByTool_Rao_TopDom_500M_50000.tsv'),
+        ('armatus_500M_50000', 'data/TADcallsByTool_Rao_armatus_500M_50000.tsv'),
+        ('arrowhead_500M_50000', 'data/TADcallsByTool_Rao_arrowhead_500M_50000.tsv')
+    ]:
+        configurations.append({
+            'index': tad_idx,
             'input_files': dict(
-                raw_gwascatalog='data/gwas_catalog_v1.0.1-associations_e90_r2017-11-20.tsv')
-        },
-        {
-            'index': 'ORthres_1,3',
-            'filters': dict(OR_threshold=1.3)
-        },
-        {
-            'index': 'ORthres_1,5',
-            'filters': dict(OR_threshold=1.5)
-        },
-        {
-            'index': 'ORthres_2',
-            'filters': dict(OR_threshold=2)
-        },
-        {
-            'index': 'nonexonic',
-            'filters': dict(variant_type='nonexonic')
-        },
-        {
-            'index': 'intergenic',
-            'filters': dict(variant_type='intergenic')
-        },
-        {
-            'index': 'tads:random',
-            'input_files': dict(
-                tad_coordinates_hg19='data/tads_hg19_randomized.tsv')
-        },
-        {
-            'index': 'tads:new:rao',
-            'input_files': dict(
-                tad_coordinates_hg19='data/TADcallsByTool_Rao.tsv')
-        },
-    ]
+                tad_coordinates_hg19=tad_fname)
+        })
 
     # execute pipelines
     for conf in tqdm(configurations):
