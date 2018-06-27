@@ -72,6 +72,12 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
     for conf in tqdm(configurations):
         idx = conf.pop('index')
 
+        print(idx, end=' ')
+        if os.path.exists(f'{execution_dir}/{idx}/'):
+            print('-- Skipping...')
+            continue
+        print()
+
         # merge default and run-specific configurations
         cur_conf = update(copy.deepcopy(default_config), conf)
 
@@ -82,7 +88,6 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
             cur_conf['output_dirs'][key] = cwd
             sh.mkdir('-p', cwd)
 
-        print(idx)
         pprint(cur_conf)
         print()
 
@@ -98,6 +103,14 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
     sh.mkdir('-p', results_dir)
     for conf_type in os.scandir(execution_dir):
         c_type = conf_type.name
+
+        # data
+        for res in os.scandir(f'{conf_type.path}/results'):
+            suf = res.name.split('.')[-1]
+            res_name = res.name[:-(len(suf)+1)] + f'_{c_type}.{suf}'
+            sh.cp(res.path, f'{results_dir}/{res_name}')
+
+        # images
         for img in os.scandir(f'{conf_type.path}/images'):
             img_name = img.name.replace('.pdf', f'_{c_type}.pdf')
             sh.cp(img.path, f'{results_dir}/{img_name}')
