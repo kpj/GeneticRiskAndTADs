@@ -19,6 +19,10 @@ os.environ['SNAKEMAKE__CONFIG_FILE'] = conf_fname
 with open(conf_fname, 'w') as fd:
     yaml.dump(config, fd)
 
+# create needed output directories
+for wd in config['output_dirs']:
+    os.makedirs(wd, exist_ok=True)
+
 ###
 # rule definitions
 
