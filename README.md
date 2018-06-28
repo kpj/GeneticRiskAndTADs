@@ -3,7 +3,7 @@
 ## Workflow
 
 * Setup
-    * `ConvertTADGenomicCoordinates`: convert TAD-coordinates from hg19 to hg38
+    * `ConvertTADGenomicCoordinates`: convert TAD-coordinates from hg18 to hg38
     * `LoadDisGeNET`: assemble custom DisGeNET (TAD associations, etc)
 
 * Analyses

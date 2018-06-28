@@ -53,7 +53,7 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
 
     # other TAD data
     for tad_idx, tad_fname in [
-        ('tads:random', 'data/tads_hg19_randomized.tsv'),
+        ('tads:random', 'data/tads_hg18_randomized.tsv'),
         ('DomainCaller_500M_50000', 'data/TADcallsByTool_Rao_DomainCaller_500M_50000.tsv'),
         ('HiCSeg_500M_50000', 'data/TADcallsByTool_Rao_HiCSeg_500M_50000.tsv'),
         ('TADbit_500M_50000', 'data/TADcallsByTool_Rao_TADbit_500M_50000.tsv'),
@@ -65,7 +65,7 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
         configurations.append({
             'index': tad_idx,
             'input_files': dict(
-                tad_coordinates_hg19=tad_fname)
+                tad_coordinates_hg18=tad_fname)
         })
 
     # execute pipelines

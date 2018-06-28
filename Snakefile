@@ -29,7 +29,7 @@ rule all:
 
 rule convert_tad_coordinates:
     input:
-        config['input_files']['tad_coordinates_hg19']
+        config['input_files']['tad_coordinates_hg18']
     output:
         f'{results}/tads_hESC_hg38.tsv'
     run:
