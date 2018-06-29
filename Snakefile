@@ -10,9 +10,6 @@ from bioinf_common.tools import execute_notebook
 # setup
 configfile: 'config.yaml'
 
-results = config['output_dirs']['results']
-images = config['output_dirs']['images']
-
 # save config for notebooks
 conf_fname = tempfile.NamedTemporaryFile().name
 os.environ['SNAKEMAKE__CONFIG_FILE'] = conf_fname
@@ -20,8 +17,12 @@ with open(conf_fname, 'w') as fd:
     yaml.dump(config, fd)
 
 # create needed output directories
-for wd in config['output_dirs']:
+for wd in config['output_dirs'].values():
     os.makedirs(wd, exist_ok=True)
+
+results = config['output_dirs']['results']
+images = config['output_dirs']['images']
+
 
 ###
 # rule definitions
