@@ -35,7 +35,7 @@ rule convert_tad_coordinates:
     input:
         config['input_files']['tad_coordinates_hg18']
     output:
-        f'{results}/tads_hESC_hg38.tsv'
+        f'{results}/tads_hg38.tsv'
     run:
         execute_notebook('ConvertTADGenomicCoordinates.ipynb')
 
@@ -43,7 +43,7 @@ rule assemble_snp_database:
     input:
         config['input_files']['raw_disgenet'],
         config['input_files']['raw_gwascatalog'],
-        f'{results}/tads_hESC_hg38.tsv'
+        f'{results}/tads_hg38.tsv'
     output:
         f'{results}/disgenet_enhanced.tsv',
         f'{results}/disease_cancer_classification.csv'
@@ -53,7 +53,7 @@ rule assemble_snp_database:
 rule compute_enrichments:
     input:
         f'{results}/disgenet_enhanced.tsv',
-        f'{results}/tads_hESC_hg38.tsv'
+        f'{results}/tads_hg38.tsv'
     output:
         f'{results}/TAD_enrichment.csv'
     run:
@@ -64,7 +64,7 @@ rule analyze_results:
         f'{results}/disgenet_enhanced.tsv',
         f'{results}/TAD_enrichment.csv',
         f'{results}/disease_cancer_classification.csv',
-        f'{results}/tads_hESC_hg38.tsv'
+        f'{results}/tads_hg38.tsv'
     output:
         f'{images}/tad_border_enrichment.pdf'
     run:
