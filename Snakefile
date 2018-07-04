@@ -49,7 +49,7 @@ rule assemble_snp_database:
         f'{results}/disgenet_enhanced.tsv',
         f'{results}/disease_cancer_classification.csv'
     run:
-        execute_notebook('LoadDisGeNET.ipynb')
+        execute_notebook('EnhanceSNPDatabase.ipynb')
 
 rule compute_enrichments:
     input:
