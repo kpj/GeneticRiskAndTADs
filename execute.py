@@ -53,8 +53,10 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
 
     # other TAD data
     for tad_idx, tad_fname in [
-        ('tads:IMR90', 'data/tads_IMR90_hg18.csv')
-        ('tads:random', 'data/tads_hg18_randomized.tsv'),
+        ('tads_IMR90', 'data/tads_IMR90_hg18.csv'),
+        ('tads_cortex', 'data/tads_cortex_hg18.csv'),
+        ('tads_mESC', 'data/tads_mESC_hg18.csv'),
+        ('tads_random', 'data/tads_hg18_randomized.tsv'),
         ('DomainCaller_500M_50000', 'data/TADcallsByTool_Rao_DomainCaller_500M_50000.tsv'),
         ('HiCSeg_500M_50000', 'data/TADcallsByTool_Rao_HiCSeg_500M_50000.tsv'),
         ('TADbit_500M_50000', 'data/TADcallsByTool_Rao_TADbit_500M_50000.tsv'),
