@@ -47,7 +47,8 @@ rule assemble_snp_database:
         f'{results}/tads_hg38.tsv'
     output:
         f'{results}/disgenet_enhanced.tsv',
-        f'{results}/disease_cancer_classification.csv'
+        f'{results}/disease_cancer_classification.csv',
+        f'{results}/disease_efolabels.csv'
     run:
         execute_notebook('EnhanceSNPDatabase.ipynb')
 
@@ -65,6 +66,7 @@ rule analyze_results:
         f'{results}/disgenet_enhanced.tsv',
         f'{results}/TAD_enrichment.csv',
         f'{results}/disease_cancer_classification.csv',
+        f'{results}/disease_efolabels.csv',
         f'{results}/tads_hg38.tsv'
     output:
         f'{images}/tad_border_enrichment.pdf'
