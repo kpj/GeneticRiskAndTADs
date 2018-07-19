@@ -8,3 +8,5 @@ output_dirs:
 filters:
     OR_threshold:  # <float>
     variant_type:  # 'nonexonic', 'intergenic'
+parameters:
+    source_genomiccoordinates_version: 'hg18'
