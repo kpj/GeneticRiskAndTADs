@@ -71,6 +71,14 @@ def main(execution_dir='cwd_multiconfig_execution', results_dir='toshow'):
                 tad_coordinates_hg18=tad_fname)
         })
 
+    configurations.append({
+        'index': 'tads_hESChg19',
+        'input_files': dict(
+            tad_coordinates_hg18='data/tads_hESC_hg19.csv'),
+        'parameters': dict(
+            source_genomiccoordinates_version='hg19')
+    })
+
     # execute pipelines
     for conf in tqdm(configurations):
         idx = conf.pop('index')
