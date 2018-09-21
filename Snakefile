@@ -46,7 +46,7 @@ rule assemble_snp_database:
         config['input_files']['raw_gwascatalog'],
         f'{results}/tads_hg38.tsv'
     output:
-        f'{results}/disgenet_enhanced.tsv',
+        f'{results}/snpdb_enhanced.tsv',
         f'{results}/disease_cancer_classification.csv',
         f'{results}/disease_efolabels.csv'
     run:
@@ -54,7 +54,7 @@ rule assemble_snp_database:
 
 rule compute_enrichments:
     input:
-        f'{results}/disgenet_enhanced.tsv',
+        f'{results}/snpdb_enhanced.tsv',
         f'{results}/tads_hg38.tsv'
     output:
         f'{results}/TAD_enrichment.csv'
@@ -63,7 +63,7 @@ rule compute_enrichments:
 
 rule analyze_results:
     input:
-        f'{results}/disgenet_enhanced.tsv',
+        f'{results}/snpdb_enhanced.tsv',
         f'{results}/TAD_enrichment.csv',
         f'{results}/disease_cancer_classification.csv',
         f'{results}/disease_efolabels.csv',
