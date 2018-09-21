@@ -30,7 +30,8 @@ images = config['output_dirs']['images']
 rule all:
     input:
         f'{results}/TAD_enrichment.csv',
-        f'{images}/tad_border_enrichment.pdf'
+        f'{images}/tad_border_enrichment.pdf',
+        f'{results}/disease_classification.csv'
 
 rule convert_tad_coordinates:
     input:
@@ -73,3 +74,12 @@ rule analyze_results:
     run:
         execute_notebook('PublicationReproductions.ipynb')
         execute_notebook('FurtherExperiments.ipynb')
+
+rule disease_classification:
+    input:
+        f'{results}/snpdb_enhanced.tsv',
+        f'{results}/TAD_enrichment.csv',
+    output:
+        f'{results}/disease_classification.csv'
+    run:
+        execute_notebook('DiseaseClassification.ipynb')
