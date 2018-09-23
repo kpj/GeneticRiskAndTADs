@@ -12,4 +12,6 @@ or run `python execute.py` to auto-run different configurations.
 
 ## Important notes
 
+Install required dependencies with `pip install -r requirements.txt`.
+
 Files in `./cache` are not automatically recreated.
