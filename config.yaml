@@ -11,3 +11,4 @@ filters:
     variant_type:  # 'nonexonic', 'intergenic'
 parameters:
     source_genomiccoordinates_version: 'hg18'
+    ppi_source: stringdb  # 'stringdb', 'biogrid'
