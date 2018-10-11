@@ -11,4 +11,5 @@ filters:
     variant_type:  # 'nonexonic', 'intergenic'
 parameters:
     source_genomiccoordinates_version: 'hg18'
+    associated_gene_source: mapped  # 'reported', 'mapped'
     ppi_source: stringdb  # 'stringdb', 'biogrid'
