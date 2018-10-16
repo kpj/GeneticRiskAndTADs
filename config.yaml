@@ -10,6 +10,7 @@ filters:
     OR_threshold:  # <float>
     variant_type:  # 'nonexonic', 'intergenic'
 parameters:
-    source_genomiccoordinates_version: 'hg18'
+    source_genomiccoordinates_version: hg18
     associated_gene_source: mapped  # 'reported', 'mapped'
     ppi_source: stringdb  # 'stringdb', 'biogrid'
+    classification_tad_boundary_type: 20in  # '20in', '20out', '20inout', '40in', '40out', '40inout', '60in', '80in'
