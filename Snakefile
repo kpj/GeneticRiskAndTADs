@@ -2,6 +2,7 @@ import os
 import tempfile
 
 import yaml
+import pandas as pd
 
 from bioinf_common.tools import execute_notebook
 
@@ -35,11 +36,18 @@ rule all:
 
 rule convert_tad_coordinates:
     input:
-        config['input_files']['tad_coordinates_hg18']
+        config['input_files']['tad_coordinates']
     output:
         f'{results}/tads_hg38.tsv'
     run:
-        execute_notebook('ConvertTADGenomicCoordinates.ipynb')
+        if config['parameters']['source_genomiccoordinates_version'] == 'hg38':
+            # skip conversion
+            df = pd.read_csv(
+                input[0],
+                header=None, names=['chrname', 'tad_start', 'tad_stop'])
+            df.to_csv(output[0], sep='\t', index=False)
+        else:
+            execute_notebook('ConvertTADGenomicCoordinates.ipynb')
 
 rule assemble_snp_database:
     input:

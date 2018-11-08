@@ -1,5 +1,5 @@
 input_files:
-    tad_coordinates_hg18: 'data/tads_hESC_hg18.csv'
+    tad_coordinates: 'data/tads_hESC_hg18.csv'
     raw_disgenet: 'data/curated_variant_disease_associations.tsv.gz'
     raw_gwascatalog: 'data/gwas_catalog_v1.0.2-associations_e94_r2018-09-30.tsv'
 output_dirs:
