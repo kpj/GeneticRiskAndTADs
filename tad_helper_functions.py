@@ -119,8 +119,10 @@ def parse_tad_annotations(type_, fname):
                 rb1, rt, rb2 = get_tad_lengths(row, type_)
             except EmptyTAD as ex:
                 error_counter['empty_tad'] += 1
+                continue
             except OverlappingTADS as ex:
                 error_counter['overlapping_tads'] += 1
+                continue
 
             # normalize chromosome name
             chrom = row.chrname
