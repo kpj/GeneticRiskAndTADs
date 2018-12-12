@@ -9,7 +9,19 @@ def load_config(fname='config.yaml'):
     fname = os.environ.get('SNAKEMAKE__CONFIG_FILE', None) or fname
 
     with open(fname) as fd:
-        return yaml.load(fd)
+        config = yaml.load(fd)
+
+    # add directories to config
+    required_dirs = ['images', 'cache', 'results']
+    for dir_ in required_dirs:
+        config['output_dirs'][dir_] = os.path.join(
+            config['output_dirs']['prefix'], dir_)
+
+    # create needed directories
+    for dir_ in config['output_dirs'].values():
+        os.makedirs(dir_, exist_ok=True)
+
+    return config
 
 
 def split_df_row(df, column, sep=','):

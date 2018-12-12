@@ -3,9 +3,7 @@ input_files:
     raw_disgenet: 'data/curated_variant_disease_associations.tsv.gz'
     raw_gwascatalog: 'data/gwas_catalog_v1.0.2-associations_e94_r2018-09-30.tsv'
 output_dirs:
-    results: 'results'
-    images: 'images'
-    cache: 'cache'
+    prefix: pipeline_run
 filters:
     OR_threshold:  # <float>
     variant_type:  # 'nonexonic', 'intergenic'

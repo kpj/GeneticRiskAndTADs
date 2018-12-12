@@ -6,10 +6,13 @@ import pandas as pd
 
 from bioinf_common.tools import execute_notebook
 
+from utils import load_config
+
 
 ###
 # setup
-configfile: 'config.yaml'
+#configfile: 'config.yaml'
+config = load_config()
 
 # save config for notebooks
 conf_fname = tempfile.NamedTemporaryFile().name
