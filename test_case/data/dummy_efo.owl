@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+
+<owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_0000408">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">disease</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_0000311">
+    <rdfs:subClassOf rdf:resource="http://www.ebi.ac.uk/efo/EFO_0000408"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cancer</rdfs:label>
+</owl:Class>
+
+
+<owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_0001663">
+    <rdfs:subClassOf rdf:resource="http://www.ebi.ac.uk/efo/EFO_0000311"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">prostate carcinoma</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_0001360">
+    <rdfs:subClassOf rdf:resource="http://www.ebi.ac.uk/efo/EFO_0000408"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">type II diabetes mellitus</rdfs:label>
+</owl:Class>
+
+
+</rdf:RDF>

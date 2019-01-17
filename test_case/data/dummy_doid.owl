@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+
+<owl:Class rdf:about="http://purl.obolibrary.org/obo/DOID_162">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cancer</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="http://purl.obolibrary.org/obo/DOID_007">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/DOID_162"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dummy</rdfs:label>
+</owl:Class>
+
+
+</rdf:RDF>
