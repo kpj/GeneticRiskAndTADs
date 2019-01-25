@@ -7,7 +7,7 @@ Force execution as follows:
 $ snakemake -pr -R convert_tad_coordinates
 ```
 
-or run `python execute.py` to auto-run different configurations.
+Post-processing of multiple pipeline runs (generated using `project_manager`) may be done using `MultiRunPostAnalysis.ipynb`.
 
 
 ## Important notes
