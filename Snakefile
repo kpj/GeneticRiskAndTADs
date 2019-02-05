@@ -35,7 +35,7 @@ rule all:
     input:
         f'{results}/TAD_enrichment.csv',
         f'{images}/tad_border_enrichment.pdf',
-        f'{results}/disease_classification.csv'
+        lambda wc: f'{results}/disease_classification.csv' if config['do_further_investigations'] else []
 
 rule convert_tad_coordinates:
     input:
@@ -84,13 +84,14 @@ rule analyze_results:
         f'{images}/tad_border_enrichment.pdf'
     run:
         execute_notebook('PublicationReproductions.ipynb')
-        execute_notebook('FurtherExperiments.ipynb')
 
-rule disease_classification:
+rule further_investigations:
     input:
         f'{results}/snpdb_enhanced.tsv',
         f'{results}/TAD_enrichment.csv',
     output:
+        f'{images}/gwas_history.pdf',
         f'{results}/disease_classification.csv'
     run:
+        execute_notebook('FurtherExperiments.ipynb')
         execute_notebook('DiseaseClassification.ipynb')
