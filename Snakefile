@@ -81,6 +81,7 @@ rule analyze_results:
         f'{results}/disease_efolabels.csv',
         f'{results}/tads_hg38.tsv'
     output:
+        f'{results}/final.csv',
         f'{images}/tad_border_enrichment.pdf'
     run:
         execute_notebook('PublicationReproductions.ipynb')
