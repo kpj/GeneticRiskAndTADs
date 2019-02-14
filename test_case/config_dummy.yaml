@@ -15,4 +15,5 @@ parameters:
     associated_gene_source: mapped  # 'reported', 'mapped'
     ppi_source: stringdb  # 'stringdb', 'biogrid'
     classification_tad_boundary_type: 20in  # '20in', '20out', '20inout', '40in', '40out', '40inout'
+    allow_snp_multiplicity_in_enrichment: false
 do_further_investigations: False
