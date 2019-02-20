@@ -43,14 +43,19 @@ rule convert_tad_coordinates:
     output:
         f'{results}/tads_hg38.tsv'
     run:
-        if config['parameters']['source_genomiccoordinates_version'] == 'hg38':
-            # skip conversion
-            df = pd.read_csv(
-                input[0],
-                header=None, names=['chrname', 'tad_start', 'tad_stop'])
-            df.to_csv(output[0], sep='\t', index=False)
-        else:
-            execute_notebook('ConvertTADGenomicCoordinates.ipynb')
+        # if config['parameters']['source_genomiccoordinates_version'] == 'hg38':
+        #     # skip conversion
+        #     df = pd.read_csv(
+        #         input[0],
+        #         header=None, names=['chrname', 'tad_start', 'tad_stop'])
+        #     df.to_csv(output[0], sep='\t', index=False)
+        # else:
+        #     execute_notebook('ConvertTADGenomicCoordinates.ipynb')
+
+        df = pd.read_csv(
+            input[0],
+            header=None, names=['chrname', 'tad_start', 'tad_stop'])
+        df.to_csv(output[0], sep='\t', index=False)
 
 rule assemble_snp_database:
     input:
