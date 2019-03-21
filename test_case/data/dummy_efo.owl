@@ -20,6 +20,11 @@
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">prostate carcinoma</rdfs:label>
 </owl:Class>
 
+<owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_0005557">
+    <rdfs:subClassOf rdf:resource="http://www.ebi.ac.uk/efo/EFO_0000311"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">gum cancer</rdfs:label>
+</owl:Class>
+
 <owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_0001360">
     <rdfs:subClassOf rdf:resource="http://www.ebi.ac.uk/efo/EFO_0000408"/>
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">type II diabetes mellitus</rdfs:label>
