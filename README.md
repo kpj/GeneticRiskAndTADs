@@ -8,6 +8,7 @@ $ snakemake -pr -R convert_tad_coordinates
 ```
 
 Post-processing of multiple pipeline runs (generated using `project_manager`) may be done using `MultiRunPostAnalysis.ipynb`.
+Also, `CoordinateComparison.ipynb` uses the aggregated results.
 
 
 ## Important notes
