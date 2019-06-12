@@ -34,7 +34,7 @@ images = config['output_dirs']['images']
 rule all:
     input:
         f'{results}/TAD_enrichment.csv',
-        f'{images}/tad_border_enrichment.pdf',
+        f'{images}/tad_border_enrichment_corrected.pdf',
         lambda wc: f'{results}/disease_classification.csv' if config['do_further_investigations'] else []
 
 rule convert_tad_coordinates:
@@ -87,7 +87,7 @@ rule analyze_results:
         f'{results}/tads_hg38.tsv'
     output:
         f'{results}/final.csv',
-        f'{images}/tad_border_enrichment.pdf'
+        f'{images}/tad_border_enrichment_corrected.pdf'
     run:
         execute_notebook('PublicationReproductions.ipynb')
 
