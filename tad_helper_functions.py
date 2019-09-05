@@ -25,6 +25,7 @@ class RangeDict(dict):
                 else:
                     if item in key:
                         return self[key]
+            raise KeyError(item)
         else:
             return super().__getitem__(item)
 
