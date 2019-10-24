@@ -9,7 +9,7 @@ output_dirs:
 
 filters:
     OR_threshold:  # <float>
-    variant_type:  # 'nonexonic', 'intergenic'
+    variant_type:  # 'intergenic', 'intronic', 'exonic'
 parameters:
     source_genomiccoordinates_version: hg38
     associated_gene_source: mapped  # 'reported', 'mapped'
