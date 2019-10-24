@@ -50,7 +50,7 @@ rule convert_tad_coordinates:
         #         header=None, names=['chrname', 'tad_start', 'tad_stop'])
         #     df.to_csv(output[0], sep='\t', index=False)
         # else:
-        #     execute_notebook('ConvertTADGenomicCoordinates.ipynb')
+        #     execute_notebook('ConvertTADGenomicCoordinates.ipynb', inplace=True)
 
         df = pd.read_csv(
             input[0],
@@ -67,7 +67,7 @@ rule assemble_snp_database:
         f'{results}/disease_cancer_classification.csv',
         f'{results}/disease_efolabels.csv'
     run:
-        execute_notebook('EnhanceSNPDatabase.ipynb')
+        execute_notebook('EnhanceSNPDatabase.ipynb', inplace=True)
 
 rule compute_enrichments:
     input:
@@ -76,7 +76,7 @@ rule compute_enrichments:
     output:
         f'{results}/TAD_enrichment.csv'
     run:
-        execute_notebook('ComputeTADEnrichments.ipynb')
+        execute_notebook('ComputeTADEnrichments.ipynb', inplace=True)
 
 rule analyze_results:
     input:
@@ -89,7 +89,7 @@ rule analyze_results:
         f'{results}/final.csv',
         f'{images}/tad_border_enrichment_corrected.pdf'
     run:
-        execute_notebook('PublicationReproductions.ipynb')
+        execute_notebook('PublicationReproductions.ipynb', inplace=True)
 
 rule further_investigations:
     input:
@@ -99,5 +99,5 @@ rule further_investigations:
         f'{images}/gwas_history.pdf',
         f'{results}/disease_classification.csv'
     run:
-        execute_notebook('FurtherExperiments.ipynb')
-        execute_notebook('DiseaseClassification.ipynb')
+        execute_notebook('FurtherExperiments.ipynb', inplace=True)
+        execute_notebook('DiseaseClassification.ipynb', inplace=True)
