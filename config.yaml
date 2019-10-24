@@ -8,7 +8,7 @@ output_dirs:
     prefix: pipeline_run
 filters:
     OR_threshold:  # <float>
-    variant_type:  # 'nonexonic', 'intergenic'
+    variant_type_group:  # 'intergenic', 'intronic', 'exonic'
 parameters:
     source_genomiccoordinates_version: hg18
     associated_gene_source: mapped  # 'reported', 'mapped'
