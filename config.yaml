@@ -4,6 +4,7 @@ input_files:
     raw_gwascatalog: 'data/gwas_catalog_v1.0.2-associations_e94_r2018-09-30.tsv'
     disease_ontology: 'data/doid.owl'
     exp_factor_ontology: 'data/efo.owl'
+    sequence_ontology: 'data/so.owl'
 output_dirs:
     prefix: pipeline_run
 filters:
