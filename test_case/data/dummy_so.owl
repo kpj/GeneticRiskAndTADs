@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+
+<owl:Class rdf:about="http://purl.obolibrary.org/obo/dummy">
+    <!-- this node (+edges) is required since ontology is saved as edgelist -->
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dummy_node</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="http://purl.obolibrary.org/obo/SO_0001791">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/dummy"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">exon_variant</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="http://purl.obolibrary.org/obo/SO_0001627">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/dummy"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">intron_variant</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="http://purl.obolibrary.org/obo/SO_0001628">
+    <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/dummy"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">intergenic</rdfs:label>
+</owl:Class>
+
+
+</rdf:RDF>

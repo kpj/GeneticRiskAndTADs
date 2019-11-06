@@ -4,6 +4,7 @@ input_files:
     raw_gwascatalog: 'test_case/data/dummy_gwas_catalog.tsv'
     disease_ontology: 'test_case/data/dummy_doid.owl'
     exp_factor_ontology: 'test_case/data/dummy_efo.owl'
+    sequence_ontology: 'test_case/data/dummy_so.owl'
 output_dirs:
     prefix: test_case/pipeline_run
 
