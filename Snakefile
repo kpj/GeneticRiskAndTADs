@@ -6,19 +6,6 @@ configfile: 'config.yaml'
 workdir: config['workdir']
 
 
-# helper functions
-def aggregate_tad_files(wildcards):
-    checkpoint_output = checkpoints.extract_count_matrices.get(**wildcards).output.out_dir
-
-    chroms = glob_wildcards(Path(checkpoint_output) / '{chromosome}' / 'matrix.csv').chromosome
-
-    return expand(
-        'tads/{source}/tads.chr{chromosome}.csv',
-        source=wildcards.source,
-        chromosome=chroms
-    )
-
-
 # rule definitions
 rule all:
     input:
@@ -29,18 +16,19 @@ rule all:
         expand('plots/subset/{source}/', source=config['hic_sources'])
 
 
-checkpoint download_hic_files:
+rule download_hic_files:
     output:
         fname = 'hic_files/raw/data.{source}.hic'
     script:
         'scripts/download_hic_files.py'
 
 
-checkpoint extract_count_matrices:
+rule extract_count_matrices:
     input:
         fname = 'hic_files/raw/data.{source}.hic'
     output:
-        out_dir = directory('hic_files/counts/{source}/')
+        fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv',
+        fname_juicer = 'hic_files/counts/{source}/{chromosome}/juicer.tsv'
     script:
         'scripts/extract_count_matrices.py'
 
@@ -60,7 +48,9 @@ rule compute_tads:
 
 rule aggregate_tads:
     input:
-        fname_list = aggregate_tad_files
+        fname_list = expand(
+            'tads/{{source}}/tads.chr{chromosome}.csv',
+            chromosome=config['chromosome_list'])
     output:
         fname = 'tads/tads.{source}.csv'
     run:

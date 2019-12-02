@@ -8,20 +8,12 @@ import sh
 from tqdm import tqdm
 
 
-def main(fname_in, out_dir):
+def main(fname_in, chrom_list, fname_matrix, fname_juicer):
     binsize = 10_000
-    chrom_list = list(str(x) for x in range(1, 23)) + ['X', 'Y']
 
     juicer_exec = Path(snakemake.scriptdir) / '..' / snakemake.config['tool_paths']['juicer_tools']
 
-    for chrom in tqdm(chrom_list):
-        print('Chrom:', chrom)
-
-        fname_out = out_dir / chrom / 'matrix.csv'
-        juicer_output = out_dir / chrom / 'juicer.tsv'
-
-        fname_out.parent.mkdir()
-
+    for chrom in tqdm(chrom_list, desc='Chromosome'):
         # hic -> list
         print('Hi-C -> list')
         sh.java(
@@ -29,13 +21,13 @@ def main(fname_in, out_dir):
             'dump', 'observed', 'NONE',
             fname_in,
             chrom, chrom, 'BP', binsize,
-            juicer_output,
+            fname_juicer,
             _out=sys.stdout, _err=sys.stderr)
 
         # list -> matrix
         print('list -> matrix')
         df = pd.read_csv(
-            juicer_output, sep='\t',
+            fname_juicer, sep='\t',
             header=None, names=['start', 'end', 'value'])
 
         df_piv = pd.pivot(df, index='start', columns='end')
@@ -57,8 +49,11 @@ def main(fname_in, out_dir):
         df_final['value'] = df_final['value'].astype(int)
         df_final = df_final['value']  # handle multilevel columns
 
-        df_final.to_csv(fname_out)
+        df_final.to_csv(fname_matrix)
 
 
 if __name__ == '__main__':
-    main(snakemake.input.fname, Path(snakemake.output.out_dir))
+    main(
+        snakemake.input.fname,
+        snakemake.config['chromosome_list'],
+        snakemake.output.fname_matrix, snakemake.output.fname_juicer)
