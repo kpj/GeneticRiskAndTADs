@@ -1,8 +1,5 @@
 from pathlib import Path
 
-import sh
-import pandas as pd
-
 
 # setup
 configfile: 'config.yaml'
@@ -16,7 +13,7 @@ def aggregate_tad_files(wildcards):
     chroms = glob_wildcards(Path(checkpoint_output) / '{chromosome}' / 'matrix.csv').chromosome
 
     return expand(
-        'tads/chromosomes/tads.{source}.{chromosome}.csv',
+        'tads/{source}/tads.chr{chromosome}.csv',
         source=wildcards.source,
         chromosome=chroms
     )
@@ -52,29 +49,13 @@ rule compute_tads:
     input:
         fname = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     output:
-        fname = 'tads/chromosomes/tads.{source}.{chromosome}.csv',
-        topdom_input = 'tads/chromosomes/topdom_input.{source}.{chromosome}.tsv',
-        topdom_output = 'tads/chromosomes/topdom_output.{source}.{chromosome}.tsv'
-    run:
-        binsize = 10_000
-
-        # matrix -> TopDom
-        df_count = pd.read_csv(input.fname, index_col=0)
-
-        df_count.insert(0, 'chr', f'chr{wildcards.chromosome}')
-        df_count.insert(1, 'td_start', (df_count.index - binsize).tolist())
-        df_count.insert(2, 'td_end', df_count.index.tolist())
-
-        df_count.to_csv(output.topdom_input, sep='\t', index=False, header=False)
-
-        # run TopDom
-        cmd = '''
-            TopDom::TopDom("{input}", 10, outFile="{output}", debug=TRUE)
-        '''.format(input=output.topdom_input, output=output.topdom_output)
-        sh.Rscript('-e', cmd, _fg=True)
-
-        # convert result
-        pd.read_csv(output.topdom_output, sep='\t').to_csv(output.fname, index=False)
+        fname = 'tads/{source}/tads.chr{chromosome}.csv',
+        topdom_input = 'tads/{source}/topdom_input.chr{chromosome}.tsv',
+        topdom_output = 'tads/{source}/topdom.chr{chromosome}.bed'
+    params:
+        prefix = 'tads/{source}/topdom.chr{chromosome}'
+    script:
+        'scripts/compute_tads.py'
 
 
 rule aggregate_tads:
@@ -83,6 +64,8 @@ rule aggregate_tads:
     output:
         fname = 'tads/tads.{source}.csv'
     run:
+        import pandas as pd
+
         pd.concat([
             pd.read_csv(x) for x in input.fname_list
         ]).to_csv(output.fname, index=False)
