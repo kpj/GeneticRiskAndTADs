@@ -4,7 +4,7 @@ import collections
 import numpy as np
 import pandas as pd
 
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 
 class EmptyTAD(Exception):
@@ -107,7 +107,7 @@ def get_tad_lengths(row, type_):
 
 def parse_tad_annotations(type_, fname):
         print(f' > Parsing TADs ({type_})', file=sys.stderr)
-        df_tad = pd.read_table(fname)
+        df_tad = pd.read_csv(fname)
         df_tad['prev_tad_stop'] = df_tad.tad_stop.shift(1)
         df_tad['next_tad_start'] = df_tad.tad_start.shift(-1)
         df_tad['prev_tad_chr'] = df_tad.chrname.shift(1)
@@ -115,6 +115,8 @@ def parse_tad_annotations(type_, fname):
 
         error_counter = collections.defaultdict(int)
         res = collections.defaultdict(RangeDict)
+
+        tqdm.pandas()
         for row in tqdm(df_tad.itertuples(), total=df_tad.shape[0]):
             try:
                 rb1, rt, rb2 = get_tad_lengths(row, type_)

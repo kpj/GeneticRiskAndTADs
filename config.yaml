@@ -1,19 +1,23 @@
+workdir: 'pipeline_run'
+
+hic_sources:
+    - GSE63525_IMR90
+
+tool_paths:
+    juicer_tools: 'hi-c/juicer_tools_1.13.02.jar'
+
 input_files:
-    tad_coordinates: 'data/tads_hESC_hg18.csv'
     raw_disgenet: 'data/curated_variant_disease_associations.tsv.gz'
     raw_gwascatalog: 'data/gwas_catalog_v1.0.2-associations_e94_r2018-09-30.tsv'
     disease_ontology: 'data/doid.owl'
     exp_factor_ontology: 'data/efo.owl'
     sequence_ontology: 'data/so.owl'
-output_dirs:
-    prefix: pipeline_run
+
 filters:
     OR_threshold:  # <float>
     variant_type_group:  # 'intergenic', 'intronic', 'exonic'
+
 parameters:
-    source_genomiccoordinates_version: hg18
+    source_genomiccoordinates_version: hg38
     associated_gene_source: mapped  # 'reported', 'mapped'
-    ppi_source: stringdb  # 'stringdb', 'biogrid'
-    classification_tad_boundary_type: 20in  # '20in', '20out', '20inout', '40in', '40out', '40inout'
     allow_snp_multiplicity_in_enrichment: false
-do_further_investigations: true
