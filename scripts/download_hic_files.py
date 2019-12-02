@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 
 def main(hic_source_list):
-    gse_list = set(x.split('_')[0] for x in hic_source_list)
+    gse_list = {x.split('_')[0] for x in hic_source_list}
     print(f'GSE selection: {gse_list}')
 
     for geo_idx in tqdm(gse_list):
