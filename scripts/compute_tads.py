@@ -7,15 +7,13 @@ import sh
 def main():
     bin_size = 10_000
 
-    # matrix -> TopDom
+    # read data
     df_count = pd.read_csv(snakemake.input.fname, index_col=0)
 
-    bin_start = (df_count.index[0] + np.asarray(range(0, df_count.shape[0]))) * bin_size
-    bin_end = bin_start + bin_size
-
+    # convert to TopDom compatible format
     df_count.insert(0, 'chr', f'chr{snakemake.wildcards.chromosome}')
-    df_count.insert(1, 'td_start', bin_start)
-    df_count.insert(2, 'td_end', bin_end)
+    df_count.insert(1, 'td_start', df_count.index)
+    df_count.insert(2, 'td_end', df_count.index + bin_size)
 
     df_count.to_csv(
         snakemake.output.topdom_input, sep='\t',
