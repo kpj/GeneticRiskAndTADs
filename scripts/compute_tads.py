@@ -34,10 +34,6 @@ def main():
 
     df_topdom = df_topdom[df_topdom['type'] == 'domain']
 
-    # rescale coordinates
-    df_topdom['tad_start'] /= bin_size
-    df_topdom['tad_stop'] /= bin_size
-
     # save result
     df_topdom.drop('type', axis=1, inplace=True)
 
