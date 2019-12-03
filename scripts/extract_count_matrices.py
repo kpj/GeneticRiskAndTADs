@@ -32,13 +32,18 @@ def main(fname_in, chrom_list, fname_matrix, fname_juicer):
 
         df_piv = pd.pivot(df, index='start', columns='end')
 
-        print('Symmetrize matrix')
-        only_in_columns = set([x[1] for x in df_piv.columns]) - set(df_piv.index.tolist())
-        df_sym = df_piv.drop([('value', x) for x in only_in_columns], axis=1)
+        df_piv.columns = df_piv.columns.droplevel(0)  # drop column label
+        # df_piv.columns.name = None
+        # df_piv.index.name = None
 
-        only_in_index = set(df_piv.index.tolist()) - set([x[1] for x in df_piv.columns])
+        print('Make matrix square')
+        only_in_columns = set(df_piv.columns) - set(df_piv.index)
+        df_sym = df_piv.drop(only_in_columns, axis=1)
+
+        only_in_index = set(df_piv.index) - set(df_piv.columns)
         df_sym = df_sym.drop(only_in_index, axis=0)
 
+        print('Symmetrize matrix')
         mat = df_sym.values.copy()
         i_lower = np.tril_indices(mat.shape[0], -1)
         mat[i_lower] = mat.T[i_lower]
@@ -46,9 +51,7 @@ def main(fname_in, chrom_list, fname_matrix, fname_juicer):
         df_final = pd.DataFrame(
             np.nan_to_num(mat), index=df_sym.index, columns=df_sym.columns)
 
-        df_final['value'] = df_final['value'].astype(int)
-        df_final = df_final['value']  # handle multilevel columns
-
+        df_final = df_final.astype(int)
         df_final.to_csv(fname_matrix)
 
 
