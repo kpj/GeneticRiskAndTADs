@@ -13,10 +13,9 @@ def make_axis_regular(df_piv, bin_size, axis):
     assert axis in (0, 1), axis
 
     # get values of axis
-    if axis == 0:
-        axis_values = df_piv.index
-    elif axis == 1:
-        axis_values = df_piv.columns
+    axis_values = (df_piv.index
+                   if axis == 0
+                   else df_piv.columns)
 
     # regularize
     idx_missing = np.where(np.diff(axis_values) != bin_size)[0]
@@ -34,11 +33,9 @@ def make_axis_regular(df_piv, bin_size, axis):
         print(idx, '->', new_index)
 
     # sort dataframe because new indices are added to the end
-    if axis == 0:
-        return df_piv.sort_index()
-    elif axis == 1:
-        return df_piv.T.sort_index().T
-    return None
+    return (df_piv.sort_index()
+            if axis == 0
+            else df_piv.T.sort_index().T)
 
 
 def main(fname_in, chrom_list, fname_matrix, fname_juicer, zero_padding=False):
