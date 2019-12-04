@@ -1,7 +1,7 @@
 {
     "__default__": {
         "name"      : "{rule}.{wildcards}",
-        "time"      : "10:00",
+        "time"      : "03:00",
         "nCPUs"     : "1",
         "resources" : "'rusage[mem=2000]'",
         "output"    : "cluster_logs/{rule}.{wildcards}.out",
@@ -10,6 +10,10 @@
     },
 
     "extract_count_matrices": {
-        "resources" : "'rusage[mem=16000]'",
+        "time"      : "25:00",
+        "resources" : "'rusage[mem=30000]'"
+    },
+    "compute_tads": {
+        "resources" : "'rusage[mem=30000]'"
     }
 }
