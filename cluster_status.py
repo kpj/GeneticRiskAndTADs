@@ -59,11 +59,7 @@ def query_status_failed(stderr: str, jobid: int) -> bool:
     return stderr.startswith(f'Job <{jobid}> is not found')
 
 
-def main(job_str):
-    # get job id
-    match = re.search(r'Job <(\d+)> is submitted', job_str)
-    job_id = match.group(1)
-
+def main(job_id: int) -> None:
     # query status
     stdout, stderr = query_status(job_id)
 
@@ -82,4 +78,4 @@ def main(job_str):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main(int(sys.argv[1]))

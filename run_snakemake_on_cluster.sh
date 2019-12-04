@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mkdir -p ./pipeline_run/cluster_logs
 
 snakemake \
@@ -5,7 +7,7 @@ snakemake \
     -j 999 \
     --latency-wait 30 \
     --cluster-config cluster.json \
-    --cluster "bsub \
+    --cluster "$(realpath ./custom_bsub.sh) \
         {cluster.extra_args} \
         -J {cluster.name} \
         -R {cluster.resources} \
