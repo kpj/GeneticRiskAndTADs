@@ -11,9 +11,10 @@ snakemake \
     --cluster "$(realpath ./cluster/custom_bsub.sh) \
         {cluster.extra_args} \
         -J {cluster.name} \
-        -R {cluster.resources} \
+        -R 'rusage[mem={cluster.resources}]' \
         -n {cluster.nCPUs} \
         -W {cluster.time} \
         -oo {cluster.output} \
         -eo {cluster.error}" \
-    --cluster-status "$(realpath ./cluster/cluster_status.py)"
+    --cluster-status "$(realpath ./cluster/cluster_status.py)" \
+    "$@"

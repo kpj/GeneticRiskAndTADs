@@ -3,17 +3,17 @@
         "name"      : "{rule}.{wildcards}",
         "time"      : "03:00",
         "nCPUs"     : "1",
-        "resources" : "'rusage[mem=2000]'",
+        "resources" : "2000",
         "output"    : "cluster_logs/{rule}.{wildcards}.out",
         "error"     : "cluster_logs/{rule}.{wildcards}.err",
         "extra_args": "-N"
     },
 
     "extract_count_matrices": {
-        "time"      : "25:00",
-        "resources" : "'rusage[mem=30000]'"
+        "time"      : "05:00",
+        "resources" : "30000"
     },
     "compute_tads": {
-        "resources" : "'rusage[mem=30000]'"
+        "resources" : "30000"
     }
 }
