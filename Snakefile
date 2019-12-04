@@ -38,10 +38,10 @@ rule compute_tads:
         fname = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     output:
         fname = 'tads/{source}/tads.chr{chromosome}.csv',
-        topdom_input = 'tads/{source}/topdom_input.chr{chromosome}.tsv',
-        topdom_output = 'tads/{source}/topdom.chr{chromosome}.bed'
+        topdom_input = 'tads/{source}/topdom/topdom_input.chr{chromosome}.tsv',
+        topdom_output = 'tads/{source}/topdom/topdom.chr{chromosome}.bed'
     params:
-        prefix = 'tads/{source}/topdom.chr{chromosome}'
+        prefix = 'tads/{source}/topdom/topdom.chr{chromosome}'
     script:
         'scripts/compute_tads.py'
 

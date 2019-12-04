@@ -38,100 +38,99 @@ def make_axis_regular(df_piv, bin_size, axis):
             else df_piv.T.sort_index().T)
 
 
-def main(fname_in, chrom_list, fname_matrix, fname_juicer, zero_padding=False):
+def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
     bin_size = 10_000
 
     juicer_exec = Path(snakemake.scriptdir) / '..' / snakemake.config['tool_paths']['juicer_tools']
 
-    for chrom in tqdm(chrom_list, desc='Chromosome'):
-        # hic -> list
-        print('Hi-C -> list')
-        sh.java(
-            '-jar', juicer_exec,
-            'dump', 'observed', 'NONE',
-            fname_in,
-            chrom, chrom, 'BP', bin_size,
-            fname_juicer,
-            _out=sys.stdout, _err=sys.stderr)
+    # hic -> list
+    print('Hi-C -> list')
+    sh.java(
+        '-jar', juicer_exec,
+        'dump', 'observed', 'NONE',
+        fname_in,
+        chrom, chrom, 'BP', bin_size,
+        fname_juicer,
+        _out=sys.stdout, _err=sys.stderr)
 
-        # list -> matrix
-        print('list -> matrix')
-        df = pd.read_csv(
-            fname_juicer, sep='\t',
-            header=None, names=['start', 'end', 'value'])
+    # list -> matrix
+    print('list -> matrix')
+    df = pd.read_csv(
+        fname_juicer, sep='\t',
+        header=None, names=['start', 'end', 'value'])
 
-        df_piv = pd.pivot(df, index='start', columns='end')
+    df_piv = pd.pivot(df, index='start', columns='end')
 
-        df_piv.columns = df_piv.columns.droplevel(0)  # drop column label
-        # df_piv.columns.name = None
-        # df_piv.index.name = None
+    df_piv.columns = df_piv.columns.droplevel(0)  # drop column label
+    # df_piv.columns.name = None
+    # df_piv.index.name = None
 
-        piv_shape1 = df_piv.shape
+    piv_shape1 = df_piv.shape
 
-        print('Normalize matrix axes')
-        df_piv = make_axis_regular(df_piv, bin_size, 0)
-        df_piv = make_axis_regular(df_piv, bin_size, 1)
+    print('Normalize matrix axes')
+    df_piv = make_axis_regular(df_piv, bin_size, 0)
+    df_piv = make_axis_regular(df_piv, bin_size, 1)
 
-        piv_shape2 = df_piv.shape
+    piv_shape2 = df_piv.shape
 
-        assert (np.diff(df_piv.index) == bin_size).all()
-        assert (np.diff(df_piv.columns) == bin_size).all()
+    assert (np.diff(df_piv.index) == bin_size).all()
+    assert (np.diff(df_piv.columns) == bin_size).all()
 
-        # enforce same index/column number
-        print('Enforce same index/column number')
-        only_in_columns = set(df_piv.columns) - set(df_piv.index)
-        only_in_index = set(df_piv.index) - set(df_piv.columns)
-        print(only_in_columns, only_in_index)
+    # enforce same index/column number
+    print('Enforce same index/column number')
+    only_in_columns = set(df_piv.columns) - set(df_piv.index)
+    only_in_index = set(df_piv.index) - set(df_piv.columns)
+    print(only_in_columns, only_in_index)
 
-        for idx in tqdm(only_in_columns, desc='Adding to index'):
-            df_piv.loc[idx, :] = 0
-        for idx in tqdm(only_in_index, desc='Adding to columns'):
-            df_piv.loc[:, idx] = 0
+    for idx in tqdm(only_in_columns, desc='Adding to index'):
+        df_piv.loc[idx, :] = 0
+    for idx in tqdm(only_in_index, desc='Adding to columns'):
+        df_piv.loc[:, idx] = 0
 
-        df_piv = df_piv.sort_index()
-        df_piv = df_piv.T.sort_index().T
+    df_piv = df_piv.sort_index()
+    df_piv = df_piv.T.sort_index().T
 
-        print(f'Pivot shape: {piv_shape1} -> {piv_shape2} -> {df_piv.shape}')
+    print(f'Pivot shape: {piv_shape1} -> {piv_shape2} -> {df_piv.shape}')
 
-        # copy upper to lower triangle
-        print('Symmetrize matrix')
-        mat = df_piv.values.copy()
-        i_lower = np.tril_indices(mat.shape[0], -1)
-        mat[i_lower] = mat.T[i_lower]
+    # copy upper to lower triangle
+    print('Symmetrize matrix')
+    mat = df_piv.values.copy()
+    i_lower = np.tril_indices(mat.shape[0], -1)
+    mat[i_lower] = mat.T[i_lower]
 
-        df_final = pd.DataFrame(
-            np.nan_to_num(mat), index=df_piv.index, columns=df_piv.columns)
+    df_final = pd.DataFrame(
+        np.nan_to_num(mat), index=df_piv.index, columns=df_piv.columns)
 
-        # pad with zeros
-        start_coord = df_final.index[0]
-        if zero_padding and start_coord > 0:
-            print('Pad with zeros')
-            extra_coords = np.arange(0, start_coord, bin_size)
+    # pad with zeros
+    start_coord = df_final.index[0]
+    if zero_padding and start_coord > 0:
+        print('Pad with zeros')
+        extra_coords = np.arange(0, start_coord, bin_size)
 
-            empty_counts_tl = np.zeros(
-                shape=(len(extra_coords), len(extra_coords)))
-            empty_counts_tr = np.zeros(
-                shape=(len(extra_coords), df_final.shape[1]))
-            empty_counts_bl = np.zeros(
-                shape=(df_final.shape[0], len(extra_coords)))
+        empty_counts_tl = np.zeros(
+            shape=(len(extra_coords), len(extra_coords)))
+        empty_counts_tr = np.zeros(
+            shape=(len(extra_coords), df_final.shape[1]))
+        empty_counts_bl = np.zeros(
+            shape=(df_final.shape[0], len(extra_coords)))
 
-            new_values = np.block([
-                [empty_counts_tl, empty_counts_tr],
-                [empty_counts_bl, df_final.values]
-            ]).astype(int)
-            new_index = np.r_[extra_coords, df_final.index]
+        new_values = np.block([
+            [empty_counts_tl, empty_counts_tr],
+            [empty_counts_bl, df_final.values]
+        ]).astype(int)
+        new_index = np.r_[extra_coords, df_final.index]
 
-            tmp = pd.DataFrame(new_values, index=new_index, columns=new_index)
-            assert (tmp.loc[start_coord:, start_coord:].values == df_final.values).all()
-            df_final = tmp
+        tmp = pd.DataFrame(new_values, index=new_index, columns=new_index)
+        assert (tmp.loc[start_coord:, start_coord:].values == df_final.values).all()
+        df_final = tmp
 
-        # save result
-        df_final = df_final.astype(int)
-        df_final.to_csv(fname_matrix)
+    # save result
+    df_final = df_final.astype(int)
+    df_final.to_csv(fname_matrix)
 
 
 if __name__ == '__main__':
     main(
         snakemake.input.fname,
-        snakemake.config['chromosome_list'],
+        snakemake.wildcards.chromosome,
         snakemake.output.fname_matrix, snakemake.output.fname_juicer)
