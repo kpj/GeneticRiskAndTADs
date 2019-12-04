@@ -1,0 +1,15 @@
+{
+    "__default__": {
+        "name"      : "{rule}.{wildcards}",
+        "time"      : "10:00",
+        "nCPUs"     : "1",
+        "resources" : "'rusage[mem=2000]'",
+        "output"    : "cluster_logs/{rule}.{wildcards}.out",
+        "error"     : "cluster_logs/{rule}.{wildcards}.err",
+        "extra_args": "-N"
+    },
+
+    "extract_count_matrices": {
+        "resources" : "'rusage[mem=16000]'",
+    }
+}

@@ -5,6 +5,8 @@ from pathlib import Path
 configfile: 'config.yaml'
 workdir: config['workdir']
 
+localrules: all, download_hic_files
+
 
 # rule definitions
 rule all:
