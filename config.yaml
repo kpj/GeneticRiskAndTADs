@@ -21,6 +21,6 @@ filters:
     variant_type_group:  # 'intergenic', 'intronic', 'exonic'
 
 parameters:
-    source_genomiccoordinates_version: hg38
+    source_genomiccoordinates_version: hg19  # actually b37
     associated_gene_source: mapped  # 'reported', 'mapped'
     allow_snp_multiplicity_in_enrichment: false
