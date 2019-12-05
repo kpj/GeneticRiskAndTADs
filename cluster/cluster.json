@@ -10,9 +10,31 @@
     },
 
     "extract_count_matrices": {
-        "resources" : "30000"
+        "resources" : "30000",
+        "extra_args": ""
     },
     "compute_tads": {
-        "resources" : "30000"
+        "resources" : "30000",
+        "extra_args": ""
+    },
+
+    "aggregate_tads": {
+        "extra_args": ""
+    },
+    "include_tad_relations": {
+        "extra_args": ""
+    },
+    "compute_enrichments": {
+        "extra_args": ""
+    },
+    "create_figures": {
+        "extra_args": ""
+    },
+
+    "aggregate_results": {
+        "resources" : "10000"
+    },
+    "multi_run_post_analysis": {
+        "resources" : "10000"
     }
 }
