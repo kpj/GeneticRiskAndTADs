@@ -8,7 +8,7 @@ import sh
 from tqdm import tqdm
 
 
-def make_axis_regular(df_piv, bin_size, axis):
+def make_axis_regular(df_piv, bin_size, axis, sort=True):
     """Regularize axis by enforcing a distance of `bin_size` between elements."""
     assert axis in (0, 1), axis
 
@@ -21,7 +21,7 @@ def make_axis_regular(df_piv, bin_size, axis):
     idx_missing = np.where(np.diff(axis_values) != bin_size)[0]
 
     new_indices = []
-    for idx in tqdm(idx_missing, desc=f'Adjusting axis {axis}'):
+    for idx in idx_missing:
         start = axis_values[idx]
         end = axis_values[idx+1]
         new_indices.extend(np.arange(start + bin_size, end, bin_size))
@@ -37,10 +37,14 @@ def make_axis_regular(df_piv, bin_size, axis):
             pd.DataFrame(data=0, index=df_piv.index, columns=new_indices)
         ], axis=1)
 
-    # sort dataframe because new indices are added to the end
-    return (df_out.sort_index()
-            if axis == 0
-            else df_out.T.sort_index().T)
+    if sort:
+        # sort dataframe because new indices are added to the end
+        return (df_out.sort_index()
+                if axis == 0
+                else df_out.T.sort_index().T)
+    else:
+        # must be sorted later
+        return df_out
 
 
 def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
@@ -73,13 +77,10 @@ def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
     piv_shape1 = df_piv.shape
 
     print('Normalize matrix axes')
-    df_piv = make_axis_regular(df_piv, bin_size, 0)
-    df_piv = make_axis_regular(df_piv, bin_size, 1)
+    df_piv = make_axis_regular(df_piv, bin_size, 0, sort=False)
+    df_piv = make_axis_regular(df_piv, bin_size, 1, sort=False)
 
     piv_shape2 = df_piv.shape
-
-    assert (np.diff(df_piv.index) == bin_size).all()
-    assert (np.diff(df_piv.columns) == bin_size).all()
 
     # enforce same index/column number
     print('Enforce same index/column number')
@@ -96,6 +97,9 @@ def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
     df_piv = df_piv.T.sort_index().T
 
     print(f'Pivot shape: {piv_shape1} -> {piv_shape2} -> {df_piv.shape}')
+
+    assert (np.diff(df_piv.index) == bin_size).all()
+    assert (np.diff(df_piv.columns) == bin_size).all()
 
     # copy upper to lower triangle
     print('Symmetrize matrix')
@@ -130,6 +134,7 @@ def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
         df_final = tmp
 
     # save result
+    print('Save result')
     df_final = df_final.astype(int)
     df_final.to_csv(fname_matrix)
 

@@ -8,6 +8,7 @@ def main():
     bin_size = 10_000
 
     # read data
+    print('Prepare input data')
     df_count = pd.read_csv(snakemake.input.fname, index_col=0)
 
     # convert to TopDom compatible format
@@ -20,6 +21,7 @@ def main():
         index=False, header=False)
 
     # run TopDom
+    print('Run TopDom')
     cmd = """
         TopDom::TopDom('{input}', {window_size}, outFile='{output}', debug=TRUE)
     """.format(
