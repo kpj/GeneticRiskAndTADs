@@ -15,7 +15,10 @@ rule all:
         'databases/statistics/',
         'tads/plots/',
         'post_analysis/',
-        expand('plots/subset/{source}/', source=config['hic_sources'])
+        expand(
+            'plots/subset/{source}/{tad_parameter}/',
+            source=config['hic_sources'],
+            tad_parameter=config['window_size_list'])
 
 
 rule download_hic_files:
@@ -39,11 +42,11 @@ rule compute_tads:
     input:
         fname = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     output:
-        fname = 'tads/{source}/tads.chr{chromosome}.csv',
-        topdom_input = 'tads/{source}/topdom/topdom_input.chr{chromosome}.tsv',
-        topdom_output = 'tads/{source}/topdom/topdom.chr{chromosome}.bed'
+        fname = 'tads/{source}/{tad_parameter}/tads.chr{chromosome}.csv',
+        topdom_input = 'tads/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv',
+        topdom_output = 'tads/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed'
     params:
-        prefix = 'tads/{source}/topdom/topdom.chr{chromosome}'
+        prefix = 'tads/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}'
     script:
         'scripts/compute_tads.py'
 
@@ -51,10 +54,10 @@ rule compute_tads:
 rule aggregate_tads:
     input:
         fname_list = expand(
-            'tads/{{source}}/tads.chr{chromosome}.csv',
+            'tads/{{source}}/{{tad_parameter}}/tads.chr{chromosome}.csv',
             chromosome=config['chromosome_list'])
     output:
-        fname = 'tads/tads.{source}.csv'
+        fname = 'tads/tads.{source}.{tad_parameter}.csv'
     run:
         import pandas as pd
 
@@ -66,7 +69,9 @@ rule aggregate_tads:
 rule compare_tad_lists:
     input:
         tad_fname_list = expand(
-            'tads/tads.{source}.csv', source=config['hic_sources'])
+            'tads/tads.{source}.{tad_parameter}.csv',
+            source=config['hic_sources'],
+            tad_parameter=config['window_size_list'])
     output:
         tad_similarity_cache = 'tads/statistics/tad_similarities.csv',
         outdir = directory('tads/plots/'),
@@ -101,34 +106,34 @@ rule compute_database_statistics:
 
 rule include_tad_relations:
     input:
-        tads_fname = 'tads/tads.{source}.csv',
+        tads_fname = 'tads/tads.{source}.{tad_parameter}.csv',
         db_fname = 'databases/initial.csv'
     output:
-        db_fname = 'databases/per_source/snpdb.{source}.csv',
-        tad_length_plot = 'tads/tad_length_histogram.{source}.pdf',
-        notebook_output = 'notebooks/IncludeTADRelations.{source}.ipynb'
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+        tad_length_plot = 'tads/tad_length_histogram.{source}.{tad_parameter}.pdf',
+        notebook_output = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.ipynb'
     script:
         'notebooks/IncludeTADRelations.ipynb'
 
 
 rule compute_enrichments:
     input:
-        db_fname = 'databases/per_source/snpdb.{source}.csv',
-        tads_fname = 'tads/tads.{source}.csv'
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+        tads_fname = 'tads/tads.{source}.{tad_parameter}.csv'
     output:
-        fname = 'enrichments/results.{source}.csv',
-        notebook_output = 'notebooks/ComputeTADEnrichments.{source}.ipynb'
+        fname = 'enrichments/results.{source}.{tad_parameter}.csv',
+        notebook_output = 'notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.ipynb'
     script:
         'notebooks/ComputeTADEnrichments.ipynb'
 
 
 rule create_figures:
     input:
-        db_fname = 'databases/per_source/snpdb.{source}.csv',
-        enr_fname = 'enrichments/results.{source}.csv',
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+        enr_fname = 'enrichments/results.{source}.{tad_parameter}.csv',
     output:
-        outdir = directory('plots/subset/{source}/'),
-        notebook_output = 'notebooks/CreateFigures.{source}.ipynb'
+        outdir = directory('plots/subset/{source}/{tad_parameter}/'),
+        notebook_output = 'notebooks/CreateFigures.{source}.{tad_parameter}.ipynb'
     script:
         'notebooks/CreateFigures.ipynb'
 
@@ -136,11 +141,13 @@ rule create_figures:
 rule aggregate_results:
     input:
         database_files = expand(
-            'databases/per_source/snpdb.{source}.csv',
-            source=config['hic_sources']),
+            'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+            source=config['hic_sources'],
+            tad_parameter=config['window_size_list']),
         enrichment_files = expand(
-            'enrichments/results.{source}.csv',
-            source=config['hic_sources'])
+            'enrichments/results.{source}.{tad_parameter}.csv',
+            source=config['hic_sources'],
+            tad_parameter=config['window_size_list'])
     output:
         fname = 'results/final.csv',
         notebook_output = 'notebooks/AggregateResults.ipynb'

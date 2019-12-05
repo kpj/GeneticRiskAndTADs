@@ -21,9 +21,10 @@ def main():
 
     # run TopDom
     cmd = """
-        TopDom::TopDom('{input}', 10, outFile='{output}', debug=TRUE)
+        TopDom::TopDom('{input}', {window_size}, outFile='{output}', debug=TRUE)
     """.format(
         input=snakemake.output.topdom_input,
+        window_size=snakemake.wildcards.tad_parameter,
         output=snakemake.params.prefix)
     sh.Rscript('-e', cmd, _fg=True)
 
