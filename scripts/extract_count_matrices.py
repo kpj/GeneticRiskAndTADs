@@ -19,23 +19,28 @@ def make_axis_regular(df_piv, bin_size, axis):
 
     # regularize
     idx_missing = np.where(np.diff(axis_values) != bin_size)[0]
+
+    new_indices = []
     for idx in tqdm(idx_missing, desc=f'Adjusting axis {axis}'):
         start = axis_values[idx]
         end = axis_values[idx+1]
+        new_indices.extend(np.arange(start + bin_size, end, bin_size))
 
-        new_index = np.arange(start + bin_size, end, bin_size)
-        for new_idx in new_index:
-            if axis == 0:
-                df_piv.loc[new_idx, :] = 0
-            elif axis == 1:
-                df_piv.loc[:, new_idx] = 0
-
-        print(idx, '->', new_index)
+    if axis == 0:
+        df_out = pd.concat([
+            df_piv,
+            pd.DataFrame(data=0, index=new_indices, columns=df_piv.columns)
+        ], axis=0)
+    elif axis == 1:
+        df_out = pd.concat([
+            df_piv,
+            pd.DataFrame(data=0, index=df_piv.index, columns=new_indices)
+        ], axis=1)
 
     # sort dataframe because new indices are added to the end
-    return (df_piv.sort_index()
+    return (df_out.sort_index()
             if axis == 0
-            else df_piv.T.sort_index().T)
+            else df_out.T.sort_index().T)
 
 
 def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
