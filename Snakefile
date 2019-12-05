@@ -11,7 +11,7 @@ localrules: all, download_hic_files
 # rule definitions
 rule all:
     input:
-        'results/final.csv',
+        'results/final.csv.gz',
         'databases/statistics/',
         'tads/plots/',
         'post_analysis/',
@@ -149,7 +149,7 @@ rule aggregate_results:
             source=config['hic_sources'],
             tad_parameter=config['window_size_list'])
     output:
-        fname = 'results/final.csv',
+        fname = 'results/final.csv.gz',
         notebook_output = 'notebooks/AggregateResults.ipynb'
     script:
         'notebooks/AggregateResults.ipynb'
@@ -157,7 +157,7 @@ rule aggregate_results:
 
 rule multi_run_post_analysis:
     input:
-        db_fname = 'results/final.csv'
+        db_fname = 'results/final.csv.gz'
     output:
         outdir = directory('post_analysis/'),
         notebook_output = 'notebooks/AggregateResults.ipynb'
