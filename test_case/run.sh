@@ -1,8 +1,13 @@
+#!/usr/bin/env bash
+
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-rm -rf pipeline_run
-mkdir -p pipeline_run/cache
-cp -v data/snp_annotations.csv pipeline_run/cache
+# setup environment
+rm -rf pipeline_test
 
+mkdir -p pipeline_test/tads/
+cp -v data/dummy_tads.csv pipeline_test/tads/tads.dummy.42.csv
+
+# execute pipeline
 cd ..
-SNAKEMAKE__CONFIG_FILE="test_case/config_dummy.yaml" snakemake -pr
+snakemake -pr --configfile "test_case/config_dummy.yaml"

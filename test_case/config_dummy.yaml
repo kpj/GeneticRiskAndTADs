@@ -1,20 +1,26 @@
+workdir: 'test_case/pipeline_test/'
+
+hic_sources:
+    - dummy
+
+chromosome_list: ['chr1']
+window_size_list: [42]
+
+snp_filter_list:
+    - 'nofilter'
+    - 'variant_group=exonic'
+
+tool_paths:
+    juicer_tools: '../hi-c/juicer_tools_1.13.02.jar'
+
 input_files:
-    tad_coordinates: 'test_case/data/dummy_tads.csv'
     raw_disgenet: 'test_case/data/disgenet_empty.tsv'
     raw_gwascatalog: 'test_case/data/dummy_gwas_catalog.tsv'
     disease_ontology: 'test_case/data/dummy_doid.owl'
     exp_factor_ontology: 'test_case/data/dummy_efo.owl'
     sequence_ontology: 'test_case/data/dummy_so.owl'
-output_dirs:
-    prefix: test_case/pipeline_run
 
-filters:
-    OR_threshold:  # <float>
-    variant_type_group:  # 'intergenic', 'intronic', 'exonic'
 parameters:
-    source_genomiccoordinates_version: hg38
+    ensembl_url: '../data/snp_annotations.csv'  # ".." because of workdir
     associated_gene_source: mapped  # 'reported', 'mapped'
-    ppi_source: stringdb  # 'stringdb', 'biogrid'
-    classification_tad_boundary_type: 20in  # '20in', '20out', '20inout', '40in', '40out', '40inout'
     allow_snp_multiplicity_in_enrichment: false
-do_further_investigations: False

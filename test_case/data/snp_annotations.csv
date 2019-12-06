@@ -1,7 +1,7 @@
-snpId,chromosome,position,variant_type
-rs42,1,110000,intron_variant
-rs43,1,90000,intron_variant
+refsnp_id,chr_name,chrom_start,consequence_type_tv,ensembl_transcript_stable_id
+rs42,1,110000,intron_variant,xxx
+rs43,1,90000,intron_variant,xxx
 
-rs44,1,150000,exon_variant
-rs45,1,300000,exon_variant
-rs46,1,130000,exon_variant
+rs44,1,150000,exon_variant,xxx
+rs45,1,300000,exon_variant,xxx
+rs46,1,130000,exon_variant,xxx

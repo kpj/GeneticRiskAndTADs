@@ -30,5 +30,10 @@
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">type II diabetes mellitus</rdfs:label>
 </owl:Class>
 
+<owl:Class rdf:about="http://www.ebi.ac.uk/efo/EFO_1002013">
+    <rdfs:subClassOf rdf:resource="http://www.ebi.ac.uk/efo/EFO_0000408"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">alcoholic pancreatitis</rdfs:label>
+</owl:Class>
+
 
 </rdf:RDF>
