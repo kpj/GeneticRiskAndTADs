@@ -12,13 +12,16 @@ localrules: all, download_hic_files
 rule all:
     input:
         'results/final.csv.gz',
-        'databases/statistics/',
+        expand(
+            'databases/statistics/{filter}/',
+            filter=config['snp_filter_list']),
         'tads/plots/',
         'post_analysis/',
         expand(
-            'plots/subset/{source}/{tad_parameter}/',
+            'plots/{source}/{tad_parameter}/{filter}/',
             source=config['hic_sources'],
-            tad_parameter=config['window_size_list'])
+            tad_parameter=config['window_size_list'],
+            filter=config['snp_filter_list'])
 
 
 rule download_hic_files:
@@ -94,12 +97,22 @@ rule assemble_input_databases:
         'notebooks/AssembleInputDatabases.ipynb'
 
 
+rule filter_database:
+    input:
+        db_fname = 'databases/initial.csv'
+    output:
+        db_fname = 'databases/initial_filtered.{filter}.csv',
+        notebook_output = 'notebooks/FilterDatabase.{filter}.ipynb'
+    script:
+        'notebooks/FilterDatabase.ipynb'
+
+
 rule compute_database_statistics:
     input:
-        fname = 'databases/initial.csv'
+        fname = 'databases/initial_filtered.{filter}.csv'
     output:
-        outdir = directory('databases/statistics/'),
-        notebook_output = 'notebooks/DatabaseStatistics.ipynb'
+        outdir = directory('databases/statistics/{filter}/'),
+        notebook_output = 'notebooks/DatabaseStatistics.{filter}.ipynb'
     script:
         'notebooks/DatabaseStatistics.ipynb'
 
@@ -107,33 +120,33 @@ rule compute_database_statistics:
 rule include_tad_relations:
     input:
         tads_fname = 'tads/tads.{source}.{tad_parameter}.csv',
-        db_fname = 'databases/initial.csv'
+        db_fname = 'databases/initial_filtered.{filter}.csv'
     output:
-        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
-        tad_length_plot = 'tads/tad_length_histogram.{source}.{tad_parameter}.pdf',
-        notebook_output = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.ipynb'
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
+        tad_length_plot = 'tads/tad_length_histogram.{source}.{tad_parameter}.{filter}.pdf',
+        notebook_output = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.{filter}.ipynb'
     script:
         'notebooks/IncludeTADRelations.ipynb'
 
 
 rule compute_enrichments:
     input:
-        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
         tads_fname = 'tads/tads.{source}.{tad_parameter}.csv'
     output:
-        fname = 'enrichments/results.{source}.{tad_parameter}.csv',
-        notebook_output = 'notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.ipynb'
+        fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
+        notebook_output = 'notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.{filter}.ipynb'
     script:
         'notebooks/ComputeTADEnrichments.ipynb'
 
 
 rule create_figures:
     input:
-        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
-        enr_fname = 'enrichments/results.{source}.{tad_parameter}.csv',
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
+        enr_fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
     output:
-        outdir = directory('plots/subset/{source}/{tad_parameter}/'),
-        notebook_output = 'notebooks/CreateFigures.{source}.{tad_parameter}.ipynb'
+        outdir = directory('plots/{source}/{tad_parameter}/{filter}/'),
+        notebook_output = 'notebooks/CreateFigures.{source}.{tad_parameter}.{filter}.ipynb'
     script:
         'notebooks/CreateFigures.ipynb'
 
@@ -141,13 +154,15 @@ rule create_figures:
 rule aggregate_results:
     input:
         database_files = expand(
-            'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+            'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
             source=config['hic_sources'],
-            tad_parameter=config['window_size_list']),
+            tad_parameter=config['window_size_list'],
+            filter=config['snp_filter_list']),
         enrichment_files = expand(
-            'enrichments/results.{source}.{tad_parameter}.csv',
+            'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
             source=config['hic_sources'],
-            tad_parameter=config['window_size_list'])
+            tad_parameter=config['window_size_list'],
+            filter=config['snp_filter_list'])
     output:
         fname = 'results/final.csv.gz',
         notebook_output = 'notebooks/AggregateResults.ipynb'

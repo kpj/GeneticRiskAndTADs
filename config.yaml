@@ -6,6 +6,12 @@ hic_sources:
 chromosome_list: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y']
 window_size_list: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
+snp_filter_list:
+    - 'nofilter'
+    - 'variant_group=exonic'
+    - 'variant_group=intronic'
+    - 'variant_group=intergenic'
+
 tool_paths:
     juicer_tools: 'hi-c/juicer_tools_1.13.02.jar'
 
@@ -15,10 +21,6 @@ input_files:
     disease_ontology: 'data/doid.owl'
     exp_factor_ontology: 'data/efo.owl'
     sequence_ontology: 'data/so.owl'
-
-filters:
-    OR_threshold:  # <float>
-    variant_type_group:  # 'intergenic', 'intronic', 'exonic'
 
 parameters:
     source_genomiccoordinates_version: hg19  # actually b37
