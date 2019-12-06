@@ -23,6 +23,6 @@ input_files:
     sequence_ontology: 'data/so.owl'
 
 parameters:
-    source_genomiccoordinates_version: hg19  # actually b37
+    ensembl_url: 'grch37.ensembl.org'  # actually b37, hg38: 'www.ensembl.org'
     associated_gene_source: mapped  # 'reported', 'mapped'
     allow_snp_multiplicity_in_enrichment: false
