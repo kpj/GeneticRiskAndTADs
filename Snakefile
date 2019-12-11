@@ -123,7 +123,7 @@ rule include_tad_relations:
         db_fname = 'databases/initial_filtered.{filter}.csv'
     output:
         db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
-        tad_length_plot = 'tads/tad_length_histogram.{source}.{tad_parameter}.{filter}.pdf',
+        tad_length_plot = 'tads/length_plots/tad_length_histogram.{source}.{tad_parameter}.{filter}.pdf',
         notebook_output = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.{filter}.ipynb'
     notebook:
         'notebooks/IncludeTADRelations.ipynb'
