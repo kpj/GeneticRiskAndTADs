@@ -175,6 +175,6 @@ rule multi_run_post_analysis:
         db_fname = 'results/final.csv.gz'
     output:
         outdir = directory('post_analysis/'),
-        notebook_output = 'notebooks/AggregateResults.ipynb'
+        notebook_output = 'notebooks/MultiRunPostAnalysis.ipynb'
     notebook:
         'notebooks/MultiRunPostAnalysis.ipynb'
