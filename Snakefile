@@ -79,7 +79,7 @@ rule compare_tad_lists:
         tad_similarity_cache = 'tads/statistics/tad_similarities.csv',
         outdir = directory('tads/plots/'),
         notebook_output = 'notebooks/TADListComparison.ipynb'
-    script:
+    notebook:
         'notebooks/TADListComparison.ipynb'
 
 
@@ -93,7 +93,7 @@ rule assemble_input_databases:
         db_fname = 'databases/initial.csv',
         raw_veps = 'databases/vep.csv',
         notebook_output = 'notebooks/AssembleInputDatabases.ipynb'
-    script:
+    notebook:
         'notebooks/AssembleInputDatabases.ipynb'
 
 
@@ -103,7 +103,7 @@ rule filter_database:
     output:
         db_fname = 'databases/initial_filtered.{filter}.csv',
         notebook_output = 'notebooks/FilterDatabase.{filter}.ipynb'
-    script:
+    notebook:
         'notebooks/FilterDatabase.ipynb'
 
 
@@ -113,7 +113,7 @@ rule compute_database_statistics:
     output:
         outdir = directory('databases/statistics/{filter}/'),
         notebook_output = 'notebooks/DatabaseStatistics.{filter}.ipynb'
-    script:
+    notebook:
         'notebooks/DatabaseStatistics.ipynb'
 
 
@@ -125,7 +125,7 @@ rule include_tad_relations:
         db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
         tad_length_plot = 'tads/tad_length_histogram.{source}.{tad_parameter}.{filter}.pdf',
         notebook_output = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.{filter}.ipynb'
-    script:
+    notebook:
         'notebooks/IncludeTADRelations.ipynb'
 
 
@@ -136,7 +136,7 @@ rule compute_enrichments:
     output:
         fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
         notebook_output = 'notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.{filter}.ipynb'
-    script:
+    notebook:
         'notebooks/ComputeTADEnrichments.ipynb'
 
 
@@ -147,7 +147,7 @@ rule create_figures:
     output:
         outdir = directory('plots/{source}/{tad_parameter}/{filter}/'),
         notebook_output = 'notebooks/CreateFigures.{source}.{tad_parameter}.{filter}.ipynb'
-    script:
+    notebook:
         'notebooks/CreateFigures.ipynb'
 
 
@@ -166,7 +166,7 @@ rule aggregate_results:
     output:
         fname = 'results/final.csv.gz',
         notebook_output = 'notebooks/AggregateResults.ipynb'
-    script:
+    notebook:
         'notebooks/AggregateResults.ipynb'
 
 
@@ -176,5 +176,5 @@ rule multi_run_post_analysis:
     output:
         outdir = directory('post_analysis/'),
         notebook_output = 'notebooks/AggregateResults.ipynb'
-    script:
+    notebook:
         'notebooks/MultiRunPostAnalysis.ipynb'
