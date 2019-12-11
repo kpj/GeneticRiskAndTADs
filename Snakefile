@@ -5,7 +5,7 @@ from pathlib import Path
 configfile: 'config.yaml'
 workdir: config['workdir']
 
-localrules: all, download_hic_files
+localrules: all, download_hic_files, aggregate_tads, filter_database, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures
 
 
 # rule definitions
