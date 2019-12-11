@@ -14,14 +14,14 @@ rule all:
         'results/final.csv.gz',
         expand(
             'databases/statistics/{filter}/',
-            filter=config['snp_filter_list']),
+            filter=config['snp_filters'].keys()),
         'tads/plots/',
         'post_analysis/',
         expand(
             'plots/{source}/{tad_parameter}/{filter}/',
             source=config['hic_sources'],
             tad_parameter=config['window_size_list'],
-            filter=config['snp_filter_list'])
+            filter=config['snp_filters'].keys())
 
 
 rule download_hic_files:
@@ -157,12 +157,12 @@ rule aggregate_results:
             'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
             source=config['hic_sources'],
             tad_parameter=config['window_size_list'],
-            filter=config['snp_filter_list']),
+            filter=config['snp_filters'].keys()),
         enrichment_files = expand(
             'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
             source=config['hic_sources'],
             tad_parameter=config['window_size_list'],
-            filter=config['snp_filter_list'])
+            filter=config['snp_filters'].keys())
     output:
         fname = 'results/final.csv.gz',
         notebook_output = 'notebooks/AggregateResults.ipynb'
