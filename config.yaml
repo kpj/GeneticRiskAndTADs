@@ -17,11 +17,10 @@ tool_paths:
     juicer_tools: 'hi-c/juicer_tools_1.13.02.jar'
 
 input_files:
-    raw_disgenet: 'data/curated_variant_disease_associations.tsv.gz'
-    raw_gwascatalog: 'data/gwas_catalog_v1.0.2-associations_e94_r2018-09-30.tsv'
-    disease_ontology: 'data/doid.owl'
-    exp_factor_ontology: 'data/efo.owl'
-    sequence_ontology: 'data/so.owl'
+    disgenet: 'https://www.disgenet.org/static/disgenet_ap1/files/downloads/curated_variant_disease_associations.tsv.gz'
+    gwascatalog: 'ftp://ftp.ebi.ac.uk/pub/databases/gwas/releases/latest/gwas-catalog-associations_ontology-annotated.tsv'
+    exp_factor_ontology: 'http://www.ebi.ac.uk/efo/efo.owl'
+    sequence_ontology: 'https://github.com/The-Sequence-Ontology/SO-Ontologies/raw/master/so.owl'
 
 parameters:
     ensembl_url: 'grch37.ensembl.org'  # actually b37, hg38: 'www.ensembl.org'

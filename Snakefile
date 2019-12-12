@@ -1,4 +1,10 @@
-from pathlib import Path
+from urllib.parse import urlparse
+
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+FTP = FTPRemoteProvider()
 
 
 # setup
@@ -6,6 +12,21 @@ configfile: 'config.yaml'
 workdir: config['workdir']
 
 localrules: all, download_hic_files, aggregate_tads, filter_database, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures
+
+
+def url_wrapper(url):
+    if os.path.isfile(srcdir(url)):
+        # is local
+        return srcdir(url)
+    else:
+        # is remote
+        o = urlparse(url)
+        if o.scheme in ('http', 'https'):
+            return HTTP.remote(url)
+        elif o.scheme == 'ftp':
+            return FTP.remote(url)
+        else:
+            raise RuntimeError(f'Invalid url: "{url}"')
 
 
 # rule definitions
@@ -83,12 +104,30 @@ rule compare_tad_lists:
         'notebooks/TADListComparison.ipynb'
 
 
+rule provide_input_files:
+    input:
+        disgenet_fname = url_wrapper(config['input_files']['disgenet']),
+        gwascatalog_fname = url_wrapper(config['input_files']['gwascatalog']),
+        efo_fname = url_wrapper(config['input_files']['exp_factor_ontology']),
+        so_fname = url_wrapper(config['input_files']['sequence_ontology'])
+    output:
+        disgenet_fname = 'input/disgenet.tsv.gz',
+        gwascatalog_fname = 'input/gwas_catalog.tsv',
+        efo_fname = 'input/efo.owl',
+        so_fname = 'input/so.owl'
+    run:
+        import shutil
+
+        for source_url, target_url in zip(input, output):
+            shutil.copy(source_url, target_url)
+
+
 rule assemble_input_databases:
     input:
-        disgenet_fname = srcdir(config['input_files']['raw_disgenet']),
-        gwascatalog_fname = srcdir(config['input_files']['raw_gwascatalog']),
-        efo_fname = srcdir(config['input_files']['exp_factor_ontology']),
-        so_fname = srcdir(config['input_files']['sequence_ontology'])
+        disgenet_fname = 'input/disgenet.tsv.gz',
+        gwascatalog_fname = 'input/gwas_catalog.tsv',
+        efo_fname = 'input/efo.owl',
+        so_fname = 'input/so.owl'
     output:
         db_fname = 'databases/initial.csv',
         raw_veps = 'databases/vep.csv',
