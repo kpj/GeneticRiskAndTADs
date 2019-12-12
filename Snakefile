@@ -112,20 +112,17 @@ rule provide_input_files:
         so_fname = url_wrapper(config['input_files']['sequence_ontology'])
     output:
         disgenet_fname = 'input/disgenet.tsv.gz',
-        gwascatalog_fname = 'input/gwas_catalog.tsv',
+        gwascatalog_fname = 'input/gwas_catalog.tsv.gz',
         efo_fname = 'input/efo.owl',
         so_fname = 'input/so.owl'
-    run:
-        import shutil
-
-        for source_url, target_url in zip(input, output):
-            shutil.copy(source_url, target_url)
+    script:
+        'scripts/provide_files.py'
 
 
 rule assemble_input_databases:
     input:
         disgenet_fname = 'input/disgenet.tsv.gz',
-        gwascatalog_fname = 'input/gwas_catalog.tsv',
+        gwascatalog_fname = 'input/gwas_catalog.tsv.gz',
         efo_fname = 'input/efo.owl',
         so_fname = 'input/so.owl'
     output:
