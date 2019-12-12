@@ -48,6 +48,8 @@ rule all:
 rule download_hic_files:
     output:
         fname = 'hic_files/raw/data.{source}.hic'
+    conda:
+        'envs/python_stack.yaml'
     script:
         'scripts/download_hic_files.py'
 
@@ -58,6 +60,8 @@ rule extract_count_matrices:
     output:
         fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv',
         fname_juicer = 'hic_files/counts/{source}/{chromosome}/juicer.tsv'
+    conda:
+        'envs/python_stack.yaml'
     script:
         'scripts/extract_count_matrices.py'
 
@@ -71,6 +75,8 @@ rule compute_tads:
         topdom_output = 'tads/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed'
     params:
         prefix = 'tads/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}'
+    conda:
+        'envs/python_stack.yaml'
     script:
         'scripts/compute_tads.py'
 
@@ -82,12 +88,10 @@ rule aggregate_tads:
             chromosome=config['chromosome_list'])
     output:
         fname = 'tads/tads.{source}.{tad_parameter}.csv'
-    run:
-        import pandas as pd
-
-        pd.concat([
-            pd.read_csv(x) for x in input.fname_list
-        ]).to_csv(output.fname, index=False)
+    conda:
+        'envs/python_stack.yaml'
+    script:
+        'scripts/aggregate_tads.py'
 
 
 rule compare_tad_lists:
@@ -100,6 +104,8 @@ rule compare_tad_lists:
         tad_similarity_cache = 'tads/statistics/tad_similarities.csv',
         outdir = directory('tads/plots/'),
         notebook_output = 'notebooks/TADListComparison.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/TADListComparison.ipynb'
 
@@ -115,6 +121,8 @@ rule provide_input_files:
         gwascatalog_fname = 'input/gwas_catalog.tsv.gz',
         efo_fname = 'input/efo.owl',
         so_fname = 'input/so.owl'
+    conda:
+        'envs/python_stack.yaml'
     script:
         'scripts/provide_files.py'
 
@@ -129,6 +137,8 @@ rule assemble_input_databases:
         db_fname = 'databases/initial.csv',
         raw_veps = 'databases/vep.csv',
         notebook_output = 'notebooks/AssembleInputDatabases.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/AssembleInputDatabases.ipynb'
 
@@ -139,6 +149,8 @@ rule filter_database:
     output:
         db_fname = 'databases/initial_filtered.{filter}.csv',
         notebook_output = 'notebooks/FilterDatabase.{filter}.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/FilterDatabase.ipynb'
 
@@ -149,6 +161,8 @@ rule compute_database_statistics:
     output:
         outdir = directory('databases/statistics/{filter}/'),
         notebook_output = 'notebooks/DatabaseStatistics.{filter}.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/DatabaseStatistics.ipynb'
 
@@ -161,6 +175,8 @@ rule include_tad_relations:
         db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
         tad_length_plot = 'tads/length_plots/tad_length_histogram.{source}.{tad_parameter}.{filter}.pdf',
         notebook_output = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.{filter}.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/IncludeTADRelations.ipynb'
 
@@ -172,6 +188,8 @@ rule compute_enrichments:
     output:
         fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
         notebook_output = 'notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.{filter}.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/ComputeTADEnrichments.ipynb'
 
@@ -183,6 +201,8 @@ rule create_figures:
     output:
         outdir = directory('plots/{source}/{tad_parameter}/{filter}/'),
         notebook_output = 'notebooks/CreateFigures.{source}.{tad_parameter}.{filter}.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/CreateFigures.ipynb'
 
@@ -202,6 +222,8 @@ rule aggregate_results:
     output:
         fname = 'results/final.csv.gz',
         notebook_output = 'notebooks/AggregateResults.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/AggregateResults.ipynb'
 
@@ -212,5 +234,7 @@ rule multi_run_post_analysis:
     output:
         outdir = directory('post_analysis/'),
         notebook_output = 'notebooks/MultiRunPostAnalysis.ipynb'
+    conda:
+        'envs/python_stack.yaml'
     notebook:
         'notebooks/MultiRunPostAnalysis.ipynb'

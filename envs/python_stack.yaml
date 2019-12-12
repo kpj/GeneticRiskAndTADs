@@ -1,0 +1,26 @@
+name: python_stack
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - armadillo
+  - python>=3.7
+  - pip
+  - pip:
+    - numpy
+    - pandas
+    - scipy
+    - networkx
+    - seaborn
+    - matplotlib
+
+    - sh
+    - tqdm
+    - bs4
+    - geoparse
+
+    - git+https://github.com/kpj/onto2nx
+    - git+https://github.com/kpj/pybiomart
+
+    - gene_map
+    - bioinf_common

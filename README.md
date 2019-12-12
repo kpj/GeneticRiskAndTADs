@@ -5,5 +5,5 @@
 
 Run pipeline as follows:
 ```bash
-$ snakemake -pr
+$ snakemake -pr --use-conda
 ```
