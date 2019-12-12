@@ -14,8 +14,8 @@ tool_paths:
     juicer_tools: '../hi-c/juicer_tools_1.13.02.jar'
 
 input_files:
-    raw_disgenet: 'test_case/data/disgenet_empty.tsv'
-    raw_gwascatalog: 'test_case/data/dummy_gwas_catalog.tsv'
+    disgenet: 'test_case/data/disgenet_empty.tsv'
+    gwascatalog: 'test_case/data/dummy_gwas_catalog.tsv'
     disease_ontology: 'test_case/data/dummy_doid.owl'
     exp_factor_ontology: 'test_case/data/dummy_efo.owl'
     sequence_ontology: 'test_case/data/dummy_so.owl'
