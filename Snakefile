@@ -11,7 +11,7 @@ FTP = FTPRemoteProvider()
 configfile: 'config.yaml'
 workdir: config['workdir']
 
-localrules: all, download_hic_files, aggregate_tads, filter_database, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures
+localrules: all, download_hic_files, aggregate_tads, provide_input_files, filter_database, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures
 
 
 def url_wrapper(url):
