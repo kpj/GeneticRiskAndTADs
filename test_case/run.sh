@@ -10,4 +10,4 @@ cp -v data/dummy_tads.csv pipeline_test/tads/tads.dummy.42.csv
 
 # execute pipeline
 cd ..
-snakemake -pr --configfile "test_case/config_dummy.yaml"
+snakemake -pr --configfile "test_case/config_dummy.yaml" --use-conda
