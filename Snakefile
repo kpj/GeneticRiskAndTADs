@@ -42,6 +42,11 @@ rule all:
             'plots/{source}/{tad_parameter}/{filter}/',
             source=config['hic_sources'],
             tad_parameter=config['window_size_list'],
+            filter=config['snp_filters'].keys()),
+        expand(
+            'reports/report.{source}.{tad_parameter}.{filter}.pdf',
+            source=config['hic_sources'],
+            tad_parameter=config['window_size_list'],
             filter=config['snp_filters'].keys())
 
 
@@ -205,6 +210,17 @@ rule create_figures:
         'envs/python_stack.yaml'
     notebook:
         'notebooks/CreateFigures.ipynb'
+
+
+rule create_report:
+    input:
+        fname_enr = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv'
+    output:
+        'reports/report.{source}.{tad_parameter}.{filter}.pdf'
+    conda:
+        'envs/r_stack.yaml'
+    script:
+        'report/report.Rmd'
 
 
 rule aggregate_results:

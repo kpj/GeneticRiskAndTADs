@@ -1,0 +1,53 @@
+---
+title: "TAD pipeline"
+author:
+  - "Various Artists"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+params:
+  rmd: "report.Rmd"
+header-includes:
+  \usepackage{float}
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+# knitr setup
+knitr::opts_chunk$set(
+  echo=FALSE, warning=FALSE, message=FALSE,
+  out.width="75%", fig.align="center", fig.pos="H"
+)
+# custom includes
+library(dplyr)
+library(ggplot2)
+# helper functions
+get_file <- function (name) {
+  return(normalizePath(
+    snakemake@input[[name]]
+  ))
+}
+show_figure <- function (...) {
+  knitr::include_graphics(sapply(c(...), get_file))
+}
+```
+
+
+# Configuration
+
+Wildcards:
+
+* Data source: `r snakemake@wildcards$source`
+* TAD parameter: `r snakemake@wildcards$tad_parameter`
+* SNP filter: `r snakemake@wildcards$filter`
+
+Used chromosomes: `r snakemake@config$chromosome_list`
+
+
+# Enrichments
+
+Computed enrichment overview:
+
+```{r}
+readr::read_csv(get_file("fname_enr")) %>%
+  summary
+```

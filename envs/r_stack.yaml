@@ -1,0 +1,7 @@
+name: r_stack
+channels:
+  - defaults
+  - conda-forge
+  - r
+dependencies:
+  - r
