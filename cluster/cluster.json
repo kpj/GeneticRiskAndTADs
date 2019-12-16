@@ -32,9 +32,9 @@
     },
 
     "aggregate_results": {
-        "resources" : "30000"
+        "resources" : "15000"
     },
     "multi_run_post_analysis": {
-        "resources" : "30000"
+        "resources" : "15000"
     }
 }
