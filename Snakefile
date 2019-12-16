@@ -32,7 +32,7 @@ def url_wrapper(url):
 # rule definitions
 rule all:
     input:
-        'results/final.csv.gz',
+        'results/final_enr.csv.gz',
         expand(
             'databases/statistics/{filter}/',
             filter=config['snp_filters'].keys()),
@@ -220,7 +220,8 @@ rule aggregate_results:
             tad_parameter=config['window_size_list'],
             filter=config['snp_filters'].keys())
     output:
-        fname = 'results/final.csv.gz',
+        fname_data = 'results/final_data.csv.gz',
+        fname_enr = 'results/final_enr.csv.gz',
         notebook_output = 'notebooks/AggregateResults.ipynb'
     conda:
         'envs/python_stack.yaml'
@@ -230,7 +231,8 @@ rule aggregate_results:
 
 rule multi_run_post_analysis:
     input:
-        db_fname = 'results/final.csv.gz'
+        fname_data = 'results/final_data.csv.gz',
+        fname_enr = 'results/final_enr.csv.gz',
     output:
         outdir = directory('post_analysis/'),
         notebook_output = 'notebooks/MultiRunPostAnalysis.ipynb'
