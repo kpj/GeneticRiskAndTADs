@@ -5,3 +5,5 @@ channels:
   - r
 dependencies:
   - r
+  - r-rmarkdown
+  - r-tidyverse
