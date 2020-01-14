@@ -23,6 +23,6 @@ input_files:
     sequence_ontology: 'https://github.com/The-Sequence-Ontology/SO-Ontologies/raw/master/so.owl'
 
 parameters:
-    ensembl_url: 'grch37.ensembl.org'  # actually b37, hg38: 'www.ensembl.org'
+    ensembl_url: 'grch37.ensembl.org'  # hg19/GRCh37/b37: 'grch37.ensembl.org', hg38/GRCh38: 'www.ensembl.org'
     associated_gene_source: mapped  # 'reported', 'mapped'
     allow_snp_multiplicity_in_enrichment: false
