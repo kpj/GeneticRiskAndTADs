@@ -5,6 +5,7 @@ mkdir -p ./pipeline_run/cluster_logs
 
 snakemake \
     -pr \
+    --use-conda \
     -j 999 \
     --latency-wait 30 \
     --cluster-config "./cluster/cluster.json" \
