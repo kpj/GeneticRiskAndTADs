@@ -18,19 +18,6 @@
         "extra_args": ""
     },
 
-    "aggregate_tads": {
-        "extra_args": ""
-    },
-    "include_tad_relations": {
-        "extra_args": ""
-    },
-    "compute_enrichments": {
-        "extra_args": ""
-    },
-    "create_figures": {
-        "extra_args": ""
-    },
-
     "aggregate_results": {
         "resources" : "15000"
     },
