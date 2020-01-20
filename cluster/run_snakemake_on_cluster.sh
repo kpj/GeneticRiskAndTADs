@@ -6,7 +6,8 @@ mkdir -p ./pipeline_run/cluster_logs
 snakemake \
     -pr \
     --use-conda \
-    -j 999 \
+    --cores 100 \
+    --local-cores 1 \
     --latency-wait 30 \
     --cluster-config "./cluster/cluster.json" \
     --cluster "$(realpath ./cluster/custom_bsub.sh) \
