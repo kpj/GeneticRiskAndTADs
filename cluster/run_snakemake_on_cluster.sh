@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 cd "$(dirname "$0")/../"
-mkdir -p ./pipeline_run/cluster_logs
+
+workdir="$(grep ^workdir config.yaml | cut -d ' ' -f 2)" # oh no, very bad
+mkdir -p "./$workdir/cluster_logs"
 
 snakemake \
     -pr \
