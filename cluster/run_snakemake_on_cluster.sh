@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")/../"
 
-workdir="$(grep ^workdir config.yaml | cut -d ' ' -f 2)" # oh no, very bad
+workdir="$(grep ^workdir config.yaml | cut -d ' ' -f 2 | tr -d "'")" # oh no, very bad
 mkdir -p "./$workdir/cluster_logs"
 
 snakemake \
