@@ -34,6 +34,9 @@ rule all:
     input:
         'results/final_enr.csv.gz',
         expand(
+            'hic_files/plots/{source}/heatmap.{chromosome}.pdf',
+            source=config['hic_sources'], chromosome=config['chromosome_list']),
+        expand(
             'databases/statistics/{filter}/',
             filter=config['snp_filters'].keys()),
         'tads/plots/',
@@ -69,6 +72,19 @@ rule extract_count_matrices:
         'envs/python_stack.yaml'
     script:
         'scripts/extract_count_matrices.py'
+
+
+rule visualize_count_matrix:
+    input:
+        fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
+    output:
+        fname_heatmap = 'hic_files/plots/{source}/heatmap.{chromosome}.pdf'
+    log:
+        notebook = 'notebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'nnotebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb'
 
 
 rule compute_tads:
