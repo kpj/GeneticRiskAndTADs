@@ -84,7 +84,7 @@ rule visualize_count_matrix:
     conda:
         'envs/python_stack.yaml'
     notebook:
-        'nnotebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb'
+        'notebooks/VisualizeContactMatrix.ipynb'
 
 
 rule compute_tads:
