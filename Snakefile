@@ -34,7 +34,7 @@ rule all:
     input:
         'results/final_enr.csv.gz',
         expand(
-            'hic_files/plots/{source}/heatmap.{chromosome}.pdf',
+            'hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
             source=config['hic_sources'], chromosome=config['chromosome_list']),
         expand(
             'databases/statistics/{filter}/',
@@ -78,7 +78,7 @@ rule visualize_count_matrix:
     input:
         fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     output:
-        fname_heatmap = 'hic_files/plots/{source}/heatmap.{chromosome}.pdf'
+        fname_heatmap = 'hic_files/plots/{source}/heatmap.chr{chromosome}.pdf'
     log:
         notebook = 'notebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb'
     conda:
