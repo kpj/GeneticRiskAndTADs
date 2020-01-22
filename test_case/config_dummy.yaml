@@ -3,7 +3,7 @@ workdir: 'test_case/pipeline_test/'
 hic_sources:
     - dummy
 
-chromosome_list: ['chr1']
+chromosome_list: ['1']
 window_size_list: [42]
 
 snp_filter_list:
