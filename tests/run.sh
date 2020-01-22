@@ -13,4 +13,4 @@ cp -v data/empty_hic_heatmap.pdf pipeline_test/hic_files/plots/dummy/heatmap.chr
 
 # execute pipeline
 cd ..
-snakemake -pr --configfile "test_case/config_dummy.yaml" --use-conda
+snakemake -pr --configfile "tests/config_dummy.yaml" --use-conda

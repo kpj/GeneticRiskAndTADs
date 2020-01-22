@@ -1,4 +1,4 @@
-workdir: 'test_case/pipeline_test/'
+workdir: 'tests/pipeline_test/'
 
 hic_sources:
     - dummy
@@ -14,11 +14,11 @@ tool_paths:
     juicer_tools: '../hi-c/juicer_tools_1.13.02.jar'
 
 input_files:
-    disgenet: 'test_case/data/disgenet_empty.tsv'
-    gwascatalog: 'test_case/data/dummy_gwas_catalog.tsv'
-    disease_ontology: 'test_case/data/dummy_doid.owl'
-    exp_factor_ontology: 'test_case/data/dummy_efo.owl'
-    sequence_ontology: 'test_case/data/dummy_so.owl'
+    disgenet: 'tests/data/disgenet_empty.tsv'
+    gwascatalog: 'tests/data/dummy_gwas_catalog.tsv'
+    disease_ontology: 'tests/data/dummy_doid.owl'
+    exp_factor_ontology: 'tests/data/dummy_efo.owl'
+    sequence_ontology: 'tests/data/dummy_so.owl'
 
 parameters:
     ensembl_url: '../data/snp_annotations.csv'  # ".." because of workdir
