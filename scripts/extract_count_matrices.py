@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+import cooler
+
 import sh
 from tqdm import tqdm
 
@@ -47,7 +49,7 @@ def make_axis_regular(df_piv, bin_size, axis, sort=True):
         return df_out
 
 
-def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
+def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
     bin_size = 10_000
 
     juicer_exec = Path(snakemake.scriptdir) / '..' / snakemake.config['tool_paths']['juicer_tools']
@@ -139,8 +141,21 @@ def main(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
     df_final.to_csv(fname_matrix)
 
 
+def extract_cool(fname_in, fname_matrix, chromosome):
+    # extract data
+    c = cooler.Cooler(fname_in)
+
+    mat = c.matrix(balance=False).fetch(chromosome)
+    df_bins = c.bins().fetch(chromosome)
+
+    df_mat = pd.DataFrame(mat, index=df_bins['start'], columns=df_bins['start'])
+
+    # save data
+    df_mat.to_csv(fname_matrix)
+
+
 if __name__ == '__main__':
-    main(
+    extract_cool(
         snakemake.input.fname,
-        snakemake.wildcards.chromosome,
-        snakemake.output.fname_matrix, snakemake.output.fname_juicer)
+        snakemake.output.fname_matrix,
+        f'chr{snakemake.wildcards.chromosome}')

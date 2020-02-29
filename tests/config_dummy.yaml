@@ -1,17 +1,15 @@
-workdir: 'tests/pipeline_test/'
+workdir: './tests/pipeline_test/'
+hicdata_dir: './tests/data/dummy_hic/'
 
-hic_sources:
-    - dummy
+chromosome_list: ['22']
+window_size_list: [10]
 
-chromosome_list: ['1']
-window_size_list: [42]
-
-snp_filter_list:
-    - 'nofilter'
-    - 'variant_group=exonic'
-
-tool_paths:
-    juicer_tools: '../hi-c/juicer_tools_1.13.02.jar'
+snp_filters:
+    nofilter: null
+    exonic: 'variant_group_{genome_assembly} == "exonic"'
+    intronic: 'variant_group_{genome_assembly} == "intronic"'
+    intergenic: 'variant_group_{genome_assembly} == "intergenic"'
+    nonexonic: 'variant_group_{genome_assembly} != "exonic"'
 
 input_files:
     disgenet: 'tests/data/disgenet_empty.tsv'
@@ -20,7 +18,10 @@ input_files:
     exp_factor_ontology: 'tests/data/dummy_efo.owl'
     sequence_ontology: 'tests/data/dummy_so.owl'
 
+annotation_sources:
+    hg19: '../data/snp_annotations.csv' # ".." because of workdir
+    hg38: '../data/snp_annotations.csv'
+
 parameters:
-    ensembl_url: '../data/snp_annotations.csv'  # ".." because of workdir
     associated_gene_source: mapped  # 'reported', 'mapped'
     allow_snp_multiplicity_in_enrichment: false

@@ -1,9 +1,9 @@
 ,refsnp_id,chr_name,chrom_start,consequence_type_tv,ensembl_transcript_stable_id
-0,rs42,1,110000,intron_variant,xxx
-1,rs43,1,90000,intron_variant,xxx
+0,rs42,22,16010000,intron_variant,xxx
+1,rs43,22,15990000,intron_variant,xxx
 
-2,rs44,1,150000,exon_variant,xxx
-3,rs45,1,300000,exon_variant,xxx
-4,rs46,1,130000,exon_variant,xxx
+2,rs44,22,20000000,exon_variant,xxx
+3,rs45,22,10000000,exon_variant,xxx
+4,rs46,22,16030000,exon_variant,xxx
 
-5,rs47,1,140000,intergenic,xxx
+5,rs47,22,16040000,intergenic,xxx

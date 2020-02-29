@@ -11,7 +11,13 @@ FTP = FTPRemoteProvider()
 configfile: 'config.yaml'
 workdir: config['workdir']
 
-localrules: all, download_hic_files, aggregate_tads, provide_input_files, filter_database, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
+localrules: all, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
+
+hicdir = config['hicdata_dir']
+hic_sources, = glob_wildcards(workflow.basedir + f'/{hicdir}/{{source}}.cool')
+
+wildcard_constraints:
+    tad_parameter = r'\d+'  # contains window size which must be an integer
 
 
 def url_wrapper(url):
@@ -35,43 +41,43 @@ rule all:
         'results/final_enr.csv.gz',
         expand(
             'hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
-            source=config['hic_sources'], chromosome=config['chromosome_list']),
-        expand(
-            'databases/statistics/{filter}/',
-            filter=config['snp_filters'].keys()),
+            source=hic_sources, chromosome=config['chromosome_list']),
+        expand('databases/statistics/'),
         'tads/plots/',
         'post_analysis/',
         expand(
             'plots/{source}/{tad_parameter}/{filter}/',
-            source=config['hic_sources'],
+            source=hic_sources,
             tad_parameter=config['window_size_list'],
             filter=config['snp_filters'].keys()),
         expand(
             'reports/report.{source}.{tad_parameter}.{filter}.pdf',
-            source=config['hic_sources'],
+            source=hic_sources,
             tad_parameter=config['window_size_list'],
             filter=config['snp_filters'].keys())
 
 
-rule download_hic_files:
-    output:
-        fname = 'hic_files/raw/data.{source}.hic'
-    conda:
-        'envs/python_stack.yaml'
-    script:
-        'scripts/download_hic_files.py'
-
-
 rule extract_count_matrices:
     input:
-        fname = 'hic_files/raw/data.{source}.hic'
+        fname = workflow.basedir + f'/{hicdir}/{{source}}.cool'
     output:
-        fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv',
-        fname_juicer = 'hic_files/counts/{source}/{chromosome}/juicer.tsv'
+        fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     conda:
         'envs/python_stack.yaml'
     script:
         'scripts/extract_count_matrices.py'
+
+
+rule gather_input_information:
+    input:
+        fname_list = expand(
+            workflow.basedir + f'/{hicdir}/{{source}}.cool', source=hic_sources)
+    output:
+        fname = 'hic_files/info.csv'
+    conda:
+        'envs/python_stack.yaml'
+    script:
+        'scripts/gather_input_information.py'
 
 
 rule visualize_count_matrix:
@@ -89,7 +95,8 @@ rule visualize_count_matrix:
 
 rule compute_tads:
     input:
-        fname = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
+        fname = 'hic_files/counts/{source}/{chromosome}/matrix.csv',
+        fname_info = 'hic_files/info.csv'
     output:
         fname = 'tads/{source}/{tad_parameter}/tads.chr{chromosome}.csv',
         topdom_input = 'tads/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv',
@@ -119,7 +126,7 @@ rule compare_tad_lists:
     input:
         tad_fname_list = expand(
             'tads/tads.{source}.{tad_parameter}.csv',
-            source=config['hic_sources'],
+            source=hic_sources,
             tad_parameter=config['window_size_list'])
     output:
         tad_similarity_cache = 'tads/statistics/tad_similarities.csv',
@@ -166,26 +173,13 @@ rule assemble_input_databases:
         'notebooks/AssembleInputDatabases.ipynb'
 
 
-rule filter_database:
-    input:
-        db_fname = 'databases/initial.csv'
-    output:
-        db_fname = 'databases/initial_filtered.{filter}.csv'
-    log:
-        notebook = 'notebooks/FilterDatabase.{filter}.ipynb'
-    conda:
-        'envs/python_stack.yaml'
-    notebook:
-        'notebooks/FilterDatabase.ipynb'
-
-
 rule compute_database_statistics:
     input:
-        fname = 'databases/initial_filtered.{filter}.csv'
+        fname = 'databases/initial.csv'
     output:
-        outdir = directory('databases/statistics/{filter}/')
+        outdir = directory('databases/statistics/')
     log:
-        notebook = 'notebooks/DatabaseStatistics.{filter}.ipynb'
+        notebook = 'notebooks/DatabaseStatistics.ipynb'
     conda:
         'envs/python_stack.yaml'
     notebook:
@@ -195,12 +189,13 @@ rule compute_database_statistics:
 rule include_tad_relations:
     input:
         tads_fname = 'tads/tads.{source}.{tad_parameter}.csv',
-        db_fname = 'databases/initial_filtered.{filter}.csv'
+        db_fname = 'databases/initial.csv',
+        info_fname = 'hic_files/info.csv'
     output:
-        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
-        tad_length_plot = 'tads/length_plots/tad_length_histogram.{source}.{tad_parameter}.{filter}.pdf'
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+        tad_length_plot = 'tads/length_plots/tad_length_histogram.{source}.{tad_parameter}.pdf'
     log:
-        notebook = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.{filter}.ipynb'
+        notebook = 'notebooks/IncludeTADRelations.{source}.{tad_parameter}.ipynb'
     conda:
         'envs/python_stack.yaml'
     notebook:
@@ -209,8 +204,9 @@ rule include_tad_relations:
 
 rule compute_enrichments:
     input:
-        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
-        tads_fname = 'tads/tads.{source}.{tad_parameter}.csv'
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+        tads_fname = 'tads/tads.{source}.{tad_parameter}.csv',
+        info_fname = 'hic_files/info.csv'
     output:
         fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv'
     log:
@@ -223,7 +219,7 @@ rule compute_enrichments:
 
 rule create_figures:
     input:
-        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
+        db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
         enr_fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
     output:
         outdir = directory('plots/{source}/{tad_parameter}/{filter}/')
@@ -249,13 +245,12 @@ rule create_report:
 rule aggregate_results:
     input:
         database_files = expand(
-            'databases/per_source/snpdb.{source}.{tad_parameter}.{filter}.csv',
-            source=config['hic_sources'],
-            tad_parameter=config['window_size_list'],
-            filter=config['snp_filters'].keys()),
+            'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+            source=hic_sources,
+            tad_parameter=config['window_size_list']),
         enrichment_files = expand(
             'enrichments/results.{source}.{tad_parameter}.{filter}.csv',
-            source=config['hic_sources'],
+            source=hic_sources,
             tad_parameter=config['window_size_list'],
             filter=config['snp_filters'].keys())
     output:

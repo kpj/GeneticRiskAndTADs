@@ -1,15 +1,17 @@
-import numpy as np
+import os
+
 import pandas as pd
 
 import sh
 
 
 def main():
-    bin_size = 10_000
-
     # read data
     print('Prepare input data')
     df_count = pd.read_csv(snakemake.input.fname, index_col=0)
+    df_info = pd.read_csv(snakemake.input.fname_info, index_col=1)
+
+    bin_size = df_info.loc[snakemake.wildcards.source, 'bin_size']
 
     # convert to TopDom compatible format
     df_count.insert(0, 'chr', f'chr{snakemake.wildcards.chromosome}')
