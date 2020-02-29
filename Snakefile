@@ -1,3 +1,4 @@
+from pathlib import Path
 from urllib.parse import urlparse
 
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
@@ -10,14 +11,15 @@ FTP = FTPRemoteProvider()
 # setup
 configfile: 'config.yaml'
 workdir: config['workdir']
+basedir = Path(workflow.basedir)
 
-localrules: all, gather_input_information, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
-
-hicdir = config['hicdata_dir']
-hic_sources, = glob_wildcards(workflow.basedir + f'/{hicdir}/{{source}}.cool')
+hicdir = basedir / config['hicdata_dir']
+hic_sources, = glob_wildcards(hicdir / '{source}.cool')
 
 wildcard_constraints:
     tad_parameter = r'\d+'  # contains window size which must be an integer
+
+localrules: all, gather_input_information, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
 
 
 def url_wrapper(url):
@@ -59,7 +61,7 @@ rule all:
 
 rule extract_count_matrices:
     input:
-        fname = workflow.basedir + f'/{hicdir}/{{source}}.cool'
+        fname = hicdir / '{source}.cool'
     output:
         fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     conda:
@@ -71,7 +73,7 @@ rule extract_count_matrices:
 rule gather_input_information:
     input:
         fname_list = expand(
-            workflow.basedir + f'/{hicdir}/{{source}}.cool', source=hic_sources)
+            str(hicdir / '{source}.cool'), source=hic_sources)
     output:
         fname = 'hic_files/info.csv'
     conda:
