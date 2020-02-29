@@ -11,7 +11,7 @@ FTP = FTPRemoteProvider()
 configfile: 'config.yaml'
 workdir: config['workdir']
 
-localrules: all, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
+localrules: all, gather_input_information, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
 
 hicdir = config['hicdata_dir']
 hic_sources, = glob_wildcards(workflow.basedir + f'/{hicdir}/{{source}}.cool')
