@@ -14,7 +14,8 @@
         "extra_args": ""
     },
     "visualize_count_matrix": {
-        "resources" : "20000"
+        "resources" : "20000",
+        "extra_args": ""
     },
 
     "compute_tads": {
