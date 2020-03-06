@@ -28,6 +28,8 @@ dependencies:
     - statsmodels
     - cooler
 
+    - ftputil
+
     - jupyter
     - jupyter_contrib_nbextensions
 
