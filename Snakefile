@@ -100,11 +100,11 @@ rule compute_tads:
         fname = 'hic_files/counts/{source}/{chromosome}/matrix.csv',
         fname_info = 'hic_files/info.csv'
     output:
-        fname = 'tads/{source}/{tad_parameter}/tads.chr{chromosome}.csv',
-        topdom_input = 'tads/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv',
-        topdom_output = 'tads/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed'
+        fname = 'tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv',
+        topdom_input = temp('tads/data/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv'),
+        topdom_output = 'tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed'
     params:
-        prefix = 'tads/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}'
+        prefix = 'tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}'
     conda:
         'envs/python_stack.yaml'
     script:
@@ -114,10 +114,10 @@ rule compute_tads:
 rule aggregate_tads:
     input:
         fname_list = expand(
-            'tads/{{source}}/{{tad_parameter}}/tads.chr{chromosome}.csv',
+            'tads/data/{{source}}/{{tad_parameter}}/tads.chr{chromosome}.csv',
             chromosome=config['chromosome_list'])
     output:
-        fname = 'tads/tads.{source}.{tad_parameter}.csv'
+        fname = 'tads/data/tads.{source}.{tad_parameter}.csv'
     conda:
         'envs/python_stack.yaml'
     script:
@@ -127,7 +127,7 @@ rule aggregate_tads:
 rule compare_tad_lists:
     input:
         tad_fname_list = expand(
-            'tads/tads.{source}.{tad_parameter}.csv',
+            'tads/data/tads.{source}.{tad_parameter}.csv',
             source=hic_sources,
             tad_parameter=config['window_size_list'])
     output:
@@ -190,7 +190,7 @@ rule compute_database_statistics:
 
 rule include_tad_relations:
     input:
-        tads_fname = 'tads/tads.{source}.{tad_parameter}.csv',
+        tads_fname = 'tads/data/tads.{source}.{tad_parameter}.csv',
         db_fname = 'databases/initial.csv',
         info_fname = 'hic_files/info.csv'
     output:
@@ -207,7 +207,7 @@ rule include_tad_relations:
 rule compute_enrichments:
     input:
         db_fname = 'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
-        tads_fname = 'tads/tads.{source}.{tad_parameter}.csv',
+        tads_fname = 'tads/data/tads.{source}.{tad_parameter}.csv',
         info_fname = 'hic_files/info.csv'
     output:
         fname = 'enrichments/results.{source}.{tad_parameter}.{filter}.csv'
