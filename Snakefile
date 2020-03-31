@@ -1,11 +1,4 @@
 from pathlib import Path
-from urllib.parse import urlparse
-
-from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
-from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
-
-HTTP = HTTPRemoteProvider()
-FTP = FTPRemoteProvider()
 
 
 # setup
@@ -21,20 +14,7 @@ wildcard_constraints:
 
 localrules: all, gather_input_information, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
 
-
-def url_wrapper(url):
-    if os.path.isfile(srcdir(url)):
-        # is local
-        return srcdir(url)
-    else:
-        # is remote
-        o = urlparse(url)
-        if o.scheme in ('http', 'https'):
-            return HTTP.remote(url)
-        elif o.scheme == 'ftp':
-            return FTP.remote(url)
-        else:
-            raise RuntimeError(f'Invalid url: "{url}"')
+include: 'rules/common.smk'
 
 
 # rule definitions
