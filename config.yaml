@@ -25,3 +25,5 @@ annotation_sources:
 parameters:
     associated_gene_source: mapped  # 'reported', 'mapped'
     allow_snp_multiplicity_in_enrichment: false
+    enrichment_distribution: binom  # 'binom', 'hypergeom'
+    enrichment_null_model: base_sample  # 'base_sample', 'snp_sample'

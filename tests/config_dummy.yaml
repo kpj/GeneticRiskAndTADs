@@ -23,5 +23,7 @@ annotation_sources:
     hg38: '../data/snp_annotations.csv'
 
 parameters:
-    associated_gene_source: mapped  # 'reported', 'mapped'
+    associated_gene_source: mapped
     allow_snp_multiplicity_in_enrichment: false
+    enrichment_distribution: binom
+    enrichment_null_model: base_sample
