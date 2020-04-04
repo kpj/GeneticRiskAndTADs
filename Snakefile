@@ -54,6 +54,8 @@ rule gather_input_information:
                       for hic in hic_sources]
     output:
         fname = 'hic_files/info.csv'
+    params:
+        samplename_list = list(hic_sources)
     conda:
         'envs/python_stack.yaml'
     script:

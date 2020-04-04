@@ -1,7 +1,7 @@
 workdir: './tests/pipeline_test/'
 
 samples:
-    dummy: './tests/data/dummy_hic/dummy.cool'
+    dummy_name: './tests/data/dummy_hic/dummy.cool'
 
 chromosome_list: ['22']
 window_size_list: [10]
