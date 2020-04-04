@@ -8,6 +8,7 @@ mkdir -p "./$workdir/cluster_logs"
 snakemake \
     -pr \
     --use-conda \
+    --restart-times 3 \
     --cores 100 \
     --local-cores 1 \
     --latency-wait 30 \
