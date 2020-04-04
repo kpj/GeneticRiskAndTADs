@@ -9,7 +9,7 @@ FTP = FTPRemoteProvider()
 
 
 def url_wrapper(url, remote_kwargs={'keep_local': True}):
-    src_url = srcdir(url)
+    src_url = os.path.join(workflow.basedir, url)
     if src_url is not None and os.path.isfile(src_url):
         # is local
         return src_url
