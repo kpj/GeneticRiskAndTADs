@@ -1,0 +1,67 @@
+$schema: "http://json-schema.org/draft-06/schema#"
+
+properties:
+    workdir:
+        type: string
+    samples:
+        type: object
+    chromosome_list:
+        type: array
+        uniqueItems: true
+    window_size_list:
+        type: array
+        uniqueItems: true
+    snp_filters:
+        type: object
+    input_files:
+        type: object
+        properties:
+            disgenet:
+                type: string
+            gwascatalog:
+                type: string
+            disease_ontology:
+                type: string
+            exp_factor_ontology:
+                type: string
+            sequence_ontology:
+                type: string
+        additionalProperties:
+            type: string
+        required:
+            - disgenet
+            - gwascatalog
+            - disease_ontology
+            - exp_factor_ontology
+            - sequence_ontology
+    annotation_sources:
+        type: object
+    parameters:
+        type: object
+        properties:
+            associated_gene_source:
+                type: string
+                enum: [mapped, reported]
+            allow_snp_multiplicity_in_enrichment:
+                type: boolean
+            enrichment_distribution:
+                type: string
+                enum: [binom, hypergeom]
+            enrichment_null_model:
+                type: string
+                enum: [base_sample, snp_sample]
+        required:
+            - associated_gene_source
+            - allow_snp_multiplicity_in_enrichment
+            - enrichment_distribution
+            - enrichment_null_model
+
+required:
+    - workdir
+    - samples
+    - chromosome_list
+    - window_size_list
+    - snp_filters
+    - input_files
+    - annotation_sources
+    - parameters

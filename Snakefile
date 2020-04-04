@@ -1,6 +1,12 @@
+from snakemake.utils import validate
+
+
 # setup
 configfile: 'config.yaml'
+validate(config, 'config.schema.yaml')
+
 workdir: config['workdir']
+include: 'rules/common.smk'
 
 hic_sources = config['samples'].keys()
 
@@ -8,8 +14,6 @@ wildcard_constraints:
     tad_parameter = r'\d+'  # contains window size which must be an integer
 
 localrules: all, gather_input_information, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
-
-include: 'rules/common.smk'
 
 
 # rule definitions
