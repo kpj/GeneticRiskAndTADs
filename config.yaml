@@ -1,6 +1,29 @@
 workdir: './pipeline_run/'
-hicdata_dir: './hic_data/'
 
+samples:
+    Dixon2012-H1hESC-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2012-H1hESC-HindIII-allreps-filtered.10kb.cool
+    Dixon2012-IMR90-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2012-IMR90-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_ME-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2015-H1_ME-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_MS-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2015-H1_MS-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_NP-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2015-H1_NP-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_TB-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2015-H1_TB-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_hESC-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2015-H1_hESC-HindIII-allreps-filtered.10kb.cool
+    Jin2013-IMR90-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Jin2013-IMR90-HindIII-allreps-filtered.10kb.cool
+    Jin2013-IMR90_Flavopiridol-HindIII-Rep1-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Jin2013-IMR90_Flavopiridol-HindIII-Rep1-filtered.10kb.cool
+    Jin2013-IMR90_Tnfa-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Jin2013-IMR90_Tnfa-HindIII-allreps-filtered.10kb.cool
+    Rao2014-GM12878-DpnII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-GM12878-DpnII-allreps-filtered.10kb.cool
+    Rao2014-GM12878-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-GM12878-MboI-allreps-filtered.10kb.cool
+    Rao2014-HMEC-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-HMEC-MboI-allreps-filtered.10kb.cool
+    Rao2014-HUVEC-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-HUVEC-MboI-allreps-filtered.10kb.cool
+    Rao2014-IMR90-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-IMR90-MboI-allreps-filtered.10kb.cool
+    Rao2014-K562-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-K562-MboI-allreps-filtered.10kb.cool
+    Rao2014-KBM7-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-KBM7-MboI-allreps-filtered.10kb.cool
+    Rao2014-NHEK-MboI-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Rao2014-NHEK-MboI-allreps-filtered.10kb.cool
+    Selvaraj2013-GM12878-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Selvaraj2013-GM12878-HindIII-allreps-filtered.10kb.cool
+    Zuin2014-HEK293CtcfControl-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Zuin2014-HEK293CtcfControl-HindIII-allreps-filtered.10kb.cool
+    Zuin2014-HEK293CtcfDepleted-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Zuin2014-HEK293CtcfDepleted-HindIII-allreps-filtered.10kb.cool
+    Zuin2014-HEK293Rad21Cleaved-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Zuin2014-HEK293Rad21Cleaved-HindIII-allreps-filtered.10kb.cool
+    Zuin2014-HEK293Rad21Control-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Zuin2014-HEK293Rad21Control-HindIII-allreps-filtered.10kb.cool
 
 chromosome_list: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y']
 window_size_list: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]

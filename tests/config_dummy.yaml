@@ -1,5 +1,7 @@
 workdir: './tests/pipeline_test/'
-hicdata_dir: './tests/data/dummy_hic/'
+
+samples:
+    dummy: './tests/data/dummy_hic/dummy.cool'
 
 chromosome_list: ['22']
 window_size_list: [10]

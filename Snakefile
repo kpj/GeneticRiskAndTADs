@@ -1,13 +1,8 @@
-from pathlib import Path
-
-
 # setup
 configfile: 'config.yaml'
 workdir: config['workdir']
-basedir = Path(workflow.basedir)
 
-hicdir = basedir / config['hicdata_dir']
-hic_sources, = glob_wildcards(hicdir / '{source}.cool')
+hic_sources = config['samples'].keys()
 
 wildcard_constraints:
     tad_parameter = r'\d+'  # contains window size which must be an integer
@@ -41,7 +36,10 @@ rule all:
 
 rule extract_count_matrices:
     input:
-        fname = hicdir / '{source}.cool'
+        unpack(
+            lambda wildcards:
+                {'fname': url_wrapper(config['samples'][wildcards.source])}
+        )
     output:
         fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     conda:
@@ -52,8 +50,8 @@ rule extract_count_matrices:
 
 rule gather_input_information:
     input:
-        fname_list = expand(
-            str(hicdir / '{source}.cool'), source=hic_sources)
+        fname_list = [url_wrapper(config['samples'][hic])
+                      for hic in hic_sources]
     output:
         fname = 'hic_files/info.csv'
     conda:
