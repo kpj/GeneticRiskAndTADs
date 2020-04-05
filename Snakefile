@@ -31,11 +31,11 @@ rule all:
             source=hic_sources,
             tad_parameter=config['window_size_list'],
             filter=config['snp_filters'].keys()),
-        expand(
-            'reports/report.{source}.{tad_parameter}.{filter}.pdf',
-            source=hic_sources,
-            tad_parameter=config['window_size_list'],
-            filter=config['snp_filters'].keys())
+        # expand(
+        #     'reports/report.{source}.{tad_parameter}.{filter}.pdf',
+        #     source=hic_sources,
+        #     tad_parameter=config['window_size_list'],
+        #     filter=config['snp_filters'].keys())
 
 
 rule extract_count_matrices:
