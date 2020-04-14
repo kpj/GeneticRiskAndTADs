@@ -11,6 +11,14 @@ properties:
     window_size_list:
         type: array
         uniqueItems: true
+    tad_borders:
+        type: object
+        additionalProperties:
+            type: array
+            items:
+                - type: integer
+                - type: integer
+            additionalItems: false
     snp_filters:
         type: object
     input_files:
@@ -55,7 +63,7 @@ properties:
             - allow_snp_multiplicity_in_enrichment
             - enrichment_distribution
             - enrichment_null_model
-
+additionalProperties: false
 required:
     - workdir
     - samples

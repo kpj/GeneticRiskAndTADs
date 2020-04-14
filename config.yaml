@@ -28,6 +28,12 @@ samples:
 chromosome_list: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y']
 window_size_list: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
+tad_borders:  # format: [in-distance, out-distance] relative to (both) TAD ends
+    10in: [10000, 0]
+    20in: [20000, 0]
+    50in: [50000, 0]
+    100in: [100000, 0]
+
 snp_filters:
     nofilter: null
     exonic: 'variant_group_{genome_assembly} == "exonic"'
