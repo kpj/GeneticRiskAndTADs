@@ -26,6 +26,7 @@ rule all:
         expand('databases/statistics/'),
         'tads/plots/',
         'post_analysis/',
+        'publication_figures/',
         expand(
             'plots/{source}/{tad_parameter}/{filter}/',
             source=hic_sources,
@@ -262,3 +263,17 @@ rule multi_run_post_analysis:
         'envs/python_stack.yaml'
     notebook:
         'notebooks/MultiRunPostAnalysis.ipynb'
+
+
+rule publication_figures:
+    input:
+        fname_data = 'results/final_data.csv.gz',
+        fname_enr = 'results/final_enr.csv.gz',
+    output:
+        outdir = directory('publication_figures/')
+    log:
+        notebook = 'notebooks/PublicationFigures.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'notebooks/PublicationFigures.ipynb'
