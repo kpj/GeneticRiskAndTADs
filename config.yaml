@@ -56,3 +56,8 @@ parameters:
     allow_snp_multiplicity_in_enrichment: false
     enrichment_distribution: hypergeom  # 'binom', 'hypergeom'
     enrichment_null_model: base_sample  # 'base_sample', 'snp_sample'
+
+sketch:
+    region: ['chr6', 25960228, 31407777]
+    data_source: Rao2014-IMR90-MboI-allreps-filtered-10kb
+    window_size: 10

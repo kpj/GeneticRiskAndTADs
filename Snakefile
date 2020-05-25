@@ -269,6 +269,12 @@ rule publication_figures:
     input:
         fname_data = 'results/final_data.csv.gz',
         fname_enr = 'results/final_enr.csv.gz',
+
+        sketch_hicfile = url_wrapper(
+            config['samples'][config['sketch']['data_source']]),
+        sketch_tadfile = 'tads/data/tads.{source}.{tad_parameter}.csv'.format(
+            source=config['sketch']['data_source'],
+            tad_parameter=config['sketch']['window_size'])
     output:
         outdir = directory('publication_figures/')
     log:

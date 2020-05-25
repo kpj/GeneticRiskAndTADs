@@ -63,6 +63,19 @@ properties:
             - allow_snp_multiplicity_in_enrichment
             - enrichment_distribution
             - enrichment_null_model
+    sketch:
+        type: object
+        properties:
+            region:
+                type: array
+                items:
+                    - type: string
+                    - type: integer
+                    - type: integer
+            data_source:
+                type: string
+            window_size:
+                type: integer
 additionalProperties: false
 required:
     - workdir
