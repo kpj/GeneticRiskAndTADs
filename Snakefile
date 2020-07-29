@@ -26,7 +26,8 @@ rule all:
         expand('databases/statistics/'),
         'tads/plots/',
         'post_analysis/',
-        'publication_figures/',
+        'publication_figures/main/',
+        'publication_figures/tad_plots/',
         expand(
             'plots/{source}/{tad_parameter}/{filter}/',
             source=hic_sources,
@@ -276,10 +277,34 @@ rule publication_figures:
             source=config['sketch']['data_source'],
             tad_parameter=config['sketch']['window_size'])
     output:
-        outdir = directory('publication_figures/')
+        outdir = directory('publication_figures/main/')
     log:
         notebook = 'notebooks/PublicationFigures.ipynb'
     conda:
         'envs/python_stack.yaml'
     notebook:
         'notebooks/PublicationFigures.ipynb'
+
+
+rule supplementary_tadplots:
+    input:
+        fname_data = 'results/final_data.csv.gz',
+
+        sketch_hicfile = url_wrapper(
+            config['samples'][config['sketch']['data_source']]),
+        sketch_tadfile = 'tads/data/tads.{source}.{tad_parameter}.csv'.format(
+            source=config['sketch']['data_source'],
+            tad_parameter=config['sketch']['window_size']),
+
+        tad_fname_list = expand(
+            'tads/data/tads.{source}.{tad_parameter}.csv',
+            source=hic_sources,
+            tad_parameter=config['window_size_list'])
+    output:
+        outdir = directory('publication_figures/tad_plots')
+    log:
+        notebook = 'notebooks/Supplementaries_TADPlots.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'notebooks/Supplementaries_TADPlots.ipynb'
