@@ -161,19 +161,6 @@ rule assemble_input_databases:
         'notebooks/AssembleInputDatabases.ipynb'
 
 
-rule compute_database_statistics:
-    input:
-        fname = 'databases/initial.csv'
-    output:
-        outdir = directory('databases/statistics/')
-    log:
-        notebook = 'notebooks/DatabaseStatistics.ipynb'
-    conda:
-        'envs/python_stack.yaml'
-    notebook:
-        'notebooks/DatabaseStatistics.ipynb'
-
-
 rule include_tad_relations:
     input:
         tads_fname = 'tads/data/tads.{source}.{tad_parameter}.csv',
@@ -250,6 +237,19 @@ rule aggregate_results:
         'envs/python_stack.yaml'
     notebook:
         'notebooks/AggregateResults.ipynb'
+
+
+rule compute_database_statistics:
+    input:
+        fname = 'results/final_data.csv.gz'
+    output:
+        outdir = directory('results/database_statistics/')
+    log:
+        notebook = 'notebooks/DatabaseStatistics.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'notebooks/DatabaseStatistics.ipynb'
 
 
 rule multi_run_post_analysis:
