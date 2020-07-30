@@ -241,7 +241,11 @@ rule aggregate_results:
 
 rule compute_database_statistics:
     input:
-        fname = 'results/final_data.csv.gz'
+        fname = 'results/final_data.csv.gz',
+        tad_fname_list = expand(
+            'tads/data/tads.{source}.{tad_parameter}.csv',
+            source=hic_sources,
+            tad_parameter=config['window_size_list'])
     output:
         outdir = directory('results/database_statistics/')
     log:
