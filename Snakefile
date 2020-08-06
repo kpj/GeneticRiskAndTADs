@@ -27,7 +27,8 @@ rule all:
         'tads/plots/',
         'post_analysis/',
         'publication_figures/main/',
-        'publication_figures/tad_plots/',
+        'publication_figures/tad_plots_multidataset/',
+        'publication_figures/tad_plots_multiwindowsize/',
         expand(
             'plots/{source}/{tad_parameter}/{filter}/',
             source=hic_sources,
@@ -290,7 +291,7 @@ rule publication_figures:
         'notebooks/PublicationFigures.ipynb'
 
 
-rule supplementary_tadplots:
+rule supplementary_tadplots_multidataset:
     input:
         fname_data = 'results/final_data.csv.gz',
 
@@ -303,9 +304,37 @@ rule supplementary_tadplots:
         tad_fname_list = expand(
             'tads/data/tads.{source}.{tad_parameter}.csv',
             source=hic_sources,
+            tad_parameter=10)
+    output:
+        outdir = directory('publication_figures/tad_plots_multidataset/')
+    params:
+        multitad_plot_type = 'multidataset'
+    log:
+        notebook = 'notebooks/Supplementaries_TADPlots.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'notebooks/Supplementaries_TADPlots.ipynb'
+
+
+rule supplementary_tadplots_multiwindowsize:
+    input:
+        fname_data = 'results/final_data.csv.gz',
+
+        sketch_hicfile = url_wrapper(
+            config['samples'][config['sketch']['data_source']]),
+        sketch_tadfile = 'tads/data/tads.{source}.{tad_parameter}.csv'.format(
+            source=config['sketch']['data_source'],
+            tad_parameter=config['sketch']['window_size']),
+
+        tad_fname_list = expand(
+            'tads/data/tads.{source}.{tad_parameter}.csv',
+            source='Rao2014-IMR90-MboI-allreps-filtered-10kb',
             tad_parameter=config['window_size_list'])
     output:
-        outdir = directory('publication_figures/tad_plots')
+        outdir = directory('publication_figures/tad_plots_multiwindowsize/')
+    params:
+        multitad_plot_type = 'multiwindowsize'
     log:
         notebook = 'notebooks/Supplementaries_TADPlots.ipynb'
     conda:
