@@ -58,11 +58,14 @@ properties:
             enrichment_null_model:
                 type: string
                 enum: [base_sample, snp_sample]
+            main_dataset:
+                type: string
         required:
             - associated_gene_source
             - allow_snp_multiplicity_in_enrichment
             - enrichment_distribution
             - enrichment_null_model
+            - main_dataset
     sketch:
         type: object
         properties:
