@@ -36,7 +36,7 @@ class RangeDict(dict):
 
 
 def get_tad_lengths(row, border_range):
-    """Get TAD and boundary lengths depending on type."""
+    """Get TAD and border lengths depending on type."""
     tad_start = row.tad_start
     tad_stop = row.tad_stop
 
@@ -114,9 +114,9 @@ def parse_tad_annotations(border_range, fname):
             chrom = chrom[3:]
 
         # store range-associations
-        res[chrom][rb1] = 'boundary'
+        res[chrom][rb1] = 'border'
         res[chrom][rt] = 'tad'
-        res[chrom][rb2] = 'boundary'
+        res[chrom][rb2] = 'border'
 
     if error_counter:
         print('TAD errors:')
