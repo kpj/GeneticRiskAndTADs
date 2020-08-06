@@ -33,6 +33,7 @@ parameters:
     allow_snp_multiplicity_in_enrichment: false
     enrichment_distribution: binom
     enrichment_null_model: base_sample
+    main_dataset: dummy_name
 
 sketch:
     region: ['chr22', 16000000, 51300000]
