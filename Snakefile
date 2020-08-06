@@ -23,8 +23,8 @@ rule all:
         expand(
             'hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
             source=hic_sources, chromosome=config['chromosome_list']),
-        expand('databases/statistics/'),
         'tads/plots/',
+        'results/database_statistics/',
         'post_analysis/',
         'publication_figures/main/',
         'publication_figures/tad_plots_multidataset/',
