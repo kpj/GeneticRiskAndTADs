@@ -329,7 +329,7 @@ rule supplementary_tadplots_multiwindowsize:
 
         tad_fname_list = expand(
             'tads/data/tads.{source}.{tad_parameter}.csv',
-            source='Rao2014-IMR90-MboI-allreps-filtered-10kb',
+            source=config['parameters']['main_dataset'],
             tad_parameter=config['window_size_list'])
     output:
         outdir = directory('publication_figures/tad_plots_multiwindowsize/')
