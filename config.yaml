@@ -51,6 +51,6 @@ parameters:
     main_dataset: Rao2014-IMR90-MboI-allreps-filtered-10kb
 
 sketch:
-    region: ['chr11', 123040000, 1123760000]
+    region: ['chr11', 123050000, 123550000]
     data_source: Rao2014-IMR90-MboI-allreps-filtered-10kb
     window_size: 10
