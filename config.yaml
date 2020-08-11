@@ -38,7 +38,7 @@ input_files:
     gwascatalog: 'ftp://ftp.ebi.ac.uk/pub/databases/gwas/releases/latest/gwas-catalog-associations_ontology-annotated.tsv'
     disease_ontology: 'https://github.com/DiseaseOntology/HumanDiseaseOntology/raw/master/src/ontology/doid.owl'
     exp_factor_ontology: 'http://www.ebi.ac.uk/efo/efo.owl'
-    sequence_ontology: 'https://github.com/The-Sequence-Ontology/SO-Ontologies/raw/master/so.owl'
+    sequence_ontology: 'https://github.com/The-Sequence-Ontology/SO-Ontologies/raw/master/Ontology_Files/so.owl'
 
 annotation_sources:
     hg19: 'grch37.ensembl.org'
