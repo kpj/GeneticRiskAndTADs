@@ -51,6 +51,8 @@ rule extract_count_matrices:
         fname_matrix = 'hic_files/counts/{source}/{chromosome}/matrix.csv'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 30_000
     script:
         'scripts/extract_count_matrices.py'
 
@@ -78,6 +80,8 @@ rule visualize_count_matrix:
         notebook = 'notebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 20_000
     notebook:
         'notebooks/VisualizeContactMatrix.ipynb'
 
@@ -94,6 +98,8 @@ rule compute_tads:
         prefix = 'tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 30_000
     script:
         'scripts/compute_tads.py'
 
@@ -236,6 +242,8 @@ rule aggregate_results:
         notebook = 'notebooks/AggregateResults.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 15_000
     notebook:
         'notebooks/AggregateResults.ipynb'
 
@@ -267,6 +275,8 @@ rule multi_run_post_analysis:
         notebook = 'notebooks/MultiRunPostAnalysis.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 15_000
     notebook:
         'notebooks/MultiRunPostAnalysis.ipynb'
 
@@ -287,6 +297,8 @@ rule publication_figures:
         notebook = 'notebooks/PublicationFigures.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 15_000
     notebook:
         'notebooks/PublicationFigures.ipynb'
 
