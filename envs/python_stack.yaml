@@ -27,6 +27,9 @@ dependencies:
     - natsort
     - statsmodels
     - cooler
+    - statannot
+    - adjustText
+    - dna_features_viewer
 
     - ftputil
 
