@@ -52,7 +52,7 @@ rule extract_count_matrices:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 30_000
+        mem_mb = 10_000
     script:
         'scripts/extract_count_matrices.py'
 
@@ -164,6 +164,8 @@ rule assemble_input_databases:
         notebook = 'notebooks/AssembleInputDatabases.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 3_000
     notebook:
         'notebooks/AssembleInputDatabases.ipynb'
 
@@ -325,6 +327,8 @@ rule supplementary_tadplots_multidataset:
         notebook = 'notebooks/Supplementaries_TADPlots.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 15_000
     notebook:
         'notebooks/Supplementaries_TADPlots.ipynb'
 
@@ -351,5 +355,7 @@ rule supplementary_tadplots_multiwindowsize:
         notebook = 'notebooks/Supplementaries_TADPlots.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 15_000
     notebook:
         'notebooks/Supplementaries_TADPlots.ipynb'
