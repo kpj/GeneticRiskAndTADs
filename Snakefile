@@ -13,7 +13,7 @@ hic_sources = config['samples'].keys()
 wildcard_constraints:
     tad_parameter = r'\d+'  # contains window size which must be an integer
 
-localrules: all, gather_input_information, aggregate_tads, provide_input_files, compute_database_statistics, include_tad_relations, compute_enrichments, create_figures, create_report
+localrules: all, gather_input_information, aggregate_tads, provide_input_files, include_tad_relations, compute_enrichments, create_figures, create_report
 
 
 # rule definitions
@@ -263,6 +263,8 @@ rule compute_database_statistics:
         notebook = 'notebooks/DatabaseStatistics.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 15_000
     notebook:
         'notebooks/DatabaseStatistics.ipynb'
 
