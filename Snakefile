@@ -245,7 +245,7 @@ rule aggregate_results:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 15_000
+        mem_mb = lambda wildcards, attempt: attempt * 10_000
     notebook:
         'notebooks/AggregateResults.ipynb'
 
@@ -264,7 +264,7 @@ rule compute_database_statistics:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 15_000
+        mem_mb = lambda wildcards, attempt: attempt * 10_000
     notebook:
         'notebooks/DatabaseStatistics.ipynb'
 
@@ -280,7 +280,7 @@ rule multi_run_post_analysis:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 15_000
+        mem_mb = lambda wildcards, attempt: attempt * 10_000
     notebook:
         'notebooks/MultiRunPostAnalysis.ipynb'
 
@@ -302,7 +302,7 @@ rule publication_figures:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 15_000
+        mem_mb = lambda wildcards, attempt: attempt * 10_000
     notebook:
         'notebooks/PublicationFigures.ipynb'
 
@@ -330,7 +330,7 @@ rule supplementary_tadplots_multidataset:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 15_000
+        mem_mb = lambda wildcards, attempt: attempt * 10_000
     notebook:
         'notebooks/Supplementaries_TADPlots.ipynb'
 
@@ -358,6 +358,6 @@ rule supplementary_tadplots_multiwindowsize:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb = 15_000
+        mem_mb = lambda wildcards, attempt: attempt * 10_000
     notebook:
         'notebooks/Supplementaries_TADPlots.ipynb'
