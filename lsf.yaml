@@ -1,0 +1,2 @@
+compare_tad_lists:
+    - "-W 23:00"

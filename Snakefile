@@ -130,6 +130,8 @@ rule compare_tad_lists:
         notebook = 'notebooks/TADListComparison.ipynb'
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb = 4_000
     notebook:
         'notebooks/TADListComparison.ipynb'
 
