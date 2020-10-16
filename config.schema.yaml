@@ -60,12 +60,15 @@ properties:
                 enum: [base_sample, snp_sample]
             main_dataset:
                 type: string
+            snp_majority_vote_border_fraction_threshold:
+                type: number
         required:
             - associated_gene_source
             - allow_snp_multiplicity_in_enrichment
             - enrichment_distribution
             - enrichment_null_model
             - main_dataset
+            - snp_majority_vote_border_fraction_threshold
     sketch:
         type: object
         properties:

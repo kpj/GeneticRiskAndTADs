@@ -15,6 +15,11 @@ wildcard_constraints:
 
 localrules: all, gather_input_information, aggregate_tads, provide_input_files, include_tad_relations, compute_enrichments, create_figures, create_report
 
+actual_window_size_list = list(set(config['window_size_list']) - {0})  # remove majority vote for rules which need actual TADs
+
+ruleorder: snp_majority_vote > aggregate_tads
+ruleorder: snp_majority_vote > include_tad_relations
+
 
 # rule definitions
 rule all:
@@ -107,8 +112,9 @@ rule compute_tads:
 rule aggregate_tads:
     input:
         fname_list = expand(
-            'tads/data/{{source}}/{{tad_parameter}}/tads.chr{chromosome}.csv',
-            chromosome=config['chromosome_list'])
+            'tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv',
+            chromosome=config['chromosome_list'],
+            allow_missing=True)
     output:
         fname = 'tads/data/tads.{source}.{tad_parameter}.csv'
     conda:
@@ -122,7 +128,7 @@ rule compare_tad_lists:
         tad_fname_list = expand(
             'tads/data/tads.{source}.{tad_parameter}.csv',
             source=hic_sources,
-            tad_parameter=config['window_size_list'])
+            tad_parameter=actual_window_size_list)
     output:
         tad_similarity_cache = 'tads/statistics/tad_similarities.csv',
         outdir = directory('tads/plots/')
@@ -186,6 +192,23 @@ rule include_tad_relations:
         'envs/python_stack.yaml'
     notebook:
         'notebooks/IncludeTADRelations.ipynb'
+
+
+rule snp_majority_vote:
+    input:
+        fname_list = expand(
+            'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+            tad_parameter=actual_window_size_list,
+            allow_missing=True)
+    output:
+        fname = 'databases/per_source/snpdb.{source}.0.csv',
+        fname_tads = 'tads/data/tads.{source}.0.csv',  # empty dummy
+    log:
+        notebook = 'notebooks/SNPMajorityVote.{source}.0.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'notebooks/SNPMajorityVote.ipynb'
 
 
 rule compute_enrichments:
@@ -258,7 +281,7 @@ rule compute_database_statistics:
         tad_fname_list = expand(
             'tads/data/tads.{source}.{tad_parameter}.csv',
             source=hic_sources,
-            tad_parameter=config['window_size_list'])
+            tad_parameter=actual_window_size_list)
     output:
         outdir = directory('results/database_statistics/')
     log:
@@ -350,7 +373,7 @@ rule supplementary_tadplots_multiwindowsize:
         tad_fname_list = expand(
             'tads/data/tads.{source}.{tad_parameter}.csv',
             source=config['parameters']['main_dataset'],
-            tad_parameter=config['window_size_list'])
+            tad_parameter=actual_window_size_list)
     output:
         outdir = directory('publication_figures/tad_plots_multiwindowsize/')
     params:

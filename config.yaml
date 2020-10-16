@@ -18,7 +18,7 @@ samples:
     Selvaraj2013-GM12878-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Selvaraj2013-GM12878-HindIII-allreps-filtered.10kb.cool
 
 chromosome_list: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y']
-window_size_list: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+window_size_list: [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
 tad_borders:  # format: [in-distance, out-distance] relative to (both) TAD ends
     10in: [10000, 0]
@@ -50,6 +50,7 @@ parameters:
     enrichment_distribution: hypergeom  # 'binom', 'hypergeom'
     enrichment_null_model: snp_sample  # 'base_sample', 'snp_sample'
     main_dataset: Rao2014-IMR90-MboI-allreps-filtered-10kb
+    snp_majority_vote_border_fraction_threshold: 0.3
 
 sketch:
     region: ['chr11', 123050000, 123550000]
