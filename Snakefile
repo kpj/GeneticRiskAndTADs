@@ -130,7 +130,6 @@ rule compare_tad_lists:
             source=hic_sources,
             tad_parameter=actual_window_size_list)
     output:
-        tad_similarity_cache = 'tads/statistics/tad_similarities.csv',
         outdir = directory('tads/plots/')
     log:
         notebook = 'notebooks/TADListComparison.ipynb'
