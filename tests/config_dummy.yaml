@@ -4,7 +4,7 @@ samples:
     dummy_name: './tests/data/dummy_hic/dummy.cool'
 
 chromosome_list: ['22']
-window_size_list: [0, 9, 10, 11]
+window_size_list: [0,1, 9, 10, 11]
 
 tad_borders:
     5in: [5000, 0]

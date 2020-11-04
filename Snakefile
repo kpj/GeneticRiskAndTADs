@@ -15,10 +15,12 @@ wildcard_constraints:
 
 localrules: all, gather_input_information, aggregate_tads, provide_input_files, include_tad_relations, compute_enrichments, create_figures, create_report
 
-actual_window_size_list = list(set(config['window_size_list']) - {0})  # remove majority vote for rules which need actual TADs
+actual_window_size_list = list(set(config['window_size_list']) - {0,1})  # remove majority vote for rules which need actual TADs
 
 ruleorder: snp_majority_vote > aggregate_tads
 ruleorder: snp_majority_vote > include_tad_relations
+ruleorder: snp_majority_vote_narrow > aggregate_tads
+ruleorder: snp_majority_vote_narrow > include_tad_relations
 
 
 # rule definitions
@@ -202,8 +204,31 @@ rule snp_majority_vote:
     output:
         fname = 'databases/per_source/snpdb.{source}.0.csv',
         fname_tads = 'tads/data/tads.{source}.0.csv',  # empty dummy
+    params:
+        tad_parameter_range = None,
+        border_fraction_threshold = config['parameters']['snp_majority_vote_border_fraction_threshold']
     log:
         notebook = 'notebooks/SNPMajorityVote.{source}.0.ipynb'
+    conda:
+        'envs/python_stack.yaml'
+    notebook:
+        'notebooks/SNPMajorityVote.ipynb'
+
+
+rule snp_majority_vote_narrow:
+    input:
+        fname_list = expand(
+            'databases/per_source/snpdb.{source}.{tad_parameter}.csv',
+            tad_parameter=actual_window_size_list,
+            allow_missing=True)
+    output:
+        fname = 'databases/per_source/snpdb.{source}.1.csv',
+        fname_tads = 'tads/data/tads.{source}.1.csv',  # empty dummy
+    params:
+        tad_parameter_range = [9, 10, 11, 12, 13],
+        border_fraction_threshold = 0.5
+    log:
+        notebook = 'notebooks/SNPMajorityVote.{source}.1.ipynb'
     conda:
         'envs/python_stack.yaml'
     notebook:
