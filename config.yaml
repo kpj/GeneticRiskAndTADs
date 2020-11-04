@@ -25,6 +25,9 @@ tad_borders:  # format: [in-distance, out-distance] relative to (both) TAD ends
     20in: [20000, 0]
     50in: [50000, 0]
     100in: [100000, 0]
+    150in: [150000, 0]
+    200in: [200000, 0]
+    300in: [300000, 0]
 
 snp_filters:
     nofilter: null
