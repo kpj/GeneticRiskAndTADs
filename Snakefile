@@ -2,7 +2,11 @@ from snakemake.utils import validate
 
 
 # setup
-configfile: 'config.yaml'
+if 'configfile' in config:
+    # user specified different config file via '--config configfile=path'
+    configfile: config['configfile']
+else:
+    configfile: 'config.yaml'
 validate(config, 'config.schema.yaml')
 
 workdir: config['workdir']
