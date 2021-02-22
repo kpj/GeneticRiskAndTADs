@@ -54,6 +54,10 @@ parameters:
     enrichment_null_model: snp_sample  # 'base_sample', 'snp_sample'
     main_dataset: Rao2014-IMR90-MboI-allreps-filtered-10kb
     snp_majority_vote_border_fraction_threshold: 0.3
+    window_aggregation:
+        disease_fraction_threshold: 0.5
+        window_size_list: null
+        snp_count_threshold_list: [0, 2, 5, 7, 10, 15, 20, 30, 40, 50]
 
 sketch:
     region: ['chr11', 123050000, 123550000]

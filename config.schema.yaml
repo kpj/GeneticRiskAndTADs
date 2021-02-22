@@ -62,6 +62,17 @@ properties:
                 type: string
             snp_majority_vote_border_fraction_threshold:
                 type: number
+            window_aggregation:
+                type: object
+                properties:
+                    disease_fraction_threshold:
+                        type: number
+                    window_size_list:
+                        type: [array, "null"]
+                        uniqueItems: true
+                    snp_count_threshold_list:
+                        type: array
+                        uniqueItems: true
         required:
             - associated_gene_source
             - allow_snp_multiplicity_in_enrichment
@@ -69,6 +80,7 @@ properties:
             - enrichment_null_model
             - main_dataset
             - snp_majority_vote_border_fraction_threshold
+            - window_aggregation
     sketch:
         type: object
         properties:
