@@ -4,7 +4,7 @@ samples:
     dummy_name: './tests/data/dummy_hic/dummy.cool'
 
 chromosome_list: ['22']
-window_size_list: [0,1, 9, 10, 11]
+window_size_list: [0, 1, 9, 10, 11]
 
 tad_borders:
     5in: [5000, 0]
@@ -25,7 +25,7 @@ input_files:
     sequence_ontology: 'tests/data/dummy_so.owl'
 
 annotation_sources:
-    hg19: '../data/snp_annotations.csv' # ".." because of workdir
+    hg19: '../data/snp_annotations.csv'  # ".." because of workdir
     hg38: '../data/snp_annotations.csv'
 
 parameters:
@@ -35,6 +35,10 @@ parameters:
     enrichment_null_model: base_sample
     main_dataset: dummy_name
     snp_majority_vote_border_fraction_threshold: 0.3
+    window_aggregation:
+        disease_fraction_threshold: 0.5
+        window_size_list: [0, 9, 10]
+        snp_count_threshold_list: [2, 5]
 
 sketch:
     region: ['chr22', 16000000, 51300000]
