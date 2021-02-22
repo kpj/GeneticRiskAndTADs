@@ -14,7 +14,7 @@ def handle_file_format(source_url, target_url):
 
         if target_suffix == '.gz':
             # remove suffix
-            new_fname = target_url.parent / target_url.name[:-len('.gz')]
+            new_fname = target_url.parent / target_url.name[: -len('.gz')]
             target_url.rename(new_fname)
 
             # gzip
@@ -28,8 +28,8 @@ def handle_file_format(source_url, target_url):
             sh.gunzip(new_fname)
         else:
             raise RuntimeError(
-                'Unsupported suffixes: '
-                f'"{source_suffix}", "{target_suffix}"')
+                'Unsupported suffixes: ' f'"{source_suffix}", "{target_suffix}"'
+            )
 
 
 def main(fname_pair_list):

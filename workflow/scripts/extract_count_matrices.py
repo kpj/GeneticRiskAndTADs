@@ -15,9 +15,7 @@ def make_axis_regular(df_piv, bin_size, axis, sort=True):
     assert axis in (0, 1), axis
 
     # get values of axis
-    axis_values = (df_piv.index
-                   if axis == 0
-                   else df_piv.columns)
+    axis_values = df_piv.index if axis == 0 else df_piv.columns
 
     # regularize
     idx_missing = np.where(np.diff(axis_values) != bin_size)[0]
@@ -25,25 +23,23 @@ def make_axis_regular(df_piv, bin_size, axis, sort=True):
     new_indices = []
     for idx in idx_missing:
         start = axis_values[idx]
-        end = axis_values[idx+1]
+        end = axis_values[idx + 1]
         new_indices.extend(np.arange(start + bin_size, end, bin_size))
 
     if axis == 0:
-        df_out = pd.concat([
-            df_piv,
-            pd.DataFrame(data=0, index=new_indices, columns=df_piv.columns)
-        ], axis=0)
+        df_out = pd.concat(
+            [df_piv, pd.DataFrame(data=0, index=new_indices, columns=df_piv.columns)],
+            axis=0,
+        )
     elif axis == 1:
-        df_out = pd.concat([
-            df_piv,
-            pd.DataFrame(data=0, index=df_piv.index, columns=new_indices)
-        ], axis=1)
+        df_out = pd.concat(
+            [df_piv, pd.DataFrame(data=0, index=df_piv.index, columns=new_indices)],
+            axis=1,
+        )
 
     if sort:
         # sort dataframe because new indices are added to the end
-        return (df_out.sort_index()
-                if axis == 0
-                else df_out.T.sort_index().T)
+        return df_out.sort_index() if axis == 0 else df_out.T.sort_index().T
     else:
         # must be sorted later
         return df_out
@@ -52,23 +48,35 @@ def make_axis_regular(df_piv, bin_size, axis, sort=True):
 def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False):
     bin_size = 10_000
 
-    juicer_exec = Path(snakemake.scriptdir) / '..' / snakemake.config['tool_paths']['juicer_tools']
+    juicer_exec = (
+        Path(snakemake.scriptdir)
+        / '..'
+        / snakemake.config['tool_paths']['juicer_tools']
+    )
 
     # hic -> list
     print('Hi-C -> list')
     sh.java(
-        '-jar', juicer_exec,
-        'dump', 'observed', 'NONE',
+        '-jar',
+        juicer_exec,
+        'dump',
+        'observed',
+        'NONE',
         fname_in,
-        chrom, chrom, 'BP', bin_size,
+        chrom,
+        chrom,
+        'BP',
+        bin_size,
         fname_juicer,
-        _out=sys.stdout, _err=sys.stderr)
+        _out=sys.stdout,
+        _err=sys.stderr,
+    )
 
     # list -> matrix
     print('list -> matrix')
     df = pd.read_csv(
-        fname_juicer, sep='\t',
-        header=None, names=['start', 'end', 'value'])
+        fname_juicer, sep='\t', header=None, names=['start', 'end', 'value']
+    )
 
     df_piv = pd.pivot(df, index='start', columns='end')
 
@@ -110,7 +118,8 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
     mat[i_lower] = mat.T[i_lower]
 
     df_final = pd.DataFrame(
-        np.nan_to_num(mat), index=df_piv.index, columns=df_piv.columns)
+        np.nan_to_num(mat), index=df_piv.index, columns=df_piv.columns
+    )
 
     # pad with zeros
     start_coord = df_final.index[0]
@@ -118,17 +127,13 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
         print('Pad with zeros')
         extra_coords = np.arange(0, start_coord, bin_size)
 
-        empty_counts_tl = np.zeros(
-            shape=(len(extra_coords), len(extra_coords)))
-        empty_counts_tr = np.zeros(
-            shape=(len(extra_coords), df_final.shape[1]))
-        empty_counts_bl = np.zeros(
-            shape=(df_final.shape[0], len(extra_coords)))
+        empty_counts_tl = np.zeros(shape=(len(extra_coords), len(extra_coords)))
+        empty_counts_tr = np.zeros(shape=(len(extra_coords), df_final.shape[1]))
+        empty_counts_bl = np.zeros(shape=(df_final.shape[0], len(extra_coords)))
 
-        new_values = np.block([
-            [empty_counts_tl, empty_counts_tr],
-            [empty_counts_bl, df_final.values]
-        ]).astype(int)
+        new_values = np.block(
+            [[empty_counts_tl, empty_counts_tr], [empty_counts_bl, df_final.values]]
+        ).astype(int)
         new_index = np.r_[extra_coords, df_final.index]
 
         tmp = pd.DataFrame(new_values, index=new_index, columns=new_index)
@@ -158,4 +163,5 @@ if __name__ == '__main__':
     extract_cool(
         snakemake.input.fname,
         snakemake.output.fname_matrix,
-        f'chr{snakemake.wildcards.chromosome}')
+        f'chr{snakemake.wildcards.chromosome}',
+    )

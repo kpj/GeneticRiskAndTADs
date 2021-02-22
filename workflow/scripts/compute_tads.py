@@ -18,9 +18,7 @@ def main():
     df_count.insert(1, 'td_start', df_count.index)
     df_count.insert(2, 'td_end', df_count.index + bin_size)
 
-    df_count.to_csv(
-        snakemake.output.topdom_input, sep='\t',
-        index=False, header=False)
+    df_count.to_csv(snakemake.output.topdom_input, sep='\t', index=False, header=False)
 
     # run TopDom
     print('Run TopDom')
@@ -29,13 +27,17 @@ def main():
     """.format(
         input=snakemake.output.topdom_input,
         window_size=snakemake.wildcards.tad_parameter,
-        output=snakemake.params.prefix)
+        output=snakemake.params.prefix,
+    )
     sh.Rscript('-e', cmd, _fg=True)
 
     # extract TADs
     df_topdom = pd.read_csv(
-        snakemake.output.topdom_output, sep='\t',
-        header=None, names=['chrname', 'tad_start', 'tad_stop', 'type'])
+        snakemake.output.topdom_output,
+        sep='\t',
+        header=None,
+        names=['chrname', 'tad_start', 'tad_stop', 'type'],
+    )
 
     df_topdom = df_topdom[df_topdom['type'] == 'domain']
 
