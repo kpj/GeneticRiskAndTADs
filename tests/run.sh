@@ -3,7 +3,6 @@
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # setup environment
-rm -rf pipeline_test
 cd ..
 
 # plot pipeline overview(s)

@@ -1,5 +1,3 @@
-workdir: './pipeline_run/'
-
 samples:
     Dixon2012-H1hESC-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2012-H1hESC-HindIII-allreps-filtered.10kb.cool
     Dixon2012-IMR90-HindIII-allreps-filtered-10kb: ftp://cooler.csail.mit.edu/coolers/hg19/Dixon2012-IMR90-HindIII-allreps-filtered.10kb.cool

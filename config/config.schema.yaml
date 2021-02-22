@@ -3,8 +3,6 @@ $schema: "http://json-schema.org/draft-06/schema#"
 properties:
     configfile:
         type: string
-    workdir:
-        type: string
     samples:
         type: object
     chromosome_list:
@@ -98,7 +96,6 @@ properties:
                 type: integer
 additionalProperties: false
 required:
-    - workdir
     - samples
     - chromosome_list
     - window_size_list

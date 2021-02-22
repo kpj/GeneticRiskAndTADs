@@ -1,7 +1,5 @@
-workdir: './tests/pipeline_test/'
-
 samples:
-    dummy_name: './tests/data/dummy_hic/dummy.cool'
+    dummy_name: 'tests/data/dummy_hic/dummy.cool'
 
 chromosome_list: ['22']
 window_size_list: [0, 1, 9, 10, 11]
@@ -25,8 +23,8 @@ input_files:
     sequence_ontology: 'tests/data/dummy_so.owl'
 
 annotation_sources:
-    hg19: '../data/snp_annotations.csv'  # ".." because of workdir
-    hg38: '../data/snp_annotations.csv'
+    hg19: 'tests/data/snp_annotations.csv'
+    hg38: 'tests/data/snp_annotations.csv'
 
 parameters:
     associated_gene_source: mapped

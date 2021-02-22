@@ -1,4 +1,5 @@
 import os
+import sys
 from urllib.parse import urlparse
 
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
@@ -21,4 +22,8 @@ def url_wrapper(url, remote_kwargs={'keep_local': True}):
         elif o.scheme == 'ftp':
             return FTP.remote(url, **remote_kwargs)
         else:
-            raise RuntimeError(f'Invalid url: "{url}"')
+            print(
+                f'Invalid url "{url}", returning input without transformation',
+                file=sys.stderr
+            )
+            return url
