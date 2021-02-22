@@ -7,7 +7,7 @@ A Snakemake workflow for the investigation of disease-associated SNP enrichments
 
 Run pipeline as follows:
 ```bash
-$ snakemake -pr --use-conda
+$ snakemake -pr -j 1 --use-conda
 ```
 
 
