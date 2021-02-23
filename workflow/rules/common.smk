@@ -9,8 +9,12 @@ HTTP = HTTPRemoteProvider()
 FTP = FTPRemoteProvider()
 
 
-def url_wrapper(url, remote_kwargs={'keep_local': True}):
-    src_url = os.path.join(workflow.basedir, url)
+def url_wrapper(url, remote_kwargs={'keep_local': True}, use_basedir=False):
+    if use_basedir:
+        src_url = os.path.join(workflow.basedir, url)
+    else:
+        src_url = url
+
     if src_url is not None and os.path.isfile(src_url):
         # is local
         return src_url
@@ -24,6 +28,6 @@ def url_wrapper(url, remote_kwargs={'keep_local': True}):
         else:
             print(
                 f'Invalid url "{url}", returning input without transformation',
-                file=sys.stderr
+                file=sys.stderr,
             )
             return url
