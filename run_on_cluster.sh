@@ -1,7 +1,7 @@
 bsub \
   -N \
   -R 'rusage[mem=2000]' \
-  -q normal.24h \
+  -W 100:00 \
   -oo snake.out -eo snake.err \
 snakemake \
   --profile lsf \

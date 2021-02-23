@@ -1,2 +1,4 @@
 compare_tad_lists:
     - "-W 23:00"
+publication_figures:
+    - "-W 23:00"
