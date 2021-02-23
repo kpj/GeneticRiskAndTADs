@@ -34,10 +34,11 @@ dependencies:
     - cooler
     - statannot
     - adjustText
-    - zstandard
     - dna_features_viewer
 
     - ftputil
+    - requests
+    - zstandard
 
     - jupyter
     - jupyter_contrib_nbextensions
