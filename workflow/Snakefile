@@ -176,8 +176,8 @@ rule provide_input_files:
         efo_fname=url_wrapper(config['input_files']['exp_factor_ontology']),
         so_fname=url_wrapper(config['input_files']['sequence_ontology']),
     output:
-        disgenet_fname='results/input/disgenet.tsv.gz',
-        gwascatalog_fname='results/input/gwas_catalog.tsv.gz',
+        disgenet_fname='results/input/disgenet.tsv',
+        gwascatalog_fname='results/input/gwas_catalog.tsv',
         efo_fname='results/input/efo.owl',
         so_fname='results/input/so.owl',
     conda:
@@ -188,8 +188,8 @@ rule provide_input_files:
 
 rule assemble_input_databases:
     input:
-        disgenet_fname='results/input/disgenet.tsv.gz',
-        gwascatalog_fname='results/input/gwas_catalog.tsv.gz',
+        disgenet_fname='results/input/disgenet.tsv',
+        gwascatalog_fname='results/input/gwas_catalog.tsv',
         efo_fname='results/input/efo.owl',
         so_fname='results/input/so.owl',
     output:

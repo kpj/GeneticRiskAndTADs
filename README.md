@@ -22,4 +22,8 @@ $ ./tests/run.sh
 # Data sources
 
 * Hi-C data: ftp://cooler.csail.mit.edu/coolers/hg19/
-* More data sources can be found in `config/config.yaml`
+* [GWAS Catalog](https://www.ebi.ac.uk/gwas/home): `v1.0.2-associations_e100_r2021-02-10`
+* [DisGeNET](https://www.disgenet.org/): `DisGeNET 2020 - v7.0`
+* [HumanDiseaseOntology](https://disease-ontology.org/): `r2021-01-28`
+* [Experimental Factor Ontology](https://www.ebi.ac.uk/efo/): `v3.27.0`
+* [SequenceOntology](http://www.sequenceontology.org/): `v3.1`

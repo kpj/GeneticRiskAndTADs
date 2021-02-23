@@ -35,15 +35,15 @@ snp_filters:
     nonexonic: 'variant_group_{genome_assembly} != "exonic"'
 
 input_files:
-    disgenet: 'https://www.disgenet.org/static/disgenet_ap1/files/downloads/curated_variant_disease_associations.tsv.gz'
-    gwascatalog: 'ftp://ftp.ebi.ac.uk/pub/databases/gwas/releases/latest/gwas-catalog-associations_ontology-annotated.tsv'
-    disease_ontology: 'https://github.com/DiseaseOntology/HumanDiseaseOntology/raw/master/src/ontology/doid.owl'
-    exp_factor_ontology: 'http://www.ebi.ac.uk/efo/efo.owl'
-    sequence_ontology: 'https://github.com/The-Sequence-Ontology/SO-Ontologies/raw/master/Ontology_Files/so.owl'
+    disgenet: 'resources/curated_variant_disease_associations.tsv.zst'
+    gwascatalog: 'resources/gwas_catalog_v1.0.2-associations_e100_r2021-02-10.tsv.zst'
+    disease_ontology: 'resources/doid.owl.zst'
+    exp_factor_ontology: 'resources/efo.owl.zst'
+    sequence_ontology: 'resources/so.owl.zst'
 
 annotation_sources:
-    hg19: 'grch37.ensembl.org'
-    hg38: 'www.ensembl.org'
+    hg19: 'resources/vep_cache_hg19.csv.zst'
+    hg38: 'resources/vep_cache_hg38.csv.zst'
 
 parameters:
     associated_gene_source: mapped  # 'reported', 'mapped'

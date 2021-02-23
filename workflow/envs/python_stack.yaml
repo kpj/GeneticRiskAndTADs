@@ -1,8 +1,13 @@
 name: python_stack
 channels:
-  - defaults
   - conda-forge
+  - bioconda
+  - defaults
 dependencies:
+  # misc dependencies
+  - zstd
+
+  # Python stuff
   - python==3.7
   - pip
 
@@ -29,6 +34,7 @@ dependencies:
     - cooler
     - statannot
     - adjustText
+    - zstandard
     - dna_features_viewer
 
     - ftputil
