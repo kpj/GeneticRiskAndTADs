@@ -39,6 +39,7 @@ dependencies:
     - ftputil
     - requests
     - zstandard
+    - simplejson
 
     - jupyter
     - jupyter_contrib_nbextensions
