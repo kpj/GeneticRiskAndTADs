@@ -11,5 +11,6 @@ snakemake \
   --cores 100 \
   --local-cores 1 \
   --latency-wait 30 \
+  --keep-going \
   --show-failed-logs \
   "$@"
