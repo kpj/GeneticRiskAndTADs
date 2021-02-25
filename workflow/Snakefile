@@ -108,7 +108,7 @@ rule visualize_count_matrix:
     conda:
         'envs/python_stack.yaml'
     resources:
-        mem_mb=20_000,
+        mem_mb=lambda wildcards, attempt: attempt * 20_000,
     notebook:
         'notebooks/VisualizeContactMatrix.ipynb'
 
