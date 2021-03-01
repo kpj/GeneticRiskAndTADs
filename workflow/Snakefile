@@ -42,12 +42,12 @@ ruleorder: snp_majority_vote_narrow > include_tad_relations
 rule all:
     input:
         'results/results/final_enr.csv.gz',
-        expand(
-            'results/hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
-            source=hic_sources,
-            chromosome=config['chromosome_list'],
-        ),
-        'results/tads/plots/',
+        # expand(
+        #     'results/hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
+        #     source=hic_sources,
+        #     chromosome=config['chromosome_list'],
+        # ),
+        # 'results/tads/plots/',
         'results/results/database_statistics/',
         'results/post_analysis/',
         'results/publication_figures/main/',
