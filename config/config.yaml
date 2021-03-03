@@ -49,7 +49,7 @@ parameters:
     associated_gene_source: mapped  # 'reported', 'mapped'
     allow_snp_multiplicity_in_enrichment: false
     enrichment_distribution: hypergeom  # 'binom', 'hypergeom'
-    enrichment_null_model: snp_sample  # 'base_sample', 'snp_sample'
+    enrichment_null_model: base_sample  # 'base_sample', 'snp_sample'
     main_dataset: Rao2014-IMR90-MboI-allreps-filtered-10kb
     snp_majority_vote_border_fraction_threshold: 0.3
     window_aggregation:
