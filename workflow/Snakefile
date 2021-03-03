@@ -53,12 +53,12 @@ rule all:
         'results/publication_figures/main/',
         'results/publication_figures/tad_plots_multidataset/',
         'results/publication_figures/tad_plots_multiwindowsize/',
-        expand(
-            'results/plots/{source}/{tad_parameter}/{filter}/',
-            source=hic_sources,
-            tad_parameter=config['window_size_list'],
-            filter=config['snp_filters'].keys(),
-        ),
+        # expand(
+        #     'results/plots/{source}/{tad_parameter}/{filter}/',
+        #     source=hic_sources,
+        #     tad_parameter=config['window_size_list'],
+        #     filter=config['snp_filters'].keys(),
+        # ),
         # expand(
         #     'results/reports/report.{source}.{tad_parameter}.{filter}.pdf',
         #     source=hic_sources,
