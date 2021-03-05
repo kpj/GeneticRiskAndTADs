@@ -242,6 +242,8 @@ rule snp_majority_vote:
         notebook='results/notebooks/SNPMajorityVote.{source}.0.ipynb',
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb=3_000,
     notebook:
         'notebooks/SNPMajorityVote.ipynb'
 
@@ -263,6 +265,8 @@ rule snp_majority_vote_narrow:
         notebook='results/notebooks/SNPMajorityVote.{source}.1.ipynb',
     conda:
         'envs/python_stack.yaml'
+    resources:
+        mem_mb=3_000,
     notebook:
         'notebooks/SNPMajorityVote.ipynb'
 
