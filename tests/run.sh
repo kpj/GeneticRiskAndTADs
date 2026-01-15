@@ -11,4 +11,4 @@ for graph_type in dag rulegraph filegraph; do
 done
 
 # execute pipeline
-snakemake -pr --config configfile="tests/config_dummy.yaml" -j 1 --use-conda "$@"
+snakemake -p --config configfile="tests/config_dummy.yaml" -j 1 --software-deployment-method conda "$@"

@@ -1,4 +1,6 @@
-$schema: "http://json-schema.org/draft-06/schema#"
+$schema: "https://json-schema.org/draft/2020-12/schema"
+
+type: object
 
 properties:
     configfile:
@@ -8,17 +10,21 @@ properties:
     chromosome_list:
         type: array
         uniqueItems: true
+        items:
+            type: string
     window_size_list:
         type: array
         uniqueItems: true
+        items:
+            type: integer
     tad_borders:
         type: object
         additionalProperties:
             type: array
-            items:
+            prefixItems:
                 - type: integer
                 - type: integer
-            additionalItems: false
+            unevaluatedItems: false
     snp_filters:
         type: object
     input_files:
@@ -68,11 +74,18 @@ properties:
                     disease_fraction_threshold:
                         type: number
                     window_size_list:
-                        type: [array, "null"]
+                        type: ["array", "null"]
                         uniqueItems: true
+                        items:
+                            type: integer
                     snp_count_threshold_list:
                         type: array
                         uniqueItems: true
+                        items:
+                            type: integer
+                required:
+                    - disease_fraction_threshold
+                    - snp_count_threshold_list
         required:
             - associated_gene_source
             - allow_snp_multiplicity_in_enrichment
@@ -86,10 +99,11 @@ properties:
         properties:
             region:
                 type: array
-                items:
+                prefixItems:
                     - type: string
                     - type: integer
                     - type: integer
+                unevaluatedItems: false
             data_source:
                 type: string
             window_size:

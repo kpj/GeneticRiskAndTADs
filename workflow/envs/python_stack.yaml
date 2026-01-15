@@ -3,50 +3,47 @@ channels:
   - conda-forge
   - bioconda
   - defaults
+  - r
 dependencies:
-  # misc dependencies
+  # Misc dependencies
   - zstd
 
   # Python stuff
-  - python==3.7
+  - python==3.10
+
+  - numpy=2.2
+  - pandas=2.3
+  - scipy=1.15
+  - networkx=3.4
+  - statsmodels=0.14
+  - natsort=8.1
+  - pyranges=0.1
+  - statannot=0.2
+  - statannotations=0.7
+  - matplotlib=3.10
+  - seaborn=0.13
+  - adjustText=1.3
+  - tqdm=4.67
+  - dna_features_viewer=3.1
+
+  - papermill
+  - ipykernel
+
   - pip
 
   # C++ deps for pip packages
   - armadillo
   - cython
   - graph-tool
+  - pygraphviz=1.14
 
   - pip:
-    - numpy
-    - pandas
-    - scipy
-    - networkx
-    - pyranges
-    - seaborn
-    - matplotlib
-
-    - sh
-    - tqdm
-    - bs4
-    - geoparse
-    - natsort
-    - statsmodels
     - cooler
-    - statannot
-    - adjustText
-    - dna_features_viewer
-
-    - ftputil
-    - requests
-    - zstandard
-    - simplejson
-
-    - jupyter
-    - jupyter_contrib_nbextensions
-
-    - gene_map
-    - ipy_pdcache
-    - bioinf_common
 
     - git+https://github.com/kpj/onto2nx
     - git+https://github.com/kpj/pybiomart
+    - git+https://github.com/kpj/ipy_pdcache
+    - git+https://github.com/kpj/gene_map
+
+  # R dependencies (called from Python)
+  - r

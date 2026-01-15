@@ -50,22 +50,22 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
 
     juicer_exec = (
         Path(snakemake.scriptdir)
-        / '..'
-        / snakemake.config['tool_paths']['juicer_tools']
+        / ".."
+        / snakemake.config["tool_paths"]["juicer_tools"]
     )
 
     # hic -> list
-    print('Hi-C -> list')
+    print("Hi-C -> list")
     sh.java(
-        '-jar',
+        "-jar",
         juicer_exec,
-        'dump',
-        'observed',
-        'NONE',
+        "dump",
+        "observed",
+        "NONE",
         fname_in,
         chrom,
         chrom,
-        'BP',
+        "BP",
         bin_size,
         fname_juicer,
         _out=sys.stdout,
@@ -73,12 +73,12 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
     )
 
     # list -> matrix
-    print('list -> matrix')
+    print("list -> matrix")
     df = pd.read_csv(
-        fname_juicer, sep='\t', header=None, names=['start', 'end', 'value']
+        fname_juicer, sep="\t", header=None, names=["start", "end", "value"]
     )
 
-    df_piv = pd.pivot(df, index='start', columns='end')
+    df_piv = pd.pivot(df, index="start", columns="end")
 
     df_piv.columns = df_piv.columns.droplevel(0)  # drop column label
     # df_piv.columns.name = None
@@ -86,33 +86,33 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
 
     piv_shape1 = df_piv.shape
 
-    print('Normalize matrix axes')
+    print("Normalize matrix axes")
     df_piv = make_axis_regular(df_piv, bin_size, 0, sort=False)
     df_piv = make_axis_regular(df_piv, bin_size, 1, sort=False)
 
     piv_shape2 = df_piv.shape
 
     # enforce same index/column number
-    print('Enforce same index/column number')
+    print("Enforce same index/column number")
     only_in_columns = set(df_piv.columns) - set(df_piv.index)
     only_in_index = set(df_piv.index) - set(df_piv.columns)
     print(only_in_columns, only_in_index)
 
-    for idx in tqdm(only_in_columns, desc='Adding to index'):
+    for idx in tqdm(only_in_columns, desc="Adding to index"):
         df_piv.loc[idx, :] = 0
-    for idx in tqdm(only_in_index, desc='Adding to columns'):
+    for idx in tqdm(only_in_index, desc="Adding to columns"):
         df_piv.loc[:, idx] = 0
 
     df_piv = df_piv.sort_index()
     df_piv = df_piv.T.sort_index().T
 
-    print(f'Pivot shape: {piv_shape1} -> {piv_shape2} -> {df_piv.shape}')
+    print(f"Pivot shape: {piv_shape1} -> {piv_shape2} -> {df_piv.shape}")
 
     assert (np.diff(df_piv.index) == bin_size).all()
     assert (np.diff(df_piv.columns) == bin_size).all()
 
     # copy upper to lower triangle
-    print('Symmetrize matrix')
+    print("Symmetrize matrix")
     mat = df_piv.values.copy()
     i_lower = np.tril_indices(mat.shape[0], -1)
     mat[i_lower] = mat.T[i_lower]
@@ -124,7 +124,7 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
     # pad with zeros
     start_coord = df_final.index[0]
     if zero_padding and start_coord > 0:
-        print('Pad with zeros')
+        print("Pad with zeros")
         extra_coords = np.arange(0, start_coord, bin_size)
 
         empty_counts_tl = np.zeros(shape=(len(extra_coords), len(extra_coords)))
@@ -141,7 +141,7 @@ def extract_hic(fname_in, chrom, fname_matrix, fname_juicer, zero_padding=False)
         df_final = tmp
 
     # save result
-    print('Save result')
+    print("Save result")
     df_final = df_final.astype(int)
     df_final.to_csv(fname_matrix)
 
@@ -153,15 +153,15 @@ def extract_cool(fname_in, fname_matrix, chromosome):
     mat = c.matrix(balance=False).fetch(chromosome)
     df_bins = c.bins().fetch(chromosome)
 
-    df_mat = pd.DataFrame(mat, index=df_bins['start'], columns=df_bins['start'])
+    df_mat = pd.DataFrame(mat, index=df_bins["start"], columns=df_bins["start"])
 
     # save data
     df_mat.to_csv(fname_matrix)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     extract_cool(
         snakemake.input.fname,
         snakemake.output.fname_matrix,
-        f'chr{snakemake.wildcards.chromosome}',
+        f"chr{snakemake.wildcards.chromosome}",
     )

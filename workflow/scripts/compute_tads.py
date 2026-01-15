@@ -20,6 +20,18 @@ def main():
 
     df_count.to_csv(snakemake.output.topdom_input, sep='\t', index=False, header=False)
 
+    # potentially install TopDom (it's not available as a conda package)
+    print('Maybe install TopDom')
+    sh.Rscript(
+        '--vanilla',
+        '-e',
+        """
+            if (!requireNamespace("TopDom", quietly = TRUE)) {
+                install.packages("TopDom", repos = "https://cloud.r-project.org")
+            }
+        """
+    )
+
     # run TopDom
     print('Run TopDom')
     cmd = """
@@ -29,7 +41,7 @@ def main():
         window_size=snakemake.wildcards.tad_parameter,
         output=snakemake.params.prefix,
     )
-    sh.Rscript('-e', cmd, _fg=True)
+    sh.Rscript('--vanilla', '-e', cmd, _fg=True)
 
     # extract TADs
     df_topdom = pd.read_csv(

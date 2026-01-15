@@ -9,6 +9,9 @@ else:
     configfile: 'config/config.yaml'
 validate(config, '../config/config.schema.yaml')
 
+conda:
+    'envs/global.yaml'
+
 include: 'rules/common.smk'
 
 hic_sources = config['samples'].keys()
@@ -68,11 +71,7 @@ rule all:
 
 rule extract_count_matrices:
     input:
-        unpack(
-            lambda wildcards: {
-                'fname': url_wrapper(config['samples'][wildcards.source])
-            }
-        ),
+        fname=lambda wc: url_wrapper(config['samples'][wc.source])
     output:
         fname_matrix='results/hic_files/counts/{source}/{chromosome}/matrix.csv',
     conda:

@@ -2,22 +2,21 @@
 
 A Snakemake workflow for the investigation of disease-associated SNP enrichments in topologically-associating domains.
 
-
 ## Usage
 
 Run pipeline as follows:
-```bash
-$ snakemake -pr -j 1 --use-conda
-```
 
+```bash
+snakemake -p -j 1 --software-deployment-method conda
+```
 
 ## Tests
 
 Run tests as follows:
-```bash
-$ ./tests/run.sh
-```
 
+```bash
+./tests/run.sh
+```
 
 # Data sources
 

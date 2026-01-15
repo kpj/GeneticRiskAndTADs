@@ -2,14 +2,8 @@ import os
 import sys
 from urllib.parse import urlparse
 
-from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
-from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
 
-HTTP = HTTPRemoteProvider()
-FTP = FTPRemoteProvider()
-
-
-def url_wrapper(url, remote_kwargs={'keep_local': True}, use_basedir=False):
+def url_wrapper(url, remote_kwargs={"keep_local": True}, use_basedir=False):
     if use_basedir:
         src_url = os.path.join(workflow.basedir, url)
     else:
@@ -21,10 +15,10 @@ def url_wrapper(url, remote_kwargs={'keep_local': True}, use_basedir=False):
     else:
         # is remote
         o = urlparse(url)
-        if o.scheme in ('http', 'https'):
-            return HTTP.remote(url, **remote_kwargs)
-        elif o.scheme == 'ftp':
-            return FTP.remote(url, **remote_kwargs)
+        if o.scheme in ("http", "https"):
+            return storage.http(url)
+        elif o.scheme == "ftp":
+            return storage.ftp(url)
         else:
             print(
                 f'Invalid url "{url}", returning input without transformation',
