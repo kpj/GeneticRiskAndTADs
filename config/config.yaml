@@ -36,10 +36,10 @@ snp_filters:
 
 input_files:
     disgenet: 'resources/curated_variant_disease_associations.tsv.zst'
-    gwascatalog: 'resources/gwas_catalog_v1.0.2-associations_e100_r2021-02-10.tsv.zst'
+    gwascatalog: 'resources/gwas_catalog_v1.0.2-associations_e115_r2025-12-22.tsv.zst'
     disease_ontology: 'resources/doid.owl.zst'
-    exp_factor_ontology: 'resources/efo.owl.zst'
-    sequence_ontology: 'resources/so.owl.zst'
+    exp_factor_ontology: 'resources/efo_v3.86.0.owl.zst'
+    sequence_ontology: 'resources/so_r2024-11-18.owl.zst'
 
 annotation_sources:
     hg19: 'resources/vep_cache_hg19.csv.zst'
