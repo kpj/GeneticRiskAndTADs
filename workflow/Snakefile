@@ -89,6 +89,7 @@ rule extract_cool_from_mcool:
         "envs/python_stack.yaml"
     resources:
         mem_mb=10_000,
+        hdf5_lock=1,
     script:
         "scripts/extract_cool_from_mcool.py"
 
@@ -102,6 +103,7 @@ rule extract_count_matrices:
         "envs/python_stack.yaml"
     resources:
         mem_mb=10_000,
+        hdf5_lock=1,
     script:
         "scripts/extract_count_matrices.py"
 
@@ -115,6 +117,8 @@ rule gather_input_information:
         samplename_list=list(hic_sources_raw),
     conda:
         "envs/python_stack.yaml"
+    resources:
+        hdf5_lock=1,
     script:
         "scripts/gather_input_information.py"
 

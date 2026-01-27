@@ -7,7 +7,7 @@ A Snakemake workflow for the investigation of disease-associated SNP enrichments
 Run pipeline as follows:
 
 ```bash
-snakemake -p -j 1 --software-deployment-method conda
+snakemake --jobs 1 --software-deployment-method conda --resources hdf5_lock=1
 ```
 
 ## Tests
