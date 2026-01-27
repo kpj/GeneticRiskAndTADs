@@ -1,8 +1,6 @@
 samples:
     dummy_name: 'tests/data/dummy_hic/dummy.cool'
 
-mcool_resolutions:
-
 chromosome_list: ['22']
 window_size_list: [0, 1, 9, 10, 11]
 

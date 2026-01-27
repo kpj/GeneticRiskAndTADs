@@ -39,7 +39,7 @@ ruleorder: snp_majority_vote_narrow > aggregate_tads
 ruleorder: snp_majority_vote_narrow > include_tad_relations
 
 hic_sources_raw = config['samples'].keys()
-hic_sources = generate_data_source_list(config['samples'], config['mcool_resolutions'])
+hic_sources = generate_data_source_list(config['samples'], config.get('mcool_resolutions', {}))
 
 # rule definitions
 rule all:

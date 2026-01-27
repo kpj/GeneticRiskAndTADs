@@ -39,6 +39,11 @@ def generate_data_source_list(input_samples, mcool_resolutions_by_input):
     for base in input_samples.keys():
         src = input_samples[base]
         if is_mcool(src):
+            if base not in mcool_resolutions_by_input:
+                raise ValueError(
+                    f"Input sample '{base}' is .mcool but has no resolutions defined in 'mcool_resolutions' config entry."
+                )
+
             for res in mcool_resolutions_by_input[base]:
                 data_source_list.append(f"{base}__{res}")
         else:
