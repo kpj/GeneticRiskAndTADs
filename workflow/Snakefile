@@ -14,8 +14,6 @@ conda:
 
 include: 'rules/common.smk'
 
-hic_sources = config['samples'].keys()
-
 wildcard_constraints:
     tad_parameter=r'\d+',  # contains window size which must be an integer
 
@@ -40,6 +38,8 @@ ruleorder: snp_majority_vote > include_tad_relations
 ruleorder: snp_majority_vote_narrow > aggregate_tads
 ruleorder: snp_majority_vote_narrow > include_tad_relations
 
+hic_sources_raw = config['samples'].keys()
+hic_sources = generate_data_source_list(config['samples'], config['mcool_resolutions'])
 
 # rule definitions
 rule all:
@@ -69,9 +69,22 @@ rule all:
         #     filter=config['snp_filters'].keys())
 
 
+rule extract_cool_from_mcool:
+    input:
+        mcool=lambda wc: sample_url_from_source_wildcard(wc.source)
+    output:
+        cool="results/hic_files/cool/{source}.cool"
+    conda:
+        "envs/python_stack.yaml"
+    resources:
+        mem_mb=10_000
+    script:
+        'scripts/extract_cool_from_mcool.py'
+
+
 rule extract_count_matrices:
     input:
-        fname=lambda wc: url_wrapper(config['samples'][wc.source])
+        fname=lambda wc: cool_input_for_source_wildcard(wc.source)
     output:
         fname_matrix='results/hic_files/counts/{source}/{chromosome}/matrix.csv',
     conda:
@@ -84,11 +97,11 @@ rule extract_count_matrices:
 
 rule gather_input_information:
     input:
-        fname_list=[url_wrapper(config['samples'][hic]) for hic in hic_sources],
+        fname_list=[url_wrapper(config['samples'][hic]) for hic in hic_sources_raw],
     output:
         fname='results/hic_files/info.csv',
     params:
-        samplename_list=list(hic_sources),
+        samplename_list=list(hic_sources_raw),
     conda:
         'envs/python_stack.yaml'
     script:
