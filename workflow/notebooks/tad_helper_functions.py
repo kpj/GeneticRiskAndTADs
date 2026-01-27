@@ -21,6 +21,7 @@ class OverlappingTADs(Exception):
 
 class RangeDict(dict):
     """Optimized for ranges with step==1."""
+
     def __getitem__(self, item):
         if type(item) != range:
             for key in self:
@@ -47,27 +48,27 @@ def get_tad_lengths(row, border_range):
     if tad_len <= 0:
         raise EmptyTAD(row)
 
-    if tad_len < 2*bp_in:
+    if tad_len < 2 * bp_in:
         bp_in = tad_len // 4
         # raise TADTooSmall(row)
 
     # assert that TADs are not overlapping
     # rescale borders if they would overlap
-    dist_prev = (tad_start - row.prev_tad_stop) \
-        if (
-            not np.isnan(row.prev_tad_stop)
-            and row.chrname == row.prev_tad_chr
-        ) else float('inf')
-    dist_next = (row.next_tad_start - tad_stop) \
-        if (
-            not np.isnan(row.next_tad_start)
-            and row.chrname == row.next_tad_chr
-        ) else float('inf')
+    dist_prev = (
+        (tad_start - row.prev_tad_stop)
+        if (not np.isnan(row.prev_tad_stop) and row.chrname == row.prev_tad_chr)
+        else float("inf")
+    )
+    dist_next = (
+        (row.next_tad_start - tad_stop)
+        if (not np.isnan(row.next_tad_start) and row.chrname == row.next_tad_chr)
+        else float("inf")
+    )
     dist_min = min(dist_prev, dist_next)
     if dist_min < 0:
         raise OverlappingTADs(row)
 
-    if dist_min < 2*bp_out:
+    if dist_min < 2 * bp_out:
         bp_out = dist_min // 4
 
     # final sanity checks
@@ -79,17 +80,17 @@ def get_tad_lengths(row, border_range):
     return (
         range(tad_start - bp_out, tad_start + bp_in),
         range(tad_start + bp_in, tad_stop - bp_in),
-        range(tad_stop - bp_in, tad_stop + bp_out)
+        range(tad_stop - bp_in, tad_stop + bp_out),
     )
 
 
 def parse_tad_annotations(border_range, fname):
-    print(f' > Parsing TADs ({border_range})', file=sys.stderr)
+    print(f" > Parsing TADs ({border_range})", file=sys.stderr)
     df_tad = pd.read_csv(fname)
-    df_tad['prev_tad_stop'] = df_tad.tad_stop.shift(1)
-    df_tad['next_tad_start'] = df_tad.tad_start.shift(-1)
-    df_tad['prev_tad_chr'] = df_tad.chrname.shift(1)
-    df_tad['next_tad_chr'] = df_tad.chrname.shift(-1)
+    df_tad["prev_tad_stop"] = df_tad.tad_stop.shift(1)
+    df_tad["next_tad_start"] = df_tad.tad_start.shift(-1)
+    df_tad["prev_tad_chr"] = df_tad.chrname.shift(1)
+    df_tad["next_tad_chr"] = df_tad.chrname.shift(-1)
 
     error_counter = collections.defaultdict(int)
     res = collections.defaultdict(RangeDict)
@@ -99,28 +100,28 @@ def parse_tad_annotations(border_range, fname):
         try:
             rb1, rt, rb2 = get_tad_lengths(row, border_range)
         except EmptyTAD as ex:
-            error_counter['empty_tad'] += 1
+            error_counter["empty_tad"] += 1
             continue
         except TADTooSmall as ex:
-            error_counter['small_tad'] += 1
+            error_counter["small_tad"] += 1
             continue
         except OverlappingTADs as ex:
-            error_counter['overlapping_tads'] += 1
+            error_counter["overlapping_tads"] += 1
             continue
 
         # normalize chromosome name
         chrom = row.chrname
-        if chrom.startswith('chr'):
+        if chrom.startswith("chr"):
             chrom = chrom[3:]
 
         # store range-associations
-        res[chrom][rb1] = 'border'
-        res[chrom][rt] = 'tad'
-        res[chrom][rb2] = 'border'
+        res[chrom][rb1] = "border"
+        res[chrom][rt] = "tad"
+        res[chrom][rb2] = "border"
 
     if error_counter:
-        print('TAD errors:')
+        print("TAD errors:")
         for k, v in sorted(error_counter.items()):
-            print(f' > {k}: {v}')
+            print(f" > {k}: {v}")
 
     return dict(res)

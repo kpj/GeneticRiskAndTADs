@@ -6,5 +6,5 @@ def main(fname_list, fname_out):
     pd.concat([pd.read_csv(x) for x in fname_list]).to_csv(fname_out, index=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(snakemake.input.fname_list, snakemake.output.fname)
