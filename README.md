@@ -18,7 +18,7 @@ Run tests as follows:
 ./tests/run.sh
 ```
 
-# Data sources
+## Data sources
 
 * Hi-C data: <https://data.4dnucleome.org/hic-data-overview>, <https://usgs2.osn.mghpcc.org/cooler01/index.html>
 * [GWAS Catalog](https://www.ebi.ac.uk/gwas/home)
