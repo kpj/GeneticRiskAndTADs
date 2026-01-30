@@ -4,6 +4,6 @@ channels:
   - conda-forge
   - r
 dependencies:
-  - r
-  - r-rmarkdown
-  - r-tidyverse
+  - r=4.5
+  - r-rmarkdown=2.30
+  - r-tidyverse=2.0.0

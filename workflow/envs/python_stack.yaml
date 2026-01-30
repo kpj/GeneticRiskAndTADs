@@ -6,7 +6,7 @@ channels:
   - r
 dependencies:
   # Misc dependencies
-  - zstd
+  - zstd=1.5.7
 
   # Python stuff
   - python==3.10
@@ -25,25 +25,23 @@ dependencies:
   - adjustText=1.3
   - tqdm=4.67
   - dna_features_viewer=3.1
+  - zstandard=0.25.0
 
-  - papermill
-  - ipykernel
+  - papermill=2.6.0
+  - ipykernel=7.1.0
 
-  - pip
+  - pip=25.3
 
   # C++ deps for pip packages
-  - armadillo
-  - cython
-  - graph-tool
   - pygraphviz=1.14
 
   - pip:
-    - cooler
+      - cooler==0.10.4
 
-    - git+https://github.com/kpj/onto2nx
-    - git+https://github.com/kpj/pybiomart
-    - git+https://github.com/kpj/ipy_pdcache
-    - git+https://github.com/kpj/gene_map
+      - git+https://github.com/kpj/onto2nx.git@9e8ccddc4ae76c0fa5dae454ccc8aea5e424b7be
+      - git+https://github.com/kpj/pybiomart.git@edbeff95250740e2b30343b1ea40cc5f54d0ed58
+      - git+https://github.com/kpj/ipy_pdcache.git@41c18f8d127fb53edbe84537d359f986b1b6815d
+      - git+https://github.com/kpj/gene_map.git@cf6d675e8c7e0672de26451918ec1b44aff619cb
 
   # R dependencies (called from Python)
-  - r
+  - r=4.5
