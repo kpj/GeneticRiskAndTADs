@@ -39,6 +39,8 @@ dependencies:
 
   - pip:
     - cooler
+    - sh
+    - beautifulsoup4
 
     - git+https://github.com/kpj/onto2nx
     - git+https://github.com/kpj/pybiomart
