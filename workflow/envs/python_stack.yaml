@@ -29,6 +29,9 @@ dependencies:
   - papermill
   - ipykernel
 
+  - sh=2.2.2
+  - beautifulsoup4=4.14.3
+
   - pip
 
   # C++ deps for pip packages
@@ -39,8 +42,6 @@ dependencies:
 
   - pip:
     - cooler
-    - sh
-    - beautifulsoup4
 
     - git+https://github.com/kpj/onto2nx
     - git+https://github.com/kpj/pybiomart
