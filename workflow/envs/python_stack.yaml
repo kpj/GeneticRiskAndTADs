@@ -34,8 +34,6 @@ dependencies:
   - beautifulsoup4=4.14.3
 
   - pip=25.3
-=======
-  - pip=25.3
 
   # C++ deps for pip packages
   - pygraphviz=1.14
