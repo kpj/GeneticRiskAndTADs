@@ -30,6 +30,9 @@ dependencies:
   - papermill=2.6.0
   - ipykernel=7.1.0
 
+  - sh=2.2.2
+  - beautifulsoup4=4.14.3
+
   - pip=25.3
 
   # C++ deps for pip packages
