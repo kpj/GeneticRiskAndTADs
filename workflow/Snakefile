@@ -419,6 +419,7 @@ rule publication_figures:
         "envs/python_stack.yaml"
     resources:
         mem_mb=lambda wildcards, attempt: (attempt + 5) * 10_000,
+        hdf5_lock=1,
     notebook:
         "notebooks/PublicationFigures.ipynb"
 
