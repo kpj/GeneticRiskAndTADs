@@ -2,8 +2,6 @@ name: python_stack
 channels:
   - conda-forge
   - bioconda
-  - defaults
-  - r
 dependencies:
   # Misc dependencies
   - zstd=1.5.7
@@ -40,6 +38,7 @@ dependencies:
 
   - pip:
       - cooler==0.10.4
+      - nxontology==0.5.0
 
       - git+https://github.com/kpj/onto2nx.git@9e8ccddc4ae76c0fa5dae454ccc8aea5e424b7be
       - git+https://github.com/kpj/pybiomart.git@edbeff95250740e2b30343b1ea40cc5f54d0ed58
@@ -47,4 +46,4 @@ dependencies:
       - git+https://github.com/kpj/gene_map.git@cf6d675e8c7e0672de26451918ec1b44aff619cb
 
   # R dependencies (called from Python)
-  - r=4.5
+  - r=4.4
