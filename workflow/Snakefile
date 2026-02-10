@@ -123,6 +123,15 @@ rule gather_input_information:
         "scripts/gather_input_information.py"
 
 
+rule install_extra_dependencies:
+    output:
+        touch("results/dependencies/extra_dependencies_installed.marker"),
+    conda:
+        "envs/python_stack.yaml"
+    script:
+        "scripts/install_extra_dependencies.py"
+
+
 rule visualize_count_matrix:
     input:
         fname_matrix="results/hic_files/counts/{source}/{chromosome}/matrix.csv",
@@ -144,6 +153,7 @@ rule compute_tads:
     input:
         fname="results/hic_files/counts/{source}/{chromosome}/matrix.csv",
         fname_info="results/hic_files/info.csv",
+        fname_dep_marker="results/dependencies/extra_dependencies_installed.marker",
     output:
         fname="results/tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv",
         topdom_input=temp(

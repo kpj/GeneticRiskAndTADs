@@ -1,5 +1,3 @@
-import os
-
 import pandas as pd
 
 import sh
@@ -19,18 +17,6 @@ def main():
     df_count.insert(2, "td_end", df_count.index + bin_size)
 
     df_count.to_csv(snakemake.output.topdom_input, sep="\t", index=False, header=False)
-
-    # potentially install TopDom (it's not available as a conda package)
-    print("Maybe install TopDom")
-    sh.Rscript(
-        "--vanilla",
-        "-e",
-        """
-            if (!requireNamespace("TopDom", quietly = TRUE)) {
-                install.packages("TopDom", repos = "https://cloud.r-project.org")
-            }
-        """,
-    )
 
     # run TopDom
     print("Run TopDom")
