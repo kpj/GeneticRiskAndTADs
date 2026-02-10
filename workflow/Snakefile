@@ -406,7 +406,7 @@ rule publication_figures:
     input:
         fname_data="results/results/final_data.csv.gz",
         fname_enr="results/results/final_enr.csv.gz",
-        sketch_hicfile=url_wrapper(config["samples"][config["sketch"]["data_source"]]),
+        sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
         sketch_tadfile="results/tads/data/tads.{source}.{tad_parameter}.csv".format(
             source=config["sketch"]["data_source"],
             tad_parameter=config["sketch"]["window_size"],
@@ -427,7 +427,7 @@ rule publication_figures:
 rule supplementary_tadplots_multidataset:
     input:
         fname_data="results/results/final_data.csv.gz",
-        sketch_hicfile=url_wrapper(config["samples"][config["sketch"]["data_source"]]),
+        sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
         sketch_tadfile="results/tads/data/tads.{source}.{tad_parameter}.csv".format(
             source=config["sketch"]["data_source"],
             tad_parameter=config["sketch"]["window_size"],
@@ -454,7 +454,7 @@ rule supplementary_tadplots_multidataset:
 rule supplementary_tadplots_multiwindowsize:
     input:
         fname_data="results/results/final_data.csv.gz",
-        sketch_hicfile=url_wrapper(config["samples"][config["sketch"]["data_source"]]),
+        sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
         sketch_tadfile="results/tads/data/tads.{source}.{tad_parameter}.csv".format(
             source=config["sketch"]["data_source"],
             tad_parameter=config["sketch"]["window_size"],

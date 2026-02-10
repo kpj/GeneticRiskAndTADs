@@ -77,6 +77,7 @@ properties:
                 enum: [base_sample, snp_sample]
             main_dataset:
                 type: string
+                description: When referring to data from a multi-resolution dataset, use the format SAMPLEID__RESOLUTION (e.g., 4DNFIXGAEPB6__10000).
             snp_majority_vote_border_fraction_threshold:
                 type: number
             window_aggregation:
@@ -120,6 +121,7 @@ properties:
                 unevaluatedItems: false
             data_source:
                 type: string
+                description: When referring to data from a multi-resolution dataset, use the format SAMPLEID__RESOLUTION (e.g., 4DNFIXGAEPB6__10000).
             window_size:
                 type: integer
 additionalProperties: false
