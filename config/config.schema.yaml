@@ -97,6 +97,8 @@ properties:
                 required:
                     - disease_fraction_threshold
                     - snp_count_threshold_list
+            publication_figure_tad_source_filter:
+                type: string
         required:
             - associated_gene_source
             - allow_snp_multiplicity_in_enrichment
@@ -105,6 +107,7 @@ properties:
             - main_dataset
             - snp_majority_vote_border_fraction_threshold
             - window_aggregation
+            - publication_figure_tad_source_filter
     sketch:
         type: object
         properties:

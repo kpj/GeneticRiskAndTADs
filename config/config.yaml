@@ -65,6 +65,7 @@ parameters:
         disease_fraction_threshold: 0.5
         window_size_list: null
         snp_count_threshold_list: [0, 2, 5, 7, 10, 15, 20, 30, 40, 50]
+    publication_figure_tad_source_filter: "tad_source.str.contains('Rao2014') & tad_source.str.contains('10kb')"
 
 sketch:
     region: ['chr11', 123050000, 123550000]

@@ -1,7 +1,7 @@
 samples:
-    dummy_name: 'tests/data/dummy_hic/dummy.cool'
+    dummy_name: "tests/data/dummy_hic/dummy.cool"
 
-chromosome_list: ['22']
+chromosome_list: ["22"]
 window_size_list: [0, 1, 9, 10, 11]
 
 tad_borders:
@@ -16,15 +16,15 @@ snp_filters:
     nonexonic: 'variant_group_{genome_assembly} != "exonic"'
 
 input_files:
-    disgenet: 'tests/data/disgenet_empty.tsv'
-    gwascatalog: 'tests/data/dummy_gwas_catalog.tsv'
-    disease_ontology: 'tests/data/dummy_doid.owl'
-    exp_factor_ontology: 'tests/data/dummy_efo.owl'
-    sequence_ontology: 'tests/data/dummy_so.owl'
+    disgenet: "tests/data/disgenet_empty.tsv"
+    gwascatalog: "tests/data/dummy_gwas_catalog.tsv"
+    disease_ontology: "tests/data/dummy_doid.owl"
+    exp_factor_ontology: "tests/data/dummy_efo.owl"
+    sequence_ontology: "tests/data/dummy_so.owl"
 
 annotation_sources:
-    hg19: 'tests/data/snp_annotations.csv'
-    hg38: 'tests/data/snp_annotations.csv'
+    hg19: "tests/data/snp_annotations.csv"
+    hg38: "tests/data/snp_annotations.csv"
 
 parameters:
     associated_gene_source: mapped
@@ -37,8 +37,9 @@ parameters:
         disease_fraction_threshold: 0.5
         window_size_list: [0, 9, 10]
         snp_count_threshold_list: [2, 5]
+    publication_figure_tad_source_filter: "tad_source.str.contains('dummy')"
 
 sketch:
-    region: ['chr22', 16000000, 51300000]
+    region: ["chr22", 16000000, 51300000]
     data_source: dummy_name
     window_size: 10
