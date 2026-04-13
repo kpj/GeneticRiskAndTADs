@@ -14,9 +14,6 @@ else:
 validate(config, "../config/config.schema.yaml")
 
 
-conda: "envs/global.yaml"
-
-
 include: "rules/common.smk"
 
 
