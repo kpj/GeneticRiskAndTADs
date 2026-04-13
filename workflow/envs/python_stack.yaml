@@ -30,6 +30,7 @@ dependencies:
 
   - sh=2.2.2
   - beautifulsoup4=4.14.3
+  - cooler=0.10.4
 
   - pip=25.3
 
@@ -37,7 +38,6 @@ dependencies:
   - pygraphviz=1.14
 
   - pip:
-      - cooler==0.10.4
       - nxontology==0.5.0
 
       - git+https://github.com/kpj/onto2nx.git@9e8ccddc4ae76c0fa5dae454ccc8aea5e424b7be
