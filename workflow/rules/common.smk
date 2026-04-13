@@ -3,6 +3,11 @@ import sys
 from urllib.parse import urlparse
 
 
+storage cached_http:
+    provider="cached-http",
+    max_concurrent_downloads=1,
+
+
 def url_wrapper(url, remote_kwargs={"keep_local": True}, use_basedir=False):
     """Wrap URL to local or remote storage as appropriate."""
     if use_basedir:
@@ -17,7 +22,7 @@ def url_wrapper(url, remote_kwargs={"keep_local": True}, use_basedir=False):
         # is remote
         o = urlparse(url)
         if o.scheme in ("http", "https"):
-            return storage.http(url)
+            return storage.cached_http(url)
         elif o.scheme == "ftp":
             return storage.ftp(url)
         else:
