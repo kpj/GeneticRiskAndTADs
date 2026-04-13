@@ -29,13 +29,29 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Snakemake tests
-        uses: snakemake/snakemake-github-action@v1
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v5
         with:
-          directory: "."
-          snakefile: "workflow/Snakefile"
-          args: '--config configfile="tests/config_dummy.yaml" --jobs 1 --software-deployment-method conda --resources hdf5_lock=1'
+          enable-cache: true
+          python-version: "3.12"
+
+      - name: Set up Conda/Mamba
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          mamba-version: "*"
+          channels: conda-forge,bioconda,nodefaults
+          python-version: "3.12"
+
+      - name: Install Snakemake and plugins
+        run: uv sync
+
+      - name: Run tests
+        run: ./tests/run.sh
