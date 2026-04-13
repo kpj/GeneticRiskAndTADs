@@ -1,9 +1,8 @@
-import sys
 import collections
+import sys
 
 import numpy as np
 import pandas as pd
-
 from tqdm.auto import tqdm
 
 
@@ -23,7 +22,7 @@ class RangeDict(dict):
     """Optimized for ranges with step==1."""
 
     def __getitem__(self, item):
-        if type(item) != range:
+        if not isinstance(item, range):
             for key in self:
                 if key.step == 1:
                     if key.start <= item < key.stop:
@@ -99,13 +98,13 @@ def parse_tad_annotations(border_range, fname):
     for row in tqdm(df_tad.itertuples(), total=df_tad.shape[0]):
         try:
             rb1, rt, rb2 = get_tad_lengths(row, border_range)
-        except EmptyTAD as ex:
+        except EmptyTAD:
             error_counter["empty_tad"] += 1
             continue
-        except TADTooSmall as ex:
+        except TADTooSmall:
             error_counter["small_tad"] += 1
             continue
-        except OverlappingTADs as ex:
+        except OverlappingTADs:
             error_counter["overlapping_tads"] += 1
             continue
 

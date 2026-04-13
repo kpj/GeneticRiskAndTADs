@@ -1,17 +1,15 @@
 """Some functions taken from https://github.com/kpj/bioinf_common/."""
 
-import sys
 import random
+import sys
+from collections.abc import Mapping, Sequence
 from typing import Any
-from collections.abc import Sequence, Mapping
 
-import numpy as np
-from statsmodels.sandbox.stats.multicomp import multipletests
-
-import networkx as nx
-
-import seaborn as sns
 import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
+import seaborn as sns
+from statsmodels.sandbox.stats.multicomp import multipletests
 
 
 def multipletests_nan(

@@ -113,12 +113,12 @@ rule gather_input_information:
         fname_list=[url_wrapper(config["samples"][hic]) for hic in hic_sources_raw],
     output:
         fname="results/hic_files/info.csv",
-    params:
-        samplename_list=list(hic_sources_raw),
     conda:
         "envs/python_stack.yaml"
     resources:
         hdf5_lock=1,
+    params:
+        samplename_list=list(hic_sources_raw),
     script:
         "scripts/gather_input_information.py"
 
@@ -160,14 +160,14 @@ rule compute_tads:
             "results/tads/data/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv"
         ),
         topdom_output="results/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed",
-    params:
-        prefix=(
-            "results/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}"
-        ),
     conda:
         "envs/python_stack.yaml"
     resources:
         mem_mb=30_000,
+    params:
+        prefix=(
+            "results/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}"
+        ),
     script:
         "scripts/compute_tads.py"
 
@@ -270,17 +270,17 @@ rule snp_majority_vote:
     output:
         fname="results/databases/per_source/snpdb.{source}.0.csv",
         fname_tads="results/tads/data/tads.{source}.0.csv",  # empty dummy
-    params:
-        tad_parameter_range=None,
-        border_fraction_threshold=config["parameters"][
-            "snp_majority_vote_border_fraction_threshold"
-        ],
     log:
         notebook="results/notebooks/SNPMajorityVote.{source}.0.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
         mem_mb=3_000,
+    params:
+        tad_parameter_range=None,
+        border_fraction_threshold=config["parameters"][
+            "snp_majority_vote_border_fraction_threshold"
+        ],
     notebook:
         "notebooks/SNPMajorityVote.ipynb"
 
@@ -295,15 +295,15 @@ rule snp_majority_vote_narrow:
     output:
         fname="results/databases/per_source/snpdb.{source}.1.csv",
         fname_tads="results/tads/data/tads.{source}.1.csv",  # empty dummy
-    params:
-        tad_parameter_range=[9, 10, 11, 12, 13],
-        border_fraction_threshold=0.5,
     log:
         notebook="results/notebooks/SNPMajorityVote.{source}.1.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
         mem_mb=3_000,
+    params:
+        tad_parameter_range=[9, 10, 11, 12, 13],
+        border_fraction_threshold=0.5,
     notebook:
         "notebooks/SNPMajorityVote.ipynb"
 
@@ -449,14 +449,14 @@ rule supplementary_tadplots_multidataset:
         ),
     output:
         outdir=directory("results/publication_figures/tad_plots_multidataset/"),
-    params:
-        multitad_plot_type="multidataset",
     log:
         notebook="results/notebooks/Supplementaries_TADPlots.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
         mem_mb=lambda wildcards, attempt: (attempt + 2) * 10_000,
+    params:
+        multitad_plot_type="multidataset",
     notebook:
         "notebooks/Supplementaries_TADPlots.ipynb"
 
@@ -476,13 +476,13 @@ rule supplementary_tadplots_multiwindowsize:
         ),
     output:
         outdir=directory("results/publication_figures/tad_plots_multiwindowsize/"),
-    params:
-        multitad_plot_type="multiwindowsize",
     log:
         notebook="results/notebooks/Supplementaries_TADPlots.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
         mem_mb=lambda wildcards, attempt: (attempt + 2) * 10_000,
+    params:
+        multitad_plot_type="multiwindowsize",
     notebook:
         "notebooks/Supplementaries_TADPlots.ipynb"

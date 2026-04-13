@@ -18,3 +18,21 @@ dev = [
 
 [tool.uv.sources]
 snakemake-storage-plugin-cached-http = { git = "https://github.com/PyPSA/snakemake-storage-plugin-cached-http" }
+
+[tool.ruff]
+line-length = 88
+extend-exclude = ["results"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+# F821: undefined name (snakemake is injected by snakemake)
+# E501: line too long
+extend-ignore = ["E203", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"workflow/scripts/*.py" = ["F821"]
+"workflow/notebooks/*.ipynb" = ["F821"]
+
+[tool.snakefmt]
+line_length = 88
+include = '\.smk$|^Snakefile'

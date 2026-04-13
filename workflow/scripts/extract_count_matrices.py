@@ -1,11 +1,9 @@
 import sys
 from pathlib import Path
 
+import cooler
 import numpy as np
 import pandas as pd
-
-import cooler
-
 import sh
 from tqdm import tqdm
 

@@ -1,8 +1,6 @@
-import os
 import urllib.request
 
 import GEOparse
-
 from tqdm import tqdm
 
 
