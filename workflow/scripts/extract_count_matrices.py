@@ -149,7 +149,7 @@ def extract_cool(fname_in, fname_matrix, chromosome):
     c = cooler.Cooler(fname_in)
 
     mat = c.matrix(balance=False).fetch(chromosome)
-    df_bins = c.bins().fetch(chromosome)
+    df_bins = c.bins()[["start"]].fetch(chromosome)
 
     df_mat = pd.DataFrame(mat, index=df_bins["start"], columns=df_bins["start"])
 
