@@ -1,20 +1,20 @@
 samples:
-    # Dixon2012-H1hESC-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2012-H1hESC-HindIII-allreps-filtered.10kb.cool
-    # Dixon2012-IMR90-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2012-IMR90-HindIII-allreps-filtered.10kb.cool
-    # Dixon2015-H1_ME-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_ME-HindIII-allreps-filtered.10kb.cool
-    # Dixon2015-H1_MS-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_MS-HindIII-allreps-filtered.10kb.cool
-    # Dixon2015-H1_NP-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_NP-HindIII-allreps-filtered.10kb.cool
-    # Dixon2015-H1_TB-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_TB-HindIII-allreps-filtered.10kb.cool
-    # Dixon2015-H1_hESC-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_hESC-HindIII-allreps-filtered.10kb.cool
-    # Jin2013-IMR90-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Jin2013-IMR90-HindIII-allreps-filtered.10kb.cool
+    Dixon2012-H1hESC-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2012-H1hESC-HindIII-allreps-filtered.10kb.cool
+    Dixon2012-IMR90-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2012-IMR90-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_ME-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_ME-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_MS-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_MS-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_NP-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_NP-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_TB-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_TB-HindIII-allreps-filtered.10kb.cool
+    Dixon2015-H1_hESC-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Dixon2015-H1_hESC-HindIII-allreps-filtered.10kb.cool
+    Jin2013-IMR90-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Jin2013-IMR90-HindIII-allreps-filtered.10kb.cool
     Rao2014-GM12878-DpnII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-GM12878-DpnII-allreps-filtered.10kb.cool
     Rao2014-GM12878-MboI-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-GM12878-MboI-allreps-filtered.10kb.cool
     Rao2014-HMEC-MboI-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-HMEC-MboI-allreps-filtered.10kb.cool
     Rao2014-HUVEC-MboI-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-HUVEC-MboI-allreps-filtered.10kb.cool
     Rao2014-IMR90-MboI-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-IMR90-MboI-allreps-filtered.10kb.cool
     Rao2014-NHEK-MboI-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Rao2014-NHEK-MboI-allreps-filtered.10kb.cool
-    # Selvaraj2013-GM12878-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Selvaraj2013-GM12878-HindIII-allreps-filtered.10kb.cool
-    4DNFIXGAEPB6: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/ee5f43b9-b069-488d-b369-b8acaed09242/4DNFIXGAEPB6.mcool
+    Selvaraj2013-GM12878-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Selvaraj2013-GM12878-HindIII-allreps-filtered.10kb.cool
+    # 4DNFIXGAEPB6: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/ee5f43b9-b069-488d-b369-b8acaed09242/4DNFIXGAEPB6.mcool
 
 mcool_resolutions:
     4DNFIXGAEPB6:
