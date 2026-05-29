@@ -10,6 +10,12 @@ Run pipeline as follows:
 ./run.sh
 ```
 
+Don't forget to occasionally update the SNP annotation cache with:
+
+```bash
+uv run python scripts/update_vep_cache.py
+```
+
 ## Tests
 
 Run tests as follows:
