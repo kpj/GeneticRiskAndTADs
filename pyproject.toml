@@ -5,7 +5,6 @@ description = "Snakemake pipeline."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "pybiomart>=0.2.0",
     "snakemake>=9.19.0",
     "snakemake-storage-plugin-cached-http",
     "snakemake-storage-plugin-ftp>=0.1.3",

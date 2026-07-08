@@ -51,6 +51,8 @@ properties:
                 type: string
             sequence_ontology:
                 type: string
+            dbsnp_hg19:
+                type: string
         additionalProperties:
             type: string
         required:
@@ -59,8 +61,11 @@ properties:
             - disease_ontology
             - exp_factor_ontology
             - sequence_ontology
+            - dbsnp_hg19
     annotation_sources:
-        type: object
+        type: array
+        items:
+            type: string
     parameters:
         type: object
         properties:

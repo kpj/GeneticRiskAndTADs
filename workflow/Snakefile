@@ -209,11 +209,13 @@ rule provide_input_files:
         gwascatalog_fname=url_wrapper(config["input_files"]["gwascatalog"]),
         efo_fname=url_wrapper(config["input_files"]["exp_factor_ontology"]),
         so_fname=url_wrapper(config["input_files"]["sequence_ontology"]),
+        dbsnp_hg19_fname=url_wrapper(config["input_files"]["dbsnp_hg19"]),
     output:
         disgenet_fname="results/input/disgenet.tsv",
         gwascatalog_fname="results/input/gwas_catalog.tsv",
         efo_fname="results/input/efo.owl",
         so_fname="results/input/so.owl",
+        dbsnp_hg19_fname="results/input/dbSnp155Common_hg19.bb",
     conda:
         "envs/python_stack.yaml"
     script:
@@ -226,6 +228,7 @@ rule assemble_input_databases:
         gwascatalog_fname="results/input/gwas_catalog.tsv",
         efo_fname="results/input/efo.owl",
         so_fname="results/input/so.owl",
+        dbsnp_hg19_fname="results/input/dbSnp155Common_hg19.bb",
     output:
         db_fname="results/databases/initial.csv",
         raw_veps="results/databases/vep.csv",

@@ -21,10 +21,11 @@ input_files:
     disease_ontology: "tests/data/dummy_doid.owl"
     exp_factor_ontology: "tests/data/dummy_efo.owl"
     sequence_ontology: "tests/data/dummy_so.owl"
+    dbsnp_hg19: "tests/data/snp_annotations.csv"
 
 annotation_sources:
-    hg19: "tests/data/snp_annotations.csv"
-    hg38: "tests/data/snp_annotations.csv"
+    - hg19
+    - hg38
 
 parameters:
     associated_gene_source: mapped
