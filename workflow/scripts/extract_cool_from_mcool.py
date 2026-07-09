@@ -17,9 +17,9 @@ def main(input_mcool, source_wildcard, output_cool):
     resolution_id = f"/resolutions/{res}"
 
     available_resolutions = cooler.fileops.list_coolers(input_mcool)
-    assert (
-        resolution_id in available_resolutions
-    ), f"{resolution_id} not in {available_resolutions}"
+    assert resolution_id in available_resolutions, (
+        f"{resolution_id} not in {available_resolutions}"
+    )
 
     in_path = f"{input_mcool}::{resolution_id}"
     cooler.fileops.cp(in_path, output_cool)
