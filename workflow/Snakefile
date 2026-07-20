@@ -256,6 +256,8 @@ rule include_tad_relations:
         ),
     conda:
         "envs/python_stack.yaml"
+    resources:
+        notebook_slots=1
     notebook:
         "notebooks/IncludeTADRelations.ipynb"
 
@@ -319,6 +321,8 @@ rule compute_enrichments:
         notebook="results/notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.{filter}.ipynb",
     conda:
         "envs/python_stack.yaml"
+    resources:
+        notebook_slots=1
     notebook:
         "notebooks/ComputeTADEnrichments.ipynb"
 
@@ -335,6 +339,8 @@ rule create_figures:
         ),
     conda:
         "envs/python_stack.yaml"
+    resources:
+        notebook_slots=1
     notebook:
         "notebooks/CreateFigures.ipynb"
 
