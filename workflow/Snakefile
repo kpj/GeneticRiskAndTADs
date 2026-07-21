@@ -53,28 +53,31 @@ hic_sources = generate_data_source_list(
 rule all:
     input:
         "results/results/final_enr.csv.gz",
-        # expand(
-        #     'results/hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
-        #     source=hic_sources,
-        #     chromosome=config['chromosome_list'],
-        # ),
-        # 'results/tads/plots/',
         "results/results/database_statistics/",
         "results/post_analysis/",
         "results/publication_figures/main/",
         "results/publication_figures/tad_plots_multidataset/",
         "results/publication_figures/tad_plots_multiwindowsize/",
-        # expand(
-        #     'results/plots/{source}/{tad_parameter}/{filter}/',
-        #     source=hic_sources,
-        #     tad_parameter=config['window_size_list'],
-        #     filter=config['snp_filters'].keys(),
-        # ),
-        # expand(
-        #     'results/reports/report.{source}.{tad_parameter}.{filter}.pdf',
-        #     source=hic_sources,
-        #     tad_parameter=config['window_size_list'],
-        #     filter=config['snp_filters'].keys())
+
+
+# Optional targets:
+# expand(
+#     'results/hic_files/plots/{source}/heatmap.chr{chromosome}.pdf',
+#     source=hic_sources,
+#     chromosome=config['chromosome_list'],
+# ),
+# 'results/tads/plots/',
+# expand(
+#     'results/plots/{source}/{tad_parameter}/{filter}/',
+#     source=hic_sources,
+#     tad_parameter=config['window_size_list'],
+#     filter=config['snp_filters'].keys(),
+# ),
+# expand(
+#     'results/reports/report.{source}.{tad_parameter}.{filter}.pdf',
+#     source=hic_sources,
+#     tad_parameter=config['window_size_list'],
+#     filter=config['snp_filters'].keys())
 
 
 rule extract_cool_from_mcool:
@@ -257,7 +260,7 @@ rule include_tad_relations:
     conda:
         "envs/python_stack.yaml"
     resources:
-        notebook_slots=1
+        notebook_slots=1,
     notebook:
         "notebooks/IncludeTADRelations.ipynb"
 
@@ -322,7 +325,7 @@ rule compute_enrichments:
     conda:
         "envs/python_stack.yaml"
     resources:
-        notebook_slots=1
+        notebook_slots=1,
     notebook:
         "notebooks/ComputeTADEnrichments.ipynb"
 
@@ -340,7 +343,7 @@ rule create_figures:
     conda:
         "envs/python_stack.yaml"
     resources:
-        notebook_slots=1
+        notebook_slots=1,
     notebook:
         "notebooks/CreateFigures.ipynb"
 
