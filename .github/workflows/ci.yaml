@@ -27,6 +27,23 @@ jobs:
       - name: Run snakefmt check
         run: uv run snakefmt --check .
 
+      - name: Validate experiment configs against schema
+        run: |
+          uv run python -c "
+          import glob, os, yaml, jsonschema
+          schema = yaml.safe_load(open('config/config.schema.yaml'))
+          base = yaml.safe_load(open('config/base.yaml'))
+          for exp_file in glob.glob('config/experiments/*.yaml'):
+              exp = yaml.safe_load(open(exp_file))
+              merged = {**base, **exp}
+              merged['parameters'] = {**base['parameters'], **exp.get('parameters', {})}
+              merged['experiment'] = os.path.basename(exp_file).replace('.yaml', '')
+              jsonschema.validate(merged, schema)
+          "
+
+      - name: Run Snakemake dry-run
+        run: uv run snakemake --config experiment=test_dummy -n
+
   # test:
   #   runs-on: ubuntu-latest
   #   defaults:
