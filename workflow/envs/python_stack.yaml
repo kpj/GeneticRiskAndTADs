@@ -5,6 +5,7 @@ channels:
 dependencies:
   # Misc dependencies
   - zstd=1.5.7
+  - ucsc-bigbednameditems=482
 
   # Python stuff
   - python==3.10
