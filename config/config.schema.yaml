@@ -61,7 +61,6 @@ properties:
         required:
             - disgenet
             - gwascatalog
-            - disease_ontology
             - exp_factor_ontology
             - sequence_ontology
             - dbsnp_hg19
@@ -97,6 +96,20 @@ properties:
                 description: When referring to data from a multi-resolution dataset, use the format SAMPLEID__RESOLUTION (e.g., 4DNFIXGAEPB6__10000).
             snp_majority_vote_border_fraction_threshold:
                 type: number
+            snp_majority_vote_narrow:
+                type: object
+                properties:
+                    tad_parameter_range:
+                        type: array
+                        items:
+                            type: integer
+                    border_fraction_threshold:
+                        type: number
+                required:
+                    - tad_parameter_range
+                    - border_fraction_threshold
+            supplementary_tad_parameter:
+                type: integer
             window_aggregation:
                 type: object
                 properties:

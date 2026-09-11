@@ -35,6 +35,10 @@ parameters:
     enrichment_distribution: hypergeom # binom, hypergeom
     enrichment_null_model: base_sample # base_sample, snp_sample
     snp_majority_vote_border_fraction_threshold: 0.3
+    snp_majority_vote_narrow:
+        tad_parameter_range: [9, 10, 11, 12, 13]
+        border_fraction_threshold: 0.5
+    supplementary_tad_parameter: 10
     window_aggregation:
         disease_fraction_threshold: 0.5
         window_size_list: null
