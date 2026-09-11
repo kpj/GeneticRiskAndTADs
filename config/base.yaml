@@ -20,7 +20,7 @@ input_files:
     disease_ontology: "resources/doid.owl.zst"
     exp_factor_ontology: "resources/efo_v3.86.0.owl.zst"
     sequence_ontology: "resources/so_r2024-11-18.owl.zst"
-    dbsnp_hg19: "https://hgdownload.soe.ucsc.edu/gbdb/hg19/snp/dbSnp155Common.bb"
+    dbsnp_hg19: "https://hgdownload-euro.soe.ucsc.edu/gbdb/hg19/snp/dbSnp155Common.bb"
 
 annotation_sources:
     - hg19
