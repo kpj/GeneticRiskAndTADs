@@ -29,6 +29,8 @@ wheels/
 .snakemake/
 results/
 cluster_data/
+*.sqlite
+*.pdf
 
 # System
 .DS_Store
