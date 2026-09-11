@@ -12,6 +12,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pandas>=3.0.5",
+    "pandera>=0.20.0",
+    "pytest>=9.1.1",
     "ruff>=0.15.9",
     "snakefmt>=1.0.0",
 ]
@@ -36,3 +39,8 @@ extend-ignore = ["E203", "E501"]
 [tool.snakefmt]
 line_length = 88
 include = '\.smk$|^Snakefile'
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
