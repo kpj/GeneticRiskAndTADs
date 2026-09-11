@@ -13,6 +13,7 @@ def maybe_install_r_package(package_name: str) -> None:
                 install.packages("{package_name}", repos = "https://cloud.r-project.org")
             }}
         """,
+        _fg=True,
     )
 
 

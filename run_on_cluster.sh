@@ -6,7 +6,7 @@ bsub \
 snakemake \
   --profile lsf \
   -pr \
-  --use-conda \
+  --software-deployment-method conda \
   --restart-times 3 \
   --cores 100 \
   --local-cores 1 \

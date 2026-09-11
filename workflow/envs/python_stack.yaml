@@ -47,3 +47,7 @@ dependencies:
 
   # R dependencies (called from Python)
   - r=4.4
+  - r-matrixstats
+  - r-tibble
+  - r-ggplot2
+  - r-reshape2

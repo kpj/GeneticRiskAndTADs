@@ -1,8 +1,8 @@
 name: r_stack
 channels:
-  - defaults
   - conda-forge
-  - r
+  - bioconda
+  - nodefaults
 dependencies:
   - r=4.5
   - r-rmarkdown=2.30
