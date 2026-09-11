@@ -28,6 +28,7 @@ wheels/
 # Snakemake
 .snakemake/
 results/
+cluster_data/
 
 # System
 .DS_Store
