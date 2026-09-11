@@ -80,6 +80,6 @@ def cool_input_for_source_wildcard(source: str):
             raise ValueError(
                 f"Sample '{base}' is .mcool but '{source}' has no '__<resolution>' suffix."
             )
-        return f"results/hic_files/cool/{source}.cool"
+        return f"{RESULTS_DIR}/hic_files/cool/{source}.cool"
     else:
         return url_wrapper(src)

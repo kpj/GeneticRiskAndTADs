@@ -1,0 +1,39 @@
+tad_borders: # format: [in-distance, out-distance] relative to (both) TAD ends
+    10in: [10000, 0]
+    20in: [20000, 0]
+    50in: [50000, 0]
+    100in: [100000, 0]
+    150in: [150000, 0]
+    200in: [200000, 0]
+    300in: [300000, 0]
+
+snp_filters:
+    nofilter: null
+    exonic: 'variant_group_{genome_assembly} == "exonic"'
+    intronic: 'variant_group_{genome_assembly} == "intronic"'
+    intergenic: 'variant_group_{genome_assembly} == "intergenic"'
+    nonexonic: 'variant_group_{genome_assembly} != "exonic"'
+
+input_files:
+    disgenet: "resources/curated_variant_disease_associations.tsv.zst"
+    gwascatalog: "resources/gwas_catalog_v1.0.2-associations_e115_r2025-12-22.tsv.zst"
+    disease_ontology: "resources/doid.owl.zst"
+    exp_factor_ontology: "resources/efo_v3.86.0.owl.zst"
+    sequence_ontology: "resources/so_r2024-11-18.owl.zst"
+    dbsnp_hg19: "https://hgdownload.soe.ucsc.edu/gbdb/hg19/snp/dbSnp155Common.bb"
+
+annotation_sources:
+    - hg19
+    - hg38
+
+parameters:
+    associated_gene_source: mapped # reported, mapped
+    allow_snp_multiplicity_in_enrichment: false
+    gwas_odds_ratio_threshold: null
+    enrichment_distribution: hypergeom # binom, hypergeom
+    enrichment_null_model: base_sample # base_sample, snp_sample
+    snp_majority_vote_border_fraction_threshold: 0.3
+    window_aggregation:
+        disease_fraction_threshold: 0.5
+        window_size_list: null
+        snp_count_threshold_list: [0, 2, 5, 7, 10, 15, 20, 30, 40, 50]

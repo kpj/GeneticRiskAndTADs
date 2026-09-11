@@ -17,9 +17,10 @@ cd ..
 # plot pipeline overview(s)
 if [ "$PLOT" = true ]; then
     for graph_type in dag rulegraph filegraph; do
-        uv run snakemake --config configfile="tests/config_dummy.yaml" --forceall --$graph_type | dot -Tpdf > "tests/test_$graph_type.pdf"
+        uv run snakemake --config experiment=test_dummy --forceall --$graph_type | dot -Tpdf > "tests/test_$graph_type.pdf"
     done
 fi
 
 # execute pipeline
-uv run snakemake --config configfile="tests/config_dummy.yaml" --jobs 1 --software-deployment-method conda --resources hdf5_lock=1 "$@"
+uv run snakemake --config experiment=test_dummy --jobs 1 --software-deployment-method conda --resources hdf5_lock=1 "$@"
+

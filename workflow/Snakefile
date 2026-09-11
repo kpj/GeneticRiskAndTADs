@@ -1,17 +1,18 @@
 from snakemake.utils import validate
 
 # setup
-if "configfile" in config:
+if "experiment" not in config:
+    raise ValueError(
+        "No experiment specified! Please provide an experiment name via '--config experiment=<name>' "
+        "or run via './run.sh <experiment>'."
+    )
 
-    # user specified different config file via '--config configfile=path'
-    configfile: config["configfile"]
-
-else:
-
-    configfile: "config/config.yaml"
-
+configfile: "config/base.yaml"
+configfile: f"config/experiments/{config['experiment']}.yaml"
 
 validate(config, "../config/config.schema.yaml")
+
+RESULTS_DIR = f"results/{config['experiment']}"
 
 
 include: "rules/common.smk"
@@ -52,12 +53,12 @@ hic_sources = generate_data_source_list(
 # rule definitions
 rule all:
     input:
-        "results/results/final_enr.csv.gz",
-        "results/results/database_statistics/",
-        "results/post_analysis/",
-        "results/publication_figures/main/",
-        "results/publication_figures/tad_plots_multidataset/",
-        "results/publication_figures/tad_plots_multiwindowsize/",
+        RESULTS_DIR + "/results/final_enr.csv.gz",
+        RESULTS_DIR + "/results/database_statistics/",
+        RESULTS_DIR + "/post_analysis/",
+        RESULTS_DIR + "/publication_figures/main/",
+        RESULTS_DIR + "/publication_figures/tad_plots_multidataset/",
+        RESULTS_DIR + "/publication_figures/tad_plots_multiwindowsize/",
 
 
 # Optional targets:
@@ -84,7 +85,7 @@ rule extract_cool_from_mcool:
     input:
         mcool=lambda wc: sample_url_from_source_wildcard(wc.source),
     output:
-        cool="results/hic_files/cool/{source}.cool",
+        cool=RESULTS_DIR + "/hic_files/cool/{source}.cool",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -98,7 +99,7 @@ rule extract_count_matrices:
     input:
         fname=lambda wc: cool_input_for_source_wildcard(wc.source),
     output:
-        fname_matrix="results/hic_files/counts/{source}/{chromosome}/matrix.csv",
+        fname_matrix=RESULTS_DIR + "/hic_files/counts/{source}/{chromosome}/matrix.csv",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -112,7 +113,7 @@ rule gather_input_information:
     input:
         fname_list=[url_wrapper(config["samples"][hic]) for hic in hic_sources_raw],
     output:
-        fname="results/hic_files/info.csv",
+        fname=RESULTS_DIR + "/hic_files/info.csv",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -125,7 +126,7 @@ rule gather_input_information:
 
 rule install_extra_dependencies:
     output:
-        touch("results/dependencies/extra_dependencies_installed.marker"),
+        touch(RESULTS_DIR + "/dependencies/extra_dependencies_installed.marker"),
     conda:
         "envs/python_stack.yaml"
     script:
@@ -134,12 +135,12 @@ rule install_extra_dependencies:
 
 rule visualize_count_matrix:
     input:
-        fname_matrix="results/hic_files/counts/{source}/{chromosome}/matrix.csv",
+        fname_matrix=RESULTS_DIR + "/hic_files/counts/{source}/{chromosome}/matrix.csv",
     output:
-        fname_heatmap="results/hic_files/plots/{source}/heatmap.chr{chromosome}.pdf",
+        fname_heatmap=RESULTS_DIR + "/hic_files/plots/{source}/heatmap.chr{chromosome}.pdf",
     log:
         notebook=(
-            "results/notebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb"
+            RESULTS_DIR + "/notebooks/VisualizeContactMatrix.{source}.{chromosome}.ipynb"
         ),
     conda:
         "envs/python_stack.yaml"
@@ -151,22 +152,22 @@ rule visualize_count_matrix:
 
 rule compute_tads:
     input:
-        fname="results/hic_files/counts/{source}/{chromosome}/matrix.csv",
-        fname_info="results/hic_files/info.csv",
-        fname_dep_marker="results/dependencies/extra_dependencies_installed.marker",
+        fname=RESULTS_DIR + "/hic_files/counts/{source}/{chromosome}/matrix.csv",
+        fname_info=RESULTS_DIR + "/hic_files/info.csv",
+        fname_dep_marker=RESULTS_DIR + "/dependencies/extra_dependencies_installed.marker",
     output:
-        fname="results/tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv",
+        fname=RESULTS_DIR + "/tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv",
         topdom_input=temp(
-            "results/tads/data/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv"
+            RESULTS_DIR + "/tads/data/{source}/{tad_parameter}/topdom/topdom_input.chr{chromosome}.tsv"
         ),
-        topdom_output="results/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed",
+        topdom_output=RESULTS_DIR + "/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}.bed",
     conda:
         "envs/python_stack.yaml"
     resources:
         mem_mb=30_000,
     params:
         prefix=(
-            "results/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}"
+            RESULTS_DIR + "/tads/data/{source}/{tad_parameter}/topdom/topdom.chr{chromosome}"
         ),
     script:
         "scripts/compute_tads.py"
@@ -175,12 +176,12 @@ rule compute_tads:
 rule aggregate_tads:
     input:
         fname_list=expand(
-            "results/tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv",
+            RESULTS_DIR + "/tads/data/{source}/{tad_parameter}/tads.chr{chromosome}.csv",
             chromosome=config["chromosome_list"],
             allow_missing=True,
         ),
     output:
-        fname="results/tads/data/tads.{source}.{tad_parameter}.csv",
+        fname=RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
     conda:
         "envs/python_stack.yaml"
     script:
@@ -190,14 +191,14 @@ rule aggregate_tads:
 rule compare_tad_lists:
     input:
         tad_fname_list=expand(
-            "results/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
             source=hic_sources,
             tad_parameter=actual_window_size_list,
         ),
     output:
-        outdir=directory("results/tads/plots/"),
+        outdir=directory(RESULTS_DIR + "/tads/plots/"),
     log:
-        notebook="results/notebooks/TADListComparison.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/TADListComparison.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -214,11 +215,11 @@ rule provide_input_files:
         so_fname=url_wrapper(config["input_files"]["sequence_ontology"]),
         dbsnp_hg19_fname=url_wrapper(config["input_files"]["dbsnp_hg19"]),
     output:
-        disgenet_fname="results/input/disgenet.tsv",
-        gwascatalog_fname="results/input/gwas_catalog.tsv",
-        efo_fname="results/input/efo.owl",
-        so_fname="results/input/so.owl",
-        dbsnp_hg19_fname="results/input/dbSnp155Common_hg19.bb",
+        disgenet_fname=RESULTS_DIR + "/input/disgenet.tsv",
+        gwascatalog_fname=RESULTS_DIR + "/input/gwas_catalog.tsv",
+        efo_fname=RESULTS_DIR + "/input/efo.owl",
+        so_fname=RESULTS_DIR + "/input/so.owl",
+        dbsnp_hg19_fname=RESULTS_DIR + "/input/dbSnp155Common_hg19.bb",
     conda:
         "envs/python_stack.yaml"
     script:
@@ -227,16 +228,16 @@ rule provide_input_files:
 
 rule assemble_input_databases:
     input:
-        disgenet_fname="results/input/disgenet.tsv",
-        gwascatalog_fname="results/input/gwas_catalog.tsv",
-        efo_fname="results/input/efo.owl",
-        so_fname="results/input/so.owl",
-        dbsnp_hg19_fname="results/input/dbSnp155Common_hg19.bb",
+        disgenet_fname=RESULTS_DIR + "/input/disgenet.tsv",
+        gwascatalog_fname=RESULTS_DIR + "/input/gwas_catalog.tsv",
+        efo_fname=RESULTS_DIR + "/input/efo.owl",
+        so_fname=RESULTS_DIR + "/input/so.owl",
+        dbsnp_hg19_fname=RESULTS_DIR + "/input/dbSnp155Common_hg19.bb",
     output:
-        db_fname="results/databases/initial.csv",
-        raw_veps="results/databases/vep.csv",
+        db_fname=RESULTS_DIR + "/databases/initial.csv",
+        raw_veps=RESULTS_DIR + "/databases/vep.csv",
     log:
-        notebook="results/notebooks/AssembleInputDatabases.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/AssembleInputDatabases.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -247,15 +248,15 @@ rule assemble_input_databases:
 
 rule include_tad_relations:
     input:
-        tads_fname="results/tads/data/tads.{source}.{tad_parameter}.csv",
-        db_fname="results/databases/initial.csv",
-        info_fname="results/hic_files/info.csv",
+        tads_fname=RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
+        db_fname=RESULTS_DIR + "/databases/initial.csv",
+        info_fname=RESULTS_DIR + "/hic_files/info.csv",
     output:
-        db_fname="results/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
-        tad_length_plot="results/tads/length_plots/tad_length_histogram.{source}.{tad_parameter}.pdf",
+        db_fname=RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
+        tad_length_plot=RESULTS_DIR + "/tads/length_plots/tad_length_histogram.{source}.{tad_parameter}.pdf",
     log:
         notebook=(
-            "results/notebooks/IncludeTADRelations.{source}.{tad_parameter}.ipynb"
+            RESULTS_DIR + "/notebooks/IncludeTADRelations.{source}.{tad_parameter}.ipynb"
         ),
     conda:
         "envs/python_stack.yaml"
@@ -268,15 +269,15 @@ rule include_tad_relations:
 rule snp_majority_vote:
     input:
         fname_list=expand(
-            "results/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
             tad_parameter=actual_window_size_list,
             allow_missing=True,
         ),
     output:
-        fname="results/databases/per_source/snpdb.{source}.0.csv",
-        fname_tads="results/tads/data/tads.{source}.0.csv",  # empty dummy
+        fname=RESULTS_DIR + "/databases/per_source/snpdb.{source}.0.csv",
+        fname_tads=RESULTS_DIR + "/tads/data/tads.{source}.0.csv",  # empty dummy
     log:
-        notebook="results/notebooks/SNPMajorityVote.{source}.0.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/SNPMajorityVote.{source}.0.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -293,15 +294,15 @@ rule snp_majority_vote:
 rule snp_majority_vote_narrow:
     input:
         fname_list=expand(
-            "results/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
             tad_parameter=actual_window_size_list,
             allow_missing=True,
         ),
     output:
-        fname="results/databases/per_source/snpdb.{source}.1.csv",
-        fname_tads="results/tads/data/tads.{source}.1.csv",  # empty dummy
+        fname=RESULTS_DIR + "/databases/per_source/snpdb.{source}.1.csv",
+        fname_tads=RESULTS_DIR + "/tads/data/tads.{source}.1.csv",  # empty dummy
     log:
-        notebook="results/notebooks/SNPMajorityVote.{source}.1.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/SNPMajorityVote.{source}.1.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -315,13 +316,13 @@ rule snp_majority_vote_narrow:
 
 rule compute_enrichments:
     input:
-        db_fname="results/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
-        tads_fname="results/tads/data/tads.{source}.{tad_parameter}.csv",
-        info_fname="results/hic_files/info.csv",
+        db_fname=RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
+        tads_fname=RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
+        info_fname=RESULTS_DIR + "/hic_files/info.csv",
     output:
-        fname="results/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
+        fname=RESULTS_DIR + "/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
     log:
-        notebook="results/notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.{filter}.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/ComputeTADEnrichments.{source}.{tad_parameter}.{filter}.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -332,13 +333,13 @@ rule compute_enrichments:
 
 rule create_figures:
     input:
-        db_fname="results/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
-        enr_fname="results/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
+        db_fname=RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
+        enr_fname=RESULTS_DIR + "/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
     output:
-        outdir=directory("results/plots/{source}/{tad_parameter}/{filter}/"),
+        outdir=directory(RESULTS_DIR + "/plots/{source}/{tad_parameter}/{filter}/"),
     log:
         notebook=(
-            "results/notebooks/CreateFigures.{source}.{tad_parameter}.{filter}.ipynb"
+            RESULTS_DIR + "/notebooks/CreateFigures.{source}.{tad_parameter}.{filter}.ipynb"
         ),
     conda:
         "envs/python_stack.yaml"
@@ -350,9 +351,9 @@ rule create_figures:
 
 rule create_report:
     input:
-        fname_enr="results/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
+        fname_enr=RESULTS_DIR + "/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
     output:
-        "results/reports/report.{source}.{tad_parameter}.{filter}.pdf",
+        RESULTS_DIR + "/reports/report.{source}.{tad_parameter}.{filter}.pdf",
     conda:
         "envs/r_stack.yaml"
     script:
@@ -362,21 +363,21 @@ rule create_report:
 rule aggregate_results:
     input:
         database_files=expand(
-            "results/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv",
             source=hic_sources,
             tad_parameter=config["window_size_list"],
         ),
         enrichment_files=expand(
-            "results/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
+            RESULTS_DIR + "/enrichments/results.{source}.{tad_parameter}.{filter}.csv",
             source=hic_sources,
             tad_parameter=config["window_size_list"],
             filter=config["snp_filters"].keys(),
         ),
     output:
-        fname_data="results/results/final_data.csv.gz",
-        fname_enr="results/results/final_enr.csv.gz",
+        fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
+        fname_enr=RESULTS_DIR + "/results/final_enr.csv.gz",
     log:
-        notebook="results/notebooks/AggregateResults.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/AggregateResults.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -387,16 +388,16 @@ rule aggregate_results:
 
 rule compute_database_statistics:
     input:
-        fname="results/results/final_data.csv.gz",
+        fname=RESULTS_DIR + "/results/final_data.csv.gz",
         tad_fname_list=expand(
-            "results/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
             source=hic_sources,
             tad_parameter=actual_window_size_list,
         ),
     output:
-        outdir=directory("results/results/database_statistics/"),
+        outdir=directory(RESULTS_DIR + "/results/database_statistics/"),
     log:
-        notebook="results/notebooks/DatabaseStatistics.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/DatabaseStatistics.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -407,12 +408,12 @@ rule compute_database_statistics:
 
 rule multi_run_post_analysis:
     input:
-        fname_data="results/results/final_data.csv.gz",
-        fname_enr="results/results/final_enr.csv.gz",
+        fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
+        fname_enr=RESULTS_DIR + "/results/final_enr.csv.gz",
     output:
-        outdir=directory("results/post_analysis/"),
+        outdir=directory(RESULTS_DIR + "/post_analysis/"),
     log:
-        notebook="results/notebooks/MultiRunPostAnalysis.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/MultiRunPostAnalysis.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -423,17 +424,17 @@ rule multi_run_post_analysis:
 
 rule publication_figures:
     input:
-        fname_data="results/results/final_data.csv.gz",
-        fname_enr="results/results/final_enr.csv.gz",
+        fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
+        fname_enr=RESULTS_DIR + "/results/final_enr.csv.gz",
         sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
-        sketch_tadfile="results/tads/data/tads.{source}.{tad_parameter}.csv".format(
+        sketch_tadfile=(RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv").format(
             source=config["sketch"]["data_source"],
             tad_parameter=config["sketch"]["window_size"],
         ),
     output:
-        outdir=directory("results/publication_figures/main/"),
+        outdir=directory(RESULTS_DIR + "/publication_figures/main/"),
     log:
-        notebook="results/notebooks/PublicationFigures.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/PublicationFigures.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -445,21 +446,21 @@ rule publication_figures:
 
 rule supplementary_tadplots_multidataset:
     input:
-        fname_data="results/results/final_data.csv.gz",
+        fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
         sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
-        sketch_tadfile="results/tads/data/tads.{source}.{tad_parameter}.csv".format(
+        sketch_tadfile=(RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv").format(
             source=config["sketch"]["data_source"],
             tad_parameter=config["sketch"]["window_size"],
         ),
         tad_fname_list=expand(
-            "results/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
             source=hic_sources,
             tad_parameter=10,
         ),
     output:
-        outdir=directory("results/publication_figures/tad_plots_multidataset/"),
+        outdir=directory(RESULTS_DIR + "/publication_figures/tad_plots_multidataset/"),
     log:
-        notebook="results/notebooks/Supplementaries_TADPlots.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/Supplementaries_TADPlots.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:
@@ -472,21 +473,21 @@ rule supplementary_tadplots_multidataset:
 
 rule supplementary_tadplots_multiwindowsize:
     input:
-        fname_data="results/results/final_data.csv.gz",
+        fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
         sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
-        sketch_tadfile="results/tads/data/tads.{source}.{tad_parameter}.csv".format(
+        sketch_tadfile=(RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv").format(
             source=config["sketch"]["data_source"],
             tad_parameter=config["sketch"]["window_size"],
         ),
         tad_fname_list=expand(
-            "results/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
             source=config["parameters"]["main_dataset"],
             tad_parameter=actual_window_size_list,
         ),
     output:
-        outdir=directory("results/publication_figures/tad_plots_multiwindowsize/"),
+        outdir=directory(RESULTS_DIR + "/publication_figures/tad_plots_multiwindowsize/"),
     log:
-        notebook="results/notebooks/Supplementaries_TADPlots.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/Supplementaries_TADPlots.ipynb",
     conda:
         "envs/python_stack.yaml"
     resources:

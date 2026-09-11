@@ -3,6 +3,9 @@ $schema: "https://json-schema.org/draft/2020-12/schema"
 type: object
 
 properties:
+    experiment:
+        type: string
+        description: Unique experiment identifier used to namespace results under results/<experiment>/.
     configfile:
         type: string
     samples:
@@ -131,6 +134,7 @@ properties:
                 type: integer
 additionalProperties: false
 required:
+    - experiment
     - samples
     - chromosome_list
     - window_size_list
