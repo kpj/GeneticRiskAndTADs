@@ -1,0 +1,92 @@
+samples:
+    # GM12878 (B-lymphocyte)
+    4DNFIXP4QG5B: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/d6abea45-b0bb-4154-9854-1d3075b98097/4DNFIXP4QG5B.mcool
+    # K562 (Erythroleukemia)
+    4DNFI18UHVRO: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/230ad652-0232-47f2-97ef-296c7a040bd9/4DNFI18UHVRO.mcool
+    # H1-hESC (Embryonic stem cell)
+    4DNFI7JNCNFB: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/3e2cf5a3-7f2a-4e52-8cc4-201672d9e6cb/4DNFI7JNCNFB.mcool
+    # HFFc6 (Tier 1 foreskin fibroblast)
+    4DNFIB59T7NN: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/bd06e6c5-765f-4660-8b1c-23b681bcfff0/4DNFIB59T7NN.mcool
+    # Heart left ventricle (Primary human tissue)
+    4DNFISWHXA16: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/b92508a7-8b2a-443b-9636-07fa82a7a59f/4DNFISWHXA16.mcool
+    # Heart left atrium (Primary human tissue)
+    4DNFIBNXTSV4: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/663c8259-fe83-434c-96bc-a9c8bb8487f8/4DNFIBNXTSV4.mcool
+    # WTC-11 differentiated to cardiac muscle cell
+    4DNFIL2ODN92: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/e3154d8c-2486-4868-81ab-d3c012a1d301/4DNFIL2ODN92.mcool
+    # H1-hESC differentiated to definitive endoderm
+    4DNFIW8IXCX1: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/4c1a3f71-5171-483c-b472-f47e81c943ae/4DNFIW8IXCX1.mcool
+    # CyT49 differentiated to pancreatic endoderm
+    4DNFIK3NF6R2: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/629aed97-f44e-48e5-be23-0ad32b3acc91/4DNFIK3NF6R2.mcool
+    # Olfactory receptor cell (Human OSN)
+    4DNFI7V61PXA: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/b352c108-b675-40fc-ab1b-ea66a8e89eb9/4DNFI7V61PXA.mcool
+    # HUVEC (Endothelial cell)
+    4DNFIRMZ7QTE: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/6446ec65-4604-49f5-afc0-05b6739185fd/4DNFIRMZ7QTE.mcool
+    # HepG2 (Liver / Hepatocellular)
+    4DNFIS6HAUPP: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/9f5fc348-f0f1-4074-b9dd-5f59e9d7ddf0/4DNFIS6HAUPP.mcool
+    # IMR-90 (Lung fibroblast)
+    4DNFIJTOIGOI: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/b4939d95-4121-4f86-9cc8-29a34eb834ef/4DNFIJTOIGOI.mcool
+    # HeLa-S3 (Epithelial cell)
+    4DNFIBM9QCFG: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/8366b542-5bcd-4cbf-88f8-deace51dd74f/4DNFIBM9QCFG.mcool
+    # HAP-1 (Near-haploid CML cell line)
+    4DNFINSKEZND: https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/90af7e5e-5f80-47ff-a227-509079b442bd/4DNFINSKEZND.mcool
+
+mcool_resolutions:
+    4DNFIXP4QG5B:
+        - 10000
+    4DNFI18UHVRO:
+        - 10000
+    4DNFI7JNCNFB:
+        - 10000
+    4DNFIB59T7NN:
+        - 10000
+    4DNFISWHXA16:
+        - 10000
+    4DNFIBNXTSV4:
+        - 10000
+    4DNFIL2ODN92:
+        - 10000
+    4DNFIW8IXCX1:
+        - 10000
+    4DNFIK3NF6R2:
+        - 10000
+    4DNFI7V61PXA:
+        - 10000
+    4DNFIRMZ7QTE:
+        - 10000
+    4DNFIS6HAUPP:
+        - 10000
+    4DNFIJTOIGOI:
+        - 10000
+    4DNFIBM9QCFG:
+        - 10000
+    4DNFINSKEZND:
+        - 10000
+
+genome_versions:
+    4DNFIXP4QG5B: hg38
+    4DNFI18UHVRO: hg38
+    4DNFI7JNCNFB: hg38
+    4DNFIB59T7NN: hg38
+    4DNFISWHXA16: hg38
+    4DNFIBNXTSV4: hg38
+    4DNFIL2ODN92: hg38
+    4DNFIW8IXCX1: hg38
+    4DNFIK3NF6R2: hg38
+    4DNFI7V61PXA: hg38
+    4DNFIRMZ7QTE: hg38
+    4DNFIS6HAUPP: hg38
+    4DNFIJTOIGOI: hg38
+    4DNFIBM9QCFG: hg38
+    4DNFINSKEZND: hg38
+
+chromosome_list: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X']
+window_size_list: [10]
+
+parameters:
+    main_dataset: 4DNFIXP4QG5B__10000
+    publication_figure_tad_source_filter: "tad_source.str.contains('4DNFIXP4QG5B__10000')"
+
+sketch:
+    region: ["chr10", 3000000, 3200000]
+    data_source: 4DNFIXP4QG5B__10000
+    window_size: 10
