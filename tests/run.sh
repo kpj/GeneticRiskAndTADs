@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# ensure clean conda environment state for nested snakemake activations
+unset CONDA_SHLVL CONDA_PREFIX CONDA_DEFAULT_ENV
+
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # parse arguments

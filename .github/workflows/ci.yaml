@@ -70,9 +70,11 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          mamba-version: "*"
+          auto-activate-base: false
+          activate-environment: ""
+          channel-priority: strict
           channels: conda-forge,bioconda,nodefaults
-          python-version: "3.12"
+
 
       - name: Cache Snakemake Conda Environments
         uses: actions/cache@v4
