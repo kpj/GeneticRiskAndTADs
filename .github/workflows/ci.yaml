@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [ master, main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
+    name: Lint & Dry Run (< 1 min)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,31 +49,51 @@ jobs:
       - name: Run Snakemake dry-run
         run: uv run snakemake --config experiment=test_dummy -n
 
-  # test:
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       shell: bash -el {0}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+  test:
+    name: End-to-End Pipeline & Assertions
+    needs: lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Install uv and Python
-  #       uses: astral-sh/setup-uv@v5
-  #       with:
-  #         enable-cache: true
-  #         python-version: "3.12"
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: "3.12"
 
-  #     - name: Set up Conda/Mamba
-  #       uses: conda-incubator/setup-miniconda@v3
-  #       with:
-  #         auto-update-conda: true
-  #         mamba-version: "*"
-  #         channels: conda-forge,bioconda,nodefaults
-  #         python-version: "3.12"
+      - name: Set up Conda/Mamba
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          mamba-version: "*"
+          channels: conda-forge,bioconda,nodefaults
+          python-version: "3.12"
 
-  #     - name: Install Snakemake and plugins
-  #       run: uv sync
+      - name: Cache Snakemake Conda Environments
+        uses: actions/cache@v4
+        with:
+          path: .snakemake/conda
+          key: snakemake-conda-${{ runner.os }}-${{ hashFiles('workflow/envs/**') }}
+          restore-keys: |
+            snakemake-conda-${{ runner.os }}-
 
-  #     - name: Run tests
-  #       run: ./tests/run.sh
+      - name: Install Snakemake and plugins
+        run: uv sync
+
+      - name: Run tests
+        run: ./tests/run.sh
+
+      - name: Upload debug artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-failure-logs
+          path: |
+            .snakemake/log/
+            results/test_dummy/notebooks/
+          retention-days: 7
