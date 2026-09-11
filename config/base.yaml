@@ -30,6 +30,8 @@ parameters:
     associated_gene_source: mapped # reported, mapped
     allow_snp_multiplicity_in_enrichment: false
     gwas_odds_ratio_threshold: null
+    gwas_date_range: null # format: [min_date, max_date] (e.g. [null, "2021-02-10"])
+    gwas_date_column: "DATE ADDED TO CATALOG"
     enrichment_distribution: hypergeom # binom, hypergeom
     enrichment_null_model: base_sample # base_sample, snp_sample
     snp_majority_vote_border_fraction_threshold: 0.3

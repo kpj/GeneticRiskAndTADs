@@ -77,6 +77,15 @@ properties:
                 enum: [mapped, reported]
             allow_snp_multiplicity_in_enrichment:
                 type: boolean
+            gwas_date_range:
+                type: ["array", "null"]
+                items:
+                    type: ["string", "null"]
+                minItems: 2
+                maxItems: 2
+            gwas_date_column:
+                type: string
+                enum: ["DATE ADDED TO CATALOG", "DATE"]
             enrichment_distribution:
                 type: string
                 enum: [binom, hypergeom]

@@ -21,6 +21,7 @@ window_size_list: [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
 parameters:
     main_dataset: Rao2014-IMR90-MboI-allreps-filtered-10kb
     publication_figure_tad_source_filter: "tad_source.str.contains('Rao2014') & tad_source.str.contains('10kb')"
+    gwas_date_range: [null, "2021-02-10"]
 
 sketch:
     region: ["chr11", 123050000, 123550000]

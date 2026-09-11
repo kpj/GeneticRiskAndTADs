@@ -19,6 +19,7 @@ input_files:
 parameters:
     associated_gene_source: mapped
     allow_snp_multiplicity_in_enrichment: false
+    gwas_date_range: [null, "2021-02-10"]
     enrichment_distribution: binom
     enrichment_null_model: base_sample
     main_dataset: dummy_name
