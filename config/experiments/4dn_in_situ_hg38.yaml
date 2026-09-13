@@ -78,10 +78,6 @@ genome_versions:
     4DNFIJTOIGOI: hg38
     4DNFIBM9QCFG: hg38
     4DNFINSKEZND: hg38
-
-chromosome_list: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X']
-window_size_list: [10]
-
 parameters:
     main_dataset: 4DNFIXP4QG5B__10000
     publication_figure_tad_source_filter: "tad_source.str.contains('4DNFIXP4QG5B__10000')"
