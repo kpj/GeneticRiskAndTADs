@@ -16,7 +16,8 @@ samples:
     Selvaraj2013-GM12878-HindIII-allreps-filtered-10kb: https://usgs2.osn.mghpcc.org/cooler01/examples/hg19/Selvaraj2013-GM12878-HindIII-allreps-filtered.10kb.cool
 
 chromosome_list: ["10"]
-window_size_list: [10]
+caller_configs:
+    - "topdom_w10"
 
 tad_borders:
     20in: [20000, 0]
@@ -28,4 +29,4 @@ parameters:
 sketch:
     region: ["chr10", 3000000, 3200000]
     data_source: Dixon2015-H1_ME-HindIII-allreps-filtered-10kb
-    window_size: 10
+    caller_config: "topdom_w10"

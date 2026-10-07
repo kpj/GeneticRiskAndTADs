@@ -78,6 +78,15 @@ genome_versions:
     4DNFIJTOIGOI: hg38
     4DNFIBM9QCFG: hg38
     4DNFINSKEZND: hg38
+
+caller_configs:
+    - "topdom_w[20..40]"
+
+majority_votes:
+    majority_vote_narrow:
+        caller_configs: ["topdom_w[20..25]"]
+        border_fraction_threshold: 0.5
+
 parameters:
     main_dataset: 4DNFIXP4QG5B__10000
     publication_figure_tad_source_filter: "tad_source.str.contains('4DNFIXP4QG5B__10000')"
@@ -85,4 +94,4 @@ parameters:
 sketch:
     region: ["chr10", 3000000, 3200000]
     data_source: 4DNFIXP4QG5B__10000
-    caller_config: "topdom_w10"
+    caller_config: "topdom_w25"

@@ -2,17 +2,17 @@ rule create_figures:
     """Generate per-dataset and per-filter diagnostic enrichment plots."""
     input:
         db_fname=(
-            RESULTS_DIR + "/databases/per_source/snpdb.{source}.{tad_parameter}.csv"
+            RESULTS_DIR + "/databases/per_source/snpdb.{source}.{caller_config}.csv"
         ),
         enr_fname=(
-            RESULTS_DIR + "/enrichments/results.{source}.{tad_parameter}.{filter}.csv"
+            RESULTS_DIR + "/enrichments/results.{source}.{caller_config}.{filter}.csv"
         ),
     output:
-        outdir=directory(RESULTS_DIR + "/plots/{source}/{tad_parameter}/{filter}/"),
+        outdir=directory(RESULTS_DIR + "/plots/{source}/{caller_config}/{filter}/"),
     log:
         notebook=(
             RESULTS_DIR
-            + "/notebooks/CreateFigures.{source}.{tad_parameter}.{filter}.ipynb"
+            + "/notebooks/CreateFigures.{source}.{caller_config}.{filter}.ipynb"
         ),
     conda:
         "../envs/python_stack.yaml"
@@ -23,13 +23,13 @@ rule create_figures:
 
 
 rule create_report:
-    """Compile PDF summary report for specific source and TAD parameters."""
+    """Compile PDF summary report for specific source and TAD caller configs."""
     input:
         fname_enr=(
-            RESULTS_DIR + "/enrichments/results.{source}.{tad_parameter}.{filter}.csv"
+            RESULTS_DIR + "/enrichments/results.{source}.{caller_config}.{filter}.csv"
         ),
     output:
-        RESULTS_DIR + "/reports/report.{source}.{tad_parameter}.{filter}.pdf",
+        RESULTS_DIR + "/reports/report.{source}.{caller_config}.{filter}.pdf",
     conda:
         "../envs/r_stack.yaml"
     script:
@@ -41,9 +41,9 @@ rule compute_database_statistics:
     input:
         fname=RESULTS_DIR + "/results/final_data.csv.gz",
         tad_fname_list=expand(
-            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv",
             source=hic_sources,
-            tad_parameter=actual_window_size_list,
+            caller_config=actual_caller_configs,
         ),
     output:
         outdir=report(
@@ -86,10 +86,10 @@ rule publication_figures:
         fname_enr=RESULTS_DIR + "/results/final_enr.csv.gz",
         sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
         sketch_tadfile=(
-            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv"
+            RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv"
         ).format(
             source=config["sketch"]["data_source"],
-            tad_parameter=config["sketch"]["window_size"],
+            caller_config=config["sketch"]["caller_config"],
         ),
     output:
         outdir=report(
@@ -115,15 +115,15 @@ rule supplementary_tadplots_multidataset:
         fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
         sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
         sketch_tadfile=(
-            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv"
+            RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv"
         ).format(
             source=config["sketch"]["data_source"],
-            tad_parameter=config["sketch"]["window_size"],
+            caller_config=config["sketch"]["caller_config"],
         ),
         tad_fname_list=expand(
-            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv",
             source=hic_sources,
-            tad_parameter=config["parameters"].get("supplementary_tad_parameter", 10),
+            caller_config=config["parameters"].get("supplementary_caller_config", "topdom_w10"),
         ),
     output:
         outdir=report(
@@ -146,20 +146,20 @@ rule supplementary_tadplots_multidataset:
 
 
 rule supplementary_tadplots_multiwindowsize:
-    """Generate parameter sweep TAD figures across varied TopDom window sizes."""
+    """Generate parameter sweep TAD figures across varied TAD caller configurations."""
     input:
         fname_data=RESULTS_DIR + "/results/final_data.csv.gz",
         sketch_hicfile=cool_input_for_source_wildcard(config["sketch"]["data_source"]),
         sketch_tadfile=(
-            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv"
+            RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv"
         ).format(
             source=config["sketch"]["data_source"],
-            tad_parameter=config["sketch"]["window_size"],
+            caller_config=config["sketch"]["caller_config"],
         ),
         tad_fname_list=expand(
-            RESULTS_DIR + "/tads/data/tads.{source}.{tad_parameter}.csv",
+            RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv",
             source=config["parameters"]["main_dataset"],
-            tad_parameter=actual_window_size_list,
+            caller_config=actual_caller_configs,
         ),
     output:
         outdir=report(

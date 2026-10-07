@@ -23,4 +23,4 @@ parameters:
 sketch:
     region: ["chr11", 123050000, 123550000]
     data_source: Rao2014-IMR90-MboI-allreps-filtered-10kb
-    window_size: 10
+    caller_config: "topdom_w10"

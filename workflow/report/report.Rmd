@@ -37,7 +37,7 @@ show_figure <- function (...) {
 Wildcards:
 
 * Data source: `r snakemake@wildcards$source`
-* TAD parameter: `r snakemake@wildcards$tad_parameter`
+* Caller config: `r snakemake@wildcards$caller_config`
 * SNP filter: `r snakemake@wildcards$filter`
 
 Used chromosomes: `r snakemake@config$chromosome_list`
