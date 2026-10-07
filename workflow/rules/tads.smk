@@ -47,21 +47,27 @@ rule aggregate_tads:
         "../scripts/aggregate_tads.py"
 
 
-rule compare_tad_lists:
-    """Evaluate concordance and overlaps between TAD calls across caller configs."""
+rule compute_tad_statistics:
+    """Compute and consolidate comprehensive TAD statistics across callers and datasets."""
     input:
         tad_fname_list=expand(
             RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv",
             source=hic_sources,
             caller_config=actual_caller_configs,
         ),
+        info_fname=RESULTS_DIR + "/hic_files/info.csv",
     output:
-        outdir=directory(RESULTS_DIR + "/tads/plots/"),
+        outdir=report(
+            directory(RESULTS_DIR + "/tad_statistics/"),
+            patterns=["figures/{name}.pdf", "tables/{name}.csv"],
+            caption="../report/tad_statistics.rst",
+            category="TAD Statistics",
+        ),
     log:
-        notebook=RESULTS_DIR + "/notebooks/TADListComparison.ipynb",
+        notebook=RESULTS_DIR + "/notebooks/ComputeTADStatistics.ipynb",
     conda:
         "../envs/python_stack.yaml"
     resources:
-        mem_mb=4_000,
+        mem_mb=8_000,
     notebook:
-        "../notebooks/TADListComparison.ipynb"
+        "../notebooks/ComputeTADStatistics.ipynb"

@@ -124,3 +124,54 @@ def test_publication_figures_are_valid_pdfs(check_results_exist):
             assert header == b"%PDF", (
                 f"File does not have valid PDF magic bytes: {pdf_path}"
             )
+
+
+def test_consolidated_tad_statistics_outputs(check_results_exist):
+    """Verify that consolidated tad_statistics tables and figures are generated correctly."""
+    stats_dir = RESULTS_DIR / "tad_statistics"
+    assert stats_dir.exists(), f"tad_statistics directory missing: {stats_dir}"
+
+    tables_dir = stats_dir / "tables"
+    figures_dir = stats_dir / "figures"
+    assert tables_dir.exists(), f"tad_statistics/tables missing: {tables_dir}"
+    assert figures_dir.exists(), f"tad_statistics/figures missing: {figures_dir}"
+
+    # Verify tables
+    summary_path = tables_dir / "tad_summary_metrics.csv"
+    assert summary_path.exists(), f"Summary metrics table missing: {summary_path}"
+    df_sum = pd.read_csv(summary_path)
+    assert len(df_sum) == 4, f"Expected 4 caller rows in summary table, got {len(df_sum)}"
+    assert {"num_tads", "median_len_bp", "genome_coverage_pct", "total_tad_bp"}.issubset(df_sum.columns)
+
+    jaccard_path = tables_dir / "tad_concordance_matrix.csv"
+    assert jaccard_path.exists(), f"Concordance matrix missing: {jaccard_path}"
+    df_jaccard = pd.read_csv(jaccard_path, index_col=0)
+    assert df_jaccard.shape == (4, 4), f"Expected 4x4 matrix, got {df_jaccard.shape}"
+    for i in range(4):
+        assert df_jaccard.iloc[i, i] == 1.0
+
+    footprint_path = tables_dir / "boundary_genomic_footprint.csv"
+    assert footprint_path.exists(), f"Boundary footprint missing: {footprint_path}"
+    df_footprint = pd.read_csv(footprint_path)
+    assert len(df_footprint) > 0
+
+    assert (tables_dir / "chromosome_coverage.csv").exists()
+    assert (tables_dir / "inter_tad_gaps.csv.gz").exists()
+
+    # Verify figures
+    expected_figures = [
+        "tad_counts_per_dataset.pdf",
+        "tad_density_per_chromosome.pdf",
+        "tad_length_distributions.pdf",
+        "tad_median_lengths.pdf",
+        "inter_tad_gap_distributions.pdf",
+        "chromosome_coverage.pdf",
+        "boundary_genomic_footprint.pdf",
+        "caller_concordance_clustermap.pdf",
+    ]
+    for fig_name in expected_figures:
+        fig_path = figures_dir / fig_name
+        assert fig_path.exists(), f"Expected figure missing: {fig_path}"
+        assert fig_path.stat().st_size > 500, f"Figure unexpectedly small: {fig_path}"
+        with open(fig_path, "rb") as f:
+            assert f.read(4) == b"%PDF", f"Invalid PDF header: {fig_path}"

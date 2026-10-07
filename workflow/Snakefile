@@ -39,6 +39,7 @@ localrules:
     provide_input_files,
     include_tad_relations,
     compute_enrichments,
+    compute_tad_statistics,
     create_figures,
     create_report,
 
@@ -89,6 +90,7 @@ rule all:
     input:
         RESULTS_DIR + "/results/final_enr.csv.gz",
         RESULTS_DIR + "/results/database_statistics/",
+        RESULTS_DIR + "/tad_statistics/",
         RESULTS_DIR + "/post_analysis/",
         RESULTS_DIR + "/publication_figures/main/",
         RESULTS_DIR + "/publication_figures/tad_plots_multidataset/",
