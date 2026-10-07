@@ -23,8 +23,13 @@ report: "report/workflow.rst"
 include: "rules/common.smk"
 
 
-wildcard_constraints:
-    tad_parameter=r"\d+",  # contains window size which must be an integer
+import sys
+import re
+from pathlib import Path
+
+# Add scripts directory to sys.path to import callers parser
+sys.path.insert(0, str(Path(workflow.basedir) / "scripts"))
+from callers import expand_caller_configs, resolve_consensus_caller_configs
 
 
 localrules:
@@ -38,15 +43,38 @@ localrules:
     create_report,
 
 
-actual_window_size_list = list(
-    set(config["window_size_list"]) - {0, 1}
-)  # remove majority vote for rules which need actual TADs
+actual_caller_configs = expand_caller_configs(config["caller_configs"])
+
+# Resolve configured majority voting schemes
+majority_votes_config = config.get("majority_votes", {})
+resolved_majority_votes = {}
+for name, vote_cfg in majority_votes_config.items():
+    selector = vote_cfg.get("caller_configs", "all")
+    resolved_callers = resolve_consensus_caller_configs(selector, actual_caller_configs)
+    if not resolved_callers:
+        continue
+    resolved_majority_votes[name] = {
+        **vote_cfg,
+        "resolved_caller_configs": resolved_callers,
+    }
+
+consensus_configs = list(resolved_majority_votes.keys())
+all_caller_configs = consensus_configs + actual_caller_configs
+
+consensus_id_pattern = (
+    "(?:" + "|".join(re.escape(k) for k in consensus_configs) + ")"
+    if consensus_configs
+    else r"[a-zA-Z0-9_.-]+"
+)
+
+wildcard_constraints:
+    caller_config=r"[a-zA-Z0-9_.-]+",
+    tad_parameter=r"[a-zA-Z0-9_.-]+",
+    consensus_id=consensus_id_pattern,
 
 
 ruleorder: snp_majority_vote > aggregate_tads
 ruleorder: snp_majority_vote > include_tad_relations
-ruleorder: snp_majority_vote_narrow > aggregate_tads
-ruleorder: snp_majority_vote_narrow > include_tad_relations
 
 
 hic_sources_raw = config["samples"].keys()

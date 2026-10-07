@@ -26,11 +26,27 @@ properties:
         uniqueItems: true
         items:
             type: string
-    window_size_list:
+    caller_configs:
         type: array
         uniqueItems: true
         items:
-            type: integer
+            type: string
+    majority_votes:
+        type: object
+        additionalProperties:
+            type: object
+            properties:
+                caller_configs:
+                    oneOf:
+                        - type: string
+                        - type: array
+                          items:
+                              type: string
+                border_fraction_threshold:
+                    type: number
+            required:
+                - caller_configs
+                - border_fraction_threshold
     tad_borders:
         type: object
         additionalProperties:
@@ -99,27 +115,27 @@ properties:
             snp_majority_vote_narrow:
                 type: object
                 properties:
-                    tad_parameter_range:
+                    caller_configs:
                         type: array
                         items:
-                            type: integer
+                            type: string
                     border_fraction_threshold:
                         type: number
                 required:
-                    - tad_parameter_range
+                    - caller_configs
                     - border_fraction_threshold
-            supplementary_tad_parameter:
-                type: integer
+            supplementary_caller_config:
+                type: string
             window_aggregation:
                 type: object
                 properties:
                     disease_fraction_threshold:
                         type: number
-                    window_size_list:
+                    caller_configs:
                         type: ["array", "null"]
                         uniqueItems: true
                         items:
-                            type: integer
+                            type: string
                     snp_count_threshold_list:
                         type: array
                         uniqueItems: true
@@ -136,7 +152,6 @@ properties:
             - enrichment_distribution
             - enrichment_null_model
             - main_dataset
-            - snp_majority_vote_border_fraction_threshold
             - window_aggregation
             - publication_figure_tad_source_filter
     sketch:
@@ -152,14 +167,14 @@ properties:
             data_source:
                 type: string
                 description: When referring to data from a multi-resolution dataset, use the format SAMPLEID__RESOLUTION (e.g., 4DNFIXGAEPB6__10000).
-            window_size:
-                type: integer
+            caller_config:
+                type: string
 additionalProperties: false
 required:
     - experiment
     - samples
     - chromosome_list
-    - window_size_list
+    - caller_configs
     - snp_filters
     - input_files
     - annotation_sources
