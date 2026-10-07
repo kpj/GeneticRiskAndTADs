@@ -1,50 +1,77 @@
+"""Dispatcher script for chromosome-level TAD calling across modular callers."""
+
+import sys
+from pathlib import Path
+
+# Add callers directory to sys.path
+script_dir = Path(__file__).resolve().parent
+if str(script_dir) not in sys.path:
+    sys.path.insert(0, str(script_dir))
+
 import pandas as pd
-import sh
+from callers import parse_caller_config
+from callers.topdom import run_topdom
+from callers.spectraltad import run_spectraltad
+from callers.cooltools import run_cooltools
 
 
 def main():
-    # read data
-    print("Prepare input data")
-    df_count = pd.read_csv(snakemake.input.fname, index_col=0)
-    df_info = pd.read_csv(snakemake.input.fname_info, index_col=1)
-
-    bin_size = df_info.loc[snakemake.wildcards.source, "bin_size"]
-
-    # convert to TopDom compatible format
-    df_count.insert(0, "chr", f"chr{snakemake.wildcards.chromosome}")
-    df_count.insert(1, "td_start", df_count.index)
-    df_count.insert(2, "td_end", df_count.index + bin_size)
-
-    df_count.to_csv(snakemake.output.topdom_input, sep="\t", index=False, header=False)
-
-    # run TopDom
-    print("Run TopDom")
-    cmd = """
-        TopDom::TopDom('{input}', {window_size}, outFile='{output}', debug=TRUE)
-    """.format(
-        input=snakemake.output.topdom_input,
-        window_size=snakemake.wildcards.tad_parameter,
-        output=snakemake.params.prefix,
+    caller_config = getattr(
+        snakemake.wildcards,
+        "caller_config",
+        getattr(snakemake.wildcards, "tad_parameter", None),
     )
-    sh.Rscript("--vanilla", "-e", cmd, _fg=True)
+    if not caller_config:
+        raise ValueError("Missing caller configuration wildcard (caller_config or tad_parameter)")
 
-    # extract TADs
-    df_topdom = pd.read_csv(
-        snakemake.output.topdom_output,
-        sep="\t",
-        header=None,
-        names=["chrname", "tad_start", "tad_stop", "type"],
+    parsed = parse_caller_config(caller_config)
+    caller = parsed["caller"]
+    source = snakemake.wildcards.source
+    chromosome = snakemake.wildcards.chromosome
+    fname_matrix = snakemake.input.fname
+    fname_info = snakemake.input.fname_info
+    fname_out = snakemake.output.fname
+
+    df_info = pd.read_csv(fname_info, index_col=1)
+    bin_size = int(df_info.loc[source, "bin_size"])
+
+    print(
+        f"[compute_tads] Running caller '{caller}' with config '{caller_config}' "
+        f"on source '{source}', chr{chromosome}"
     )
 
-    df_topdom = df_topdom[df_topdom["type"] == "domain"]
-
-    # save result
-    df_topdom.drop("type", axis=1, inplace=True)
-
-    df_topdom["tad_start"] = df_topdom["tad_start"].astype(int)
-    df_topdom["tad_stop"] = df_topdom["tad_stop"].astype(int)
-
-    df_topdom.to_csv(snakemake.output.fname, index=False)
+    if caller == "topdom":
+        run_topdom(
+            fname_matrix=fname_matrix,
+            bin_size=bin_size,
+            chromosome=chromosome,
+            window_size=parsed["window_size"],
+            fname_out=fname_out,
+        )
+    elif caller == "spectraltad":
+        run_spectraltad(
+            fname_matrix=fname_matrix,
+            bin_size=bin_size,
+            chromosome=chromosome,
+            levels=parsed["levels"],
+            fname_out=fname_out,
+        )
+    elif caller == "cooltools":
+        fname_cool = getattr(snakemake.input, "cool", None)
+        if not fname_cool:
+            raise ValueError(
+                "Cooler input required for cooltools caller but not provided in snakemake.input.cool"
+            )
+        run_cooltools(
+            fname_cool=fname_cool,
+            chromosome=chromosome,
+            window_bp=parsed["window_bp"],
+            fname_out=fname_out,
+        )
+    else:
+        raise ValueError(
+            f"Unsupported TAD caller '{caller}' (parsed from caller_config='{caller_config}')"
+        )
 
 
 if __name__ == "__main__":
