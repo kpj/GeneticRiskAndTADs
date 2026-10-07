@@ -3,6 +3,7 @@
 import os
 import tempfile
 from pathlib import Path
+
 import pandas as pd
 import sh
 
@@ -15,9 +16,13 @@ def run_spectraltad(
     fname_out: str,
 ) -> None:
     """Execute SpectralTAD clustering caller and extract disjoint Level 1 domains."""
-    chrom_str = f"chr{chromosome}" if not str(chromosome).startswith("chr") else str(chromosome)
+    chrom_str = (
+        f"chr{chromosome}" if not str(chromosome).startswith("chr") else str(chromosome)
+    )
 
-    print(f"[SpectralTAD] Preparing input matrix for {chrom_str} (bin_size={bin_size}, levels={levels})")
+    print(
+        f"[SpectralTAD] Preparing input matrix for {chrom_str} (bin_size={bin_size}, levels={levels})"
+    )
     df_count = pd.read_csv(fname_matrix, index_col=0)
 
     # Convert to n x (n+3) format: chr, start, end, ... contacts ...
@@ -54,7 +59,9 @@ def run_spectraltad(
         sh.Rscript("--vanilla", "-e", cmd, _fg=True)
 
         if not os.path.exists(out_tsv):
-            raise RuntimeError(f"[SpectralTAD] Expected output file not found: {out_tsv}")
+            raise RuntimeError(
+                f"[SpectralTAD] Expected output file not found: {out_tsv}"
+            )
 
         df_spectral = pd.read_csv(out_tsv, sep="\t")
 
@@ -82,7 +89,9 @@ def run_spectraltad(
             df_spectral["chrname"] = chrom_str
             df_spectral["tad_start"] = df_spectral["tad_start"].astype(int)
             df_spectral["tad_stop"] = df_spectral["tad_stop"].astype(int)
-            df_spectral = df_spectral[df_spectral["tad_stop"] > df_spectral["tad_start"]].copy()
+            df_spectral = df_spectral[
+                df_spectral["tad_stop"] > df_spectral["tad_start"]
+            ].copy()
             df_spectral = df_spectral.sort_values("tad_start").reset_index(drop=True)
 
         Path(fname_out).parent.mkdir(parents=True, exist_ok=True)

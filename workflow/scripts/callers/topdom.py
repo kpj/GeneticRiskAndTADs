@@ -3,6 +3,7 @@
 import os
 import tempfile
 from pathlib import Path
+
 import pandas as pd
 import sh
 
@@ -15,9 +16,13 @@ def run_topdom(
     fname_out: str,
 ) -> None:
     """Execute TopDom boundary caller and format domain predictions."""
-    chrom_str = f"chr{chromosome}" if not str(chromosome).startswith("chr") else str(chromosome)
+    chrom_str = (
+        f"chr{chromosome}" if not str(chromosome).startswith("chr") else str(chromosome)
+    )
 
-    print(f"[TopDom] Preparing input matrix for {chrom_str} (bin_size={bin_size}, w={window_size})")
+    print(
+        f"[TopDom] Preparing input matrix for {chrom_str} (bin_size={bin_size}, w={window_size})"
+    )
     df_count = pd.read_csv(fname_matrix, index_col=0)
 
     # Convert to TopDom compatible format (chr, start, end, ... contacts ...)

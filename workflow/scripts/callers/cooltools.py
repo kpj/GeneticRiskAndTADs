@@ -1,6 +1,7 @@
 """cooltools insulation caller adapter."""
 
 from pathlib import Path
+
 import cooler
 import cooltools
 import pandas as pd
@@ -22,10 +23,14 @@ def run_cooltools(
         elif chromosome.startswith("chr") and chromosome[3:] in clr.chromnames:
             chrom_str = chromosome[3:]
         else:
-            raise ValueError(f"Chromosome '{chromosome}' not found in cooler: {clr.chromnames}")
+            raise ValueError(
+                f"Chromosome '{chromosome}' not found in cooler: {clr.chromnames}"
+            )
 
     window_int = int(window_bp)
-    print(f"[cooltools] Computing insulation score for {chrom_str} (window_bp={window_int})")
+    print(
+        f"[cooltools] Computing insulation score for {chrom_str} (window_bp={window_int})"
+    )
 
     try:
         ins_df = cooltools.insulation(clr, [window_int])
@@ -39,21 +44,29 @@ def run_cooltools(
         if matching_cols:
             boundary_col = matching_cols[0]
         else:
-            raise KeyError(f"Expected boundary column '{boundary_col}' in cooltools output: {ins_chrom.columns}")
+            raise KeyError(
+                f"Expected boundary column '{boundary_col}' in cooltools output: {ins_chrom.columns}"
+            )
 
-    boundaries = ins_chrom[ins_chrom[boundary_col] == True].sort_values("start").reset_index(drop=True)
+    boundaries = (
+        ins_chrom[ins_chrom[boundary_col]].sort_values("start").reset_index(drop=True)
+    )
 
     domains = []
-    out_chrom = f"chr{chromosome}" if not str(chromosome).startswith("chr") else str(chromosome)
+    out_chrom = (
+        f"chr{chromosome}" if not str(chromosome).startswith("chr") else str(chromosome)
+    )
     for i in range(len(boundaries) - 1):
         d_start = int(boundaries.loc[i, "end"])
         d_stop = int(boundaries.loc[i + 1, "start"])
         if d_stop > d_start:
-            domains.append({
-                "chrname": out_chrom,
-                "tad_start": d_start,
-                "tad_stop": d_stop,
-            })
+            domains.append(
+                {
+                    "chrname": out_chrom,
+                    "tad_start": d_start,
+                    "tad_stop": d_stop,
+                }
+            )
 
     df_domains = pd.DataFrame(domains)
     if df_domains.empty:

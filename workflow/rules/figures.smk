@@ -123,7 +123,9 @@ rule supplementary_tadplots_multidataset:
         tad_fname_list=expand(
             RESULTS_DIR + "/tads/data/tads.{source}.{caller_config}.csv",
             source=hic_sources,
-            caller_config=config["parameters"].get("supplementary_caller_config", "topdom_w10"),
+            caller_config=config["parameters"].get(
+                "supplementary_caller_config", "topdom_w10"
+            ),
         ),
     output:
         outdir=report(

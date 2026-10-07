@@ -78,7 +78,9 @@ def test_all_configured_callers_and_majority_votes_present(check_results_exist):
         "cooltools_w3mb",
     }
     missing = expected_configs - configs_present
-    assert not missing, f"Expected caller configs missing from final enrichments: {missing}"
+    assert not missing, (
+        f"Expected caller configs missing from final enrichments: {missing}"
+    )
 
     # Verify per-caller TAD files exist and have non-empty domain predictions
     for cfg in ["topdom_w9", "topdom_w10", "topdom_w11", "cooltools_w3mb"]:
@@ -95,8 +97,12 @@ def test_symmetric_boundaries_computed(check_results_exist):
     df = pd.read_csv(enr_path)
 
     tad_types = set(df["TAD_type"].unique())
-    assert {"5in", "20in"}.issubset(tad_types), f"Missing asymmetric boundaries in {tad_types}"
-    assert {"10sym", "20sym"}.issubset(tad_types), f"Missing symmetric boundaries in {tad_types}"
+    assert {"5in", "20in"}.issubset(tad_types), (
+        f"Missing asymmetric boundaries in {tad_types}"
+    )
+    assert {"10sym", "20sym"}.issubset(tad_types), (
+        f"Missing symmetric boundaries in {tad_types}"
+    )
 
 
 def test_no_legacy_artifacts_exist(check_results_exist):
@@ -140,8 +146,15 @@ def test_consolidated_tad_statistics_outputs(check_results_exist):
     summary_path = tables_dir / "tad_summary_metrics.csv"
     assert summary_path.exists(), f"Summary metrics table missing: {summary_path}"
     df_sum = pd.read_csv(summary_path)
-    assert len(df_sum) == 4, f"Expected 4 caller rows in summary table, got {len(df_sum)}"
-    assert {"num_tads", "median_len_bp", "genome_coverage_pct", "total_tad_bp"}.issubset(df_sum.columns)
+    assert len(df_sum) == 4, (
+        f"Expected 4 caller rows in summary table, got {len(df_sum)}"
+    )
+    assert {
+        "num_tads",
+        "median_len_bp",
+        "genome_coverage_pct",
+        "total_tad_bp",
+    }.issubset(df_sum.columns)
 
     jaccard_path = tables_dir / "tad_concordance_matrix.csv"
     assert jaccard_path.exists(), f"Concordance matrix missing: {jaccard_path}"

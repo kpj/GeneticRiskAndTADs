@@ -54,6 +54,7 @@ def run_consensustad(
 ) -> None:
     """Aggregate predictions across multiple caller outputs using WIS."""
     import pandas as pd
+
     print(f"[ConsensusTAD] Aggregating {len(tad_files)} TAD caller files")
     all_intervals = []
     for f in tad_files:
@@ -61,12 +62,14 @@ def run_consensustad(
             continue
         df = pd.read_csv(f)
         for _, row in df.iterrows():
-            all_intervals.append({
-                "chrname": str(row["chrname"]),
-                "tad_start": int(row["tad_start"]),
-                "tad_stop": int(row["tad_stop"]),
-                "weight": 1.0,
-            })
+            all_intervals.append(
+                {
+                    "chrname": str(row["chrname"]),
+                    "tad_start": int(row["tad_start"]),
+                    "tad_stop": int(row["tad_stop"]),
+                    "weight": 1.0,
+                }
+            )
 
     df_all = pd.DataFrame(all_intervals)
     final_domains = []
@@ -80,21 +83,25 @@ def run_consensustad(
             )
             chrom_intervals = []
             for _, r in grouped_intervals.iterrows():
-                chrom_intervals.append({
-                    "chrname": chrom,
-                    "tad_start": int(r["tad_start"]),
-                    "tad_stop": int(r["tad_stop"]),
-                    "weight": float(r["recurrence"]),
-                })
+                chrom_intervals.append(
+                    {
+                        "chrname": chrom,
+                        "tad_start": int(r["tad_start"]),
+                        "tad_stop": int(r["tad_stop"]),
+                        "weight": float(r["recurrence"]),
+                    }
+                )
 
             chosen = weighted_interval_scheduling(chrom_intervals)
             final_domains.extend(chosen)
 
     df_out = pd.DataFrame(final_domains)
     if not df_out.empty:
-        df_out = df_out[["chrname", "tad_start", "tad_stop"]].sort_values(
-            ["chrname", "tad_start"]
-        ).reset_index(drop=True)
+        df_out = (
+            df_out[["chrname", "tad_start", "tad_stop"]]
+            .sort_values(["chrname", "tad_start"])
+            .reset_index(drop=True)
+        )
     else:
         df_out = pd.DataFrame(columns=["chrname", "tad_start", "tad_stop"])
 

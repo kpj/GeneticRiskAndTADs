@@ -50,7 +50,8 @@ rule snp_majority_vote:
         fname=RESULTS_DIR + "/databases/per_source/snpdb.{source}.{consensus_id}.csv",
         fname_tads=RESULTS_DIR + "/tads/data/tads.{source}.{consensus_id}.csv",  # empty dummy
     log:
-        notebook=RESULTS_DIR + "/notebooks/SNPMajorityVote.{source}.{consensus_id}.ipynb",
+        notebook=RESULTS_DIR
+        + "/notebooks/SNPMajorityVote.{source}.{consensus_id}.ipynb",
     conda:
         "../envs/python_stack.yaml"
     resources:

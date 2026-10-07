@@ -68,6 +68,7 @@ consensus_id_pattern = (
     else r"[a-zA-Z0-9_.-]+"
 )
 
+
 wildcard_constraints:
     caller_config=r"[a-zA-Z0-9_.-]+",
     tad_parameter=r"[a-zA-Z0-9_.-]+",

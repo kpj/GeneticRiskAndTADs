@@ -32,7 +32,9 @@ def expand_caller_token(token: Union[str, int]) -> List[str]:
             f"Invalid range in token '{token_str}': start ({start}) cannot exceed end ({end}) with positive step ({step})."
         )
     if step <= 0:
-        raise ValueError(f"Invalid range step in token '{token_str}': step must be positive.")
+        raise ValueError(
+            f"Invalid range step in token '{token_str}': step must be positive."
+        )
 
     return [f"{prefix}{val}{suffix}" for val in range(start, end + 1, step)]
 

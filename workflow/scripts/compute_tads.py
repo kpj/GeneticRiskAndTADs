@@ -10,9 +10,9 @@ if str(script_dir) not in sys.path:
 
 import pandas as pd
 from callers import parse_caller_config
-from callers.topdom import run_topdom
-from callers.spectraltad import run_spectraltad
 from callers.cooltools import run_cooltools
+from callers.spectraltad import run_spectraltad
+from callers.topdom import run_topdom
 
 
 def main():
@@ -22,7 +22,9 @@ def main():
         getattr(snakemake.wildcards, "tad_parameter", None),
     )
     if not caller_config:
-        raise ValueError("Missing caller configuration wildcard (caller_config or tad_parameter)")
+        raise ValueError(
+            "Missing caller configuration wildcard (caller_config or tad_parameter)"
+        )
 
     parsed = parse_caller_config(caller_config)
     caller = parsed["caller"]

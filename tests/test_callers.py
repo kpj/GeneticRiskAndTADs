@@ -1,8 +1,9 @@
 """Tests for modular TAD callers grammar, expansion, and consensus aggregation."""
 
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add workflow/scripts to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "workflow" / "scripts"))
@@ -119,10 +120,14 @@ def test_resolve_consensus_caller_configs():
 
 def test_parse_caller_config_invalid_prefix_error():
     # User's exact question: what happens if I write spectraltad_w1?
-    with pytest.raises(ValueError, match="Caller 'spectraltad' requires parameter prefix 'l'"):
+    with pytest.raises(
+        ValueError, match="Caller 'spectraltad' requires parameter prefix 'l'"
+    ):
         parse_caller_config("spectraltad_w1")
 
-    with pytest.raises(ValueError, match="Caller 'topdom' requires parameter prefix 'w'"):
+    with pytest.raises(
+        ValueError, match="Caller 'topdom' requires parameter prefix 'w'"
+    ):
         parse_caller_config("topdom_l1")
 
     with pytest.raises(ValueError, match="Unknown TAD caller 'unknown'"):
@@ -147,7 +152,11 @@ def test_weighted_interval_scheduling_disjoint():
 def test_weighted_interval_scheduling_overlapping():
     intervals = [
         {"tad_start": 0, "tad_stop": 150, "weight": 1.0},
-        {"tad_start": 100, "tad_stop": 250, "weight": 3.0},  # Heavy interval overlapping both
+        {
+            "tad_start": 100,
+            "tad_stop": 250,
+            "weight": 3.0,
+        },  # Heavy interval overlapping both
         {"tad_start": 200, "tad_stop": 350, "weight": 1.0},
     ]
     res = weighted_interval_scheduling(intervals)
