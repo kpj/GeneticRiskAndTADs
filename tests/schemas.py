@@ -54,7 +54,7 @@ FinalEnrichmentSchema = pa.DataFrameSchema(
         "TAD_type": Column(pa.String),
         "is_cancer": Column(pa.Bool),
         "tad_source": Column(pa.String),
-        "window_size": Column(pa.Int64, Check.ge(0)),
+        "caller_config": Column(pa.String),
         "filter": Column(pa.String),
     },
     checks=[

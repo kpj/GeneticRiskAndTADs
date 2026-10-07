@@ -2,11 +2,15 @@ samples:
     dummy_name: "tests/data/dummy_hic/dummy.cool"
 
 chromosome_list: ["22"]
-window_size_list: [0, 1, 9, 10, 11]
+caller_configs:
+    - "topdom_w[9..11]"
+    - "cooltools_w3mb"
 
 tad_borders:
     5in: [5000, 0]
     20in: [20000, 0]
+    10sym: [5000, 5000]
+    20sym: [10000, 10000]
 
 snp_filters:
     nofilter: null
@@ -27,20 +31,34 @@ annotation_sources:
     - hg19
     - hg38
 
+majority_votes:
+    majority_vote:
+        caller_configs: all
+        border_fraction_threshold: 0.3
+    majority_vote_narrow:
+        caller_configs: ["topdom_w[9..10]"]
+        border_fraction_threshold: 0.5
+    topdom_majority_vote:
+        caller_configs: topdom
+        border_fraction_threshold: 0.3
+    cooltools_majority_vote:
+        caller_configs: cooltools
+        border_fraction_threshold: 0.3
+
 parameters:
     associated_gene_source: mapped
     allow_snp_multiplicity_in_enrichment: false
     enrichment_distribution: binom
     enrichment_null_model: base_sample
     main_dataset: dummy_name
-    snp_majority_vote_border_fraction_threshold: 0.3
+    supplementary_caller_config: "topdom_w10"
     window_aggregation:
         disease_fraction_threshold: 0.5
-        window_size_list: [0, 9, 10]
+        caller_configs: ["majority_vote", "topdom_w9", "topdom_w10"]
         snp_count_threshold_list: [2, 5]
     publication_figure_tad_source_filter: "tad_source.str.contains('dummy')"
 
 sketch:
     region: ["chr22", 16000000, 51300000]
     data_source: dummy_name
-    window_size: 10
+    caller_config: "topdom_w10"

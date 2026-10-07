@@ -28,7 +28,7 @@ if [ "$PLOT" = true ]; then
 fi
 
 # execute pipeline
-uv run snakemake --config experiment=test_dummy --jobs 1 --software-deployment-method conda --resources hdf5_lock=1 "${SNAKEMAKE_ARGS[@]}"
+uv run snakemake --config experiment=test_dummy --jobs 1 --software-deployment-method conda --scheduler greedy --resources hdf5_lock=1 "${SNAKEMAKE_ARGS[@]}"
 
 # run output assertions and schema validations
 uv run pytest tests/

@@ -61,6 +61,52 @@ def test_final_enrichments_schema_and_invariants(check_results_exist):
     FinalEnrichmentSchema.validate(df, lazy=True)
 
 
+def test_all_configured_callers_and_majority_votes_present(check_results_exist):
+    """Verify presence of multiple callers (TopDom + cooltools) and semantic majority votes."""
+    enr_path = RESULTS_DIR / "results" / "final_enr.csv.gz"
+    df = pd.read_csv(enr_path)
+
+    configs_present = set(df["caller_config"].unique())
+    expected_configs = {
+        "majority_vote",
+        "majority_vote_narrow",
+        "topdom_majority_vote",
+        "cooltools_majority_vote",
+        "topdom_w9",
+        "topdom_w10",
+        "topdom_w11",
+        "cooltools_w3mb",
+    }
+    missing = expected_configs - configs_present
+    assert not missing, f"Expected caller configs missing from final enrichments: {missing}"
+
+    # Verify per-caller TAD files exist and have non-empty domain predictions
+    for cfg in ["topdom_w9", "topdom_w10", "topdom_w11", "cooltools_w3mb"]:
+        tad_file = RESULTS_DIR / "tads" / "data" / f"tads.dummy_name.{cfg}.csv"
+        assert tad_file.exists(), f"TAD file missing for caller {cfg}: {tad_file}"
+        df_tad = pd.read_csv(tad_file)
+        assert len(df_tad) > 0, f"No domains called by {cfg} in {tad_file}"
+        assert {"chrname", "tad_start", "tad_stop"}.issubset(df_tad.columns)
+
+
+def test_symmetric_boundaries_computed(check_results_exist):
+    """Verify that both asymmetric (*in) and symmetric (*sym) boundary geometries are computed."""
+    enr_path = RESULTS_DIR / "results" / "final_enr.csv.gz"
+    df = pd.read_csv(enr_path)
+
+    tad_types = set(df["TAD_type"].unique())
+    assert {"5in", "20in"}.issubset(tad_types), f"Missing asymmetric boundaries in {tad_types}"
+    assert {"10sym", "20sym"}.issubset(tad_types), f"Missing symmetric boundaries in {tad_types}"
+
+
+def test_no_legacy_artifacts_exist(check_results_exist):
+    """Verify that legacy numeric tokens (.0. / .1.) do not exist in generated outputs."""
+    legacy_files = list(RESULTS_DIR.glob("**/*.*.0.*")) + list(
+        RESULTS_DIR.glob("**/*.*.1.*")
+    )
+    assert not legacy_files, f"Legacy numeric token files found: {legacy_files}"
+
+
 def test_publication_figures_are_valid_pdfs(check_results_exist):
     """Verify that all generated figures exist and have valid PDF headers."""
     pdf_files = list((RESULTS_DIR / "publication_figures").glob("**/*.pdf")) + list(
