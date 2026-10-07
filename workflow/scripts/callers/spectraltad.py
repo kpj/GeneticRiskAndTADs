@@ -41,10 +41,10 @@ def run_spectraltad(
             suppressPackageStartupMessages(library(SpectralTAD))
             df_mat <- read.table('{input_tsv}', sep='\\t', header=FALSE)
             res <- tryCatch(
-                SpectralTAD(df_mat, levels={levels}, qual_filter=FALSE),
-                error=function(e) {{
+                SpectralTAD(df_mat, chr = '{chrom_str}', levels = {levels}, qual_filter = FALSE),
+                error = function(e) {{
                     warning(paste("SpectralTAD error:", e$message))
-                    data.frame(chr=character(0), start=integer(0), end=integer(0))
+                    data.frame(chr = character(0), start = integer(0), end = integer(0))
                 }}
             )
             if (is.data.frame(res)) {{
